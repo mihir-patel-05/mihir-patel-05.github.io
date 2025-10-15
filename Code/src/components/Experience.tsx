@@ -27,60 +27,37 @@ interface ExperienceItem {
 const Experience = () => {
   const experiences: ExperienceItem[] = [
     {
-      company: "Tech Analytics Corp",
-      position: "Data Science Intern",
-      location: "San Francisco, CA",
-      dateRange: "Jun 2024 - Aug 2024",
+      company: "Voya Financial",
+      position: "Data Analyst Intern",
+      location: "Detroit, MI",
+      dateRange: "Jun 2025 - Aug 2025",
       description: [
-        "Developed machine learning models to predict customer churn with 87% accuracy, directly contributing to a 15% improvement in customer retention rates",
-        "Built automated ETL pipelines processing 2M+ records daily using Python (pandas, NumPy) and SQL, reducing data processing time by 60%",
-        "Created interactive Tableau dashboards for executive stakeholders featuring real-time KPIs, reducing manual reporting time by 40%",
-        "Collaborated with cross-functional teams across product, marketing, and engineering to translate business requirements into scalable technical solutions",
-        "Implemented data validation and quality checks ensuring 99.9% data accuracy across all pipelines"
+        "Engineered scalable data ingestion pipelines using Microsoft Fabric + Apache Spark, improving distributed data processing performance by 32% and enabling downstream analytics",
+        "Partnered with the FP&A team to design interactive Power BI dashboards for 8 cost centers, transforming financial data into actionable insights",
+        "Built and optimized 5 semantic models in Power BI linked to Fabric Dataflows, processing 2M+ row datasets from Oracle ERP/EPM systems, increasing reporting time by 30%"
       ],
-      tags: ["Python", "SQL", "Tableau", "Machine Learning", "Scikit-learn", "pandas", "ETL"],
+      tags: ["Power BI", "Microsoft Fabric", "Apache Spark", "Data Pipelines", "Data Analysis", "SQL", "Python" ,"ETL"],
       gradient: "from-primary/20 to-secondary/20",
       achievements: [
-        "15% improvement in customer retention",
-        "60% reduction in processing time"
+        "32% reduction in data processing time",
+        "30% increase in reporting speed"
       ]
     },
     {
-      company: "DataViz Solutions",
-      position: "Analytics Intern",
-      location: "Remote",
-      dateRange: "Jan 2024 - May 2024",
+      company: "BAPS Swaminarayan Sanstha",
+      position: "Data Analyst",
+      location: "Canton, MI",
+      dateRange: "Jun 2022 - Aug 2024",
       description: [
-        "Analyzed customer behavior data across 500K+ users to identify key engagement metrics and trends, leading to actionable insights for product development",
-        "Designed and implemented comprehensive A/B testing framework for product feature optimization, enabling data-driven decision making across 12+ experiments",
-        "Created Power BI reports and interactive dashboards visualizing KPIs for marketing and product teams, serving 25+ stakeholders",
-        "Conducted advanced statistical analysis on user segmentation using clustering algorithms, resulting in 3 distinct user personas and targeted marketing campaigns",
-        "Presented weekly insights to leadership team, influencing product roadmap decisions and marketing strategies"
+        "Leveraged SQL + Python analytics to identify engagement trends across youth activity programs, increasing participation effectiveness by 15%",
+        "Designed a data-driven registration pipeline improving user tracking for 500+ attendees, reducing operational processing time and proving data quality + insights",
+        "Created financial dashboards to detect cost savings and delivered insights that saved $4,000 in event operations through data-driven decision-making"
       ],
-      tags: ["Power BI", "A/B Testing", "Statistics", "Data Analysis", "Python", "User Segmentation"],
+      tags: ["SQL", "Python", "Data Analysis", "Data Visualization", "Dashboards", "Power BI", "Expense Analytics"],
       gradient: "from-secondary/20 to-accent/20",
       achievements: [
-        "12+ A/B tests completed",
-        "3 user personas identified"
-      ]
-    },
-    {
-      company: "University Research Lab",
-      position: "Research Assistant",
-      location: "Berkeley, CA",
-      dateRange: "Sep 2023 - Dec 2023",
-      description: [
-        "Researched state-of-the-art natural language processing techniques for sentiment analysis applications in e-commerce product reviews",
-        "Processed and cleaned large text datasets containing 1M+ reviews from social media platforms using Python and NLTK",
-        "Implemented deep learning models (LSTM, BERT) using TensorFlow and PyTorch, achieving 87% accuracy on emotion classification tasks",
-        "Co-authored research paper titled 'Emotion Detection in Customer Reviews Using Transfer Learning' accepted to IEEE conference",
-        "Conducted literature reviews on 50+ academic papers and synthesized findings for research team"
-      ],
-      tags: ["NLP", "TensorFlow", "PyTorch", "Research", "Python", "BERT", "Deep Learning"],
-      gradient: "from-accent/20 to-primary/20",
-      achievements: [
-        "87% model accuracy achieved",
-        "1 research paper published"
+        "15% increase in youth program engagement",
+        "$4,000 in event cost savings"
       ]
     }
   ];
