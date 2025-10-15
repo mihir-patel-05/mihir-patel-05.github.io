@@ -5,21 +5,21 @@ import { Button } from "@/components/ui/button";
 const Projects = () => {
   const projects = [
     {
-      title: "Customer Segmentation Analysis",
-      description: "ML-powered clustering to identify customer segments and optimize marketing strategies",
-      tags: ["Python", "Scikit-learn", "Tableau"],
+      title: "March Madness Outcome Prediction Model Development",
+      description: "ML-powered model for predicting March Madness tournament outcomes",
+      tags: ["Python", "Scikit-learn", "Pandas", "Numpy", "Machine Learning"],
       gradient: "from-primary/20 to-secondary/20"
     },
     {
-      title: "Sales Forecasting Dashboard",
-      description: "Interactive dashboard with predictive analytics for revenue forecasting",
-      tags: ["Power BI", "SQL", "Time Series"],
+      title: "War on Drugs Policy Analysis",
+      description: "Statistical analysis of the impact of drug policies using Python",
+      tags: ["Pyton", "Pandas", "NumPy", "NumPy", "Matplotlib", "Seaborn", "Statsmodels"],
       gradient: "from-secondary/20 to-accent/20"
     },
     {
-      title: "Sentiment Analysis Pipeline",
-      description: "NLP pipeline analyzing customer feedback to drive product improvements",
-      tags: ["NLP", "TensorFlow", "API"],
+      title: "Event Check-in APP",
+      description: "Web app for event check-ins using TypeScript and React",
+      tags: ["TypeScript", "React", "MySQL", "Next.js", "Tailwind CSS", "Stripe API", "Prisma", "Typeform API"],
       gradient: "from-accent/20 to-primary/20"
     }
   ];

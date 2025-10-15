@@ -42,7 +42,7 @@ const Contact = () => {
 
           <div className="pt-8 border-t border-border">
             <p className="text-muted-foreground">
-              © 2025 Data Scientist Portfolio. Built with passion for data and nature.
+              © 2025 Mihir Patel Portfolio. Built with passion for data and nature.
             </p>
           </div>
         </div>
