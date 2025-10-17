@@ -31,7 +31,7 @@ const Projects = () => {
           Featured Projects
         </h2>
         <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto animate-fade-in [animation-delay:200ms]" style={{ animationDelay: '200ms', opacity: 0, animationFillMode: 'forwards' }}>
-          Explore my portfolio of data science projects that demonstrate real-world problem-solving
+          Explore my portfolio of data science and coding projects that demonstrate real-world problem-solving
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
