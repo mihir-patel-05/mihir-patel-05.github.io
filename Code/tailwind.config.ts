@@ -112,6 +112,14 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px rgba(var(--accent), 0.3)" },
           "50%": { boxShadow: "0 0 40px rgba(var(--accent), 0.6)" }
         },
+        "cursor-blink": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" }
+        },
+        "typing": {
+          "0%": { width: "0" },
+          "100%": { width: "100%" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -123,6 +131,8 @@ export default {
         "scale-in": "scale-in 0.5s ease-out",
         "float": "float 3s ease-in-out infinite",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "cursor-blink": "cursor-blink 1s ease-in-out infinite",
+        "typing": "typing 2s steps(12) 1s forwards",
       },
     },
   },

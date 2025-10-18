@@ -1,6 +1,7 @@
 import { Mountain, TrendingUp, Users } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+const profileImageSrc = `${import.meta.env.BASE_URL}linkedin-profile.jpg`;
 const About = () => {
   return (
     <section id="about" className="py-24 bg-background">
@@ -15,9 +16,9 @@ const About = () => {
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-glow"></div>
               <Avatar className="relative w-40 h-40 md:w-48 md:h-48 border-4 border-background shadow-mountain">
-                <AvatarImage src="/placeholder.svg" alt="Profile" className="object-cover" />
+                <AvatarImage src={profileImageSrc} alt="LinkedIn profile photo" className="object-cover" />
                 <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white text-4xl font-bold">
-                  DS
+                  MP
                 </AvatarFallback>
               </Avatar>
             </div>
