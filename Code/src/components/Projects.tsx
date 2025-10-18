@@ -8,19 +8,23 @@ const Projects = () => {
       title: "March Madness Outcome Prediction Model Development",
       description: "ML-powered model for predicting March Madness tournament outcomes",
       tags: ["Python", "Scikit-learn", "Pandas", "Numpy", "Machine Learning"],
-      gradient: "from-primary/20 to-secondary/20"
+      gradient: "from-primary/20 to-secondary/20",
+      codeUrl: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis"
+      
     },
     {
       title: "War on Drugs Policy Analysis",
       description: "Statistical analysis of the impact of drug policies using Python",
       tags: ["Pyton", "Pandas", "NumPy", "NumPy", "Matplotlib", "Seaborn", "Statsmodels"],
-      gradient: "from-secondary/20 to-accent/20"
+      gradient: "from-secondary/20 to-accent/20",
+      codeUrl: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy"
     },
     {
       title: "Event Check-in APP",
       description: "Web app for event check-ins using TypeScript and React",
       tags: ["TypeScript", "React", "MySQL", "Next.js", "Tailwind CSS", "Stripe API", "Prisma", "Typeform API"],
-      gradient: "from-accent/20 to-primary/20"
+      gradient: "from-accent/20 to-primary/20",
+      codeUrl: "https://github.com/mihir-patel-05/KDC_Checkin_2025"
     }
   ];
 
@@ -58,22 +62,13 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-3">
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    className="flex-1 border-primary/30 hover:bg-primary/10"
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    Code
-                  </Button>
-                  <Button 
-                    size="sm"
-                    className="flex-1 bg-primary hover:bg-primary/90"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    View
-                  </Button>
+                <div className="flex gap-3 w-full">
+                  <a href={project.codeUrl} target="_blank" rel="noopener noreferrer" className="block flex-1">
+                    <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 px-6 py-3 text-base">
+                      <Github className="w-5 h-5 mr-2" />
+                      Code
+                    </Button>
+                  </a>
                 </div>
               </CardContent>
             </Card>
