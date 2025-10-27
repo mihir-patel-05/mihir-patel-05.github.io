@@ -25,6 +25,14 @@ const Projects = () => {
       tags: ["TypeScript", "React", "MySQL", "Next.js", "Tailwind CSS", "Stripe API", "Prisma", "Typeform API"],
       gradient: "from-accent/20 to-primary/20",
       codeUrl: "https://github.com/mihir-patel-05/KDC_Checkin_2025"
+    },
+    {
+      title: "RespondXR",
+      description: "Turn Anyone into a First Responder using AI-powered emergency guidance that saves lives when every second counts",
+      tags: ["React Native", "TypeScript", "Expo", "Google Gemini API", "Anthropic Model API", "Computer Vision"],
+      gradient: "from-primary/20 to-accent/20",
+      codeUrl: "https://github.com/mihir-patel-05/Respond-XR",
+      websiteUrl: "http://respondxr.tech/"
     }
   ];
 
@@ -69,6 +77,14 @@ const Projects = () => {
                       Code
                     </Button>
                   </a>
+                  {project.websiteUrl && (
+                    <a href={project.websiteUrl} target="_blank" rel="noopener noreferrer" className="block flex-1">
+                      <Button size="lg" variant="outline" className="w-full border-primary/30 hover:bg-primary/10 px-6 py-3 text-base">
+                        <ExternalLink className="w-5 h-5 mr-2" />
+                        Website
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </CardContent>
             </Card>
