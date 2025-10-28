@@ -25,10 +25,10 @@ interface ExperienceItem {
 }
 
 const Experience = () => {
-  const experiences: ExperienceItem[] = [
+  const experiences: ExperienceItem[] =[
     {
       company: "Voya Financial",
-      position: "Data Analyst Intern",
+      position: "Data Analyst/Engineering Intern",
       location: "Detroit, MI",
       dateRange: "Jun 2025 - Aug 2025",
       description: [
