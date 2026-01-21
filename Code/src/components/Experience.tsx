@@ -27,6 +27,30 @@ interface ExperienceItem {
 const Experience = () => {
   const experiences: ExperienceItem[] =[
     {
+      company: "Meijer",
+      position: "Data Science/ML Intern (Incoming)",
+      location: "Grand Rapids, MI",
+      dateRange: "May 2026 - Aug 2026",
+      description: [
+        "Incoming Data Science and Machine Learning intern for Summer 2026"
+      ],
+      tags: ["Data Science", "Machine Learning", "Python"],
+      gradient: "from-primary/20 to-secondary/20"
+    },
+    {
+      company: "Michigan State University",
+      position: "Undergraduate Learning Assistant - CMSE 201",
+      location: "Michigan State University",
+      dateRange: "Jan 2026 - Present",
+      description: [
+        "Conduct office hours twice weekly to support students learning introductory data analysis concepts and computational methods",
+        "Guide students through hands-on learning of data science tools including Jupyter Notebook for interactive coding and documentation",
+        "Provide mentorship on Python programming fundamentals and data visualization libraries such as Matplotlib and scikit-learn for data analysis projects"
+      ],
+      tags: ["Python", "Jupyter Notebook", "Matplotlib", "Data Analysis", "Scikit-Learn", "Teaching", "Mentoring"],
+      gradient: "from-secondary/20 to-accent/20"
+    },
+    {
       company: "Voya Financial",
       position: "Data Analyst/Engineering Intern",
       location: "Detroit, MI",
@@ -41,23 +65,6 @@ const Experience = () => {
       achievements: [
         "32% reduction in data processing time",
         "30% increase in reporting speed"
-      ]
-    },
-    {
-      company: "BAPS Swaminarayan Sanstha",
-      position: "Data Analyst",
-      location: "Canton, MI",
-      dateRange: "Jun 2022 - Aug 2024",
-      description: [
-        "Leveraged SQL + Python analytics to identify engagement trends across youth activity programs, increasing participation effectiveness by 15%",
-        "Designed a data-driven registration pipeline improving user tracking for 500+ attendees, reducing operational processing time and proving data quality + insights",
-        "Created financial dashboards to detect cost savings and delivered insights that saved $4,000 in event operations through data-driven decision-making"
-      ],
-      tags: ["SQL", "Python", "Data Analysis", "Data Visualization", "Dashboards", "Power BI", "Expense Analytics"],
-      gradient: "from-secondary/20 to-accent/20",
-      achievements: [
-        "15% increase in youth program engagement",
-        "$4,000 in event cost savings"
       ]
     }
   ];
