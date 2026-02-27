@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
+        sans: ['Inter', 'sans-serif'],
+        serif: ['JetBrains Mono', 'monospace'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -120,6 +121,22 @@ export default {
           "0%": { width: "0" },
           "100%": { width: "100%" }
         },
+        "data-pulse": {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.05)" }
+        },
+        "fill-bar": {
+          "0%": { width: "0%" },
+          "100%": { width: "var(--bar-width)" }
+        },
+        "node-glow": {
+          "0%, 100%": { boxShadow: "0 0 5px hsl(var(--accent) / 0.3)" },
+          "50%": { boxShadow: "0 0 20px hsl(var(--accent) / 0.6), 0 0 40px hsl(var(--primary) / 0.3)" }
+        },
+        "count-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -133,6 +150,10 @@ export default {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "cursor-blink": "cursor-blink 1s ease-in-out infinite",
         "typing": "typing 2s steps(12) 1s forwards",
+        "data-pulse": "data-pulse 3s ease-in-out infinite",
+        "fill-bar": "fill-bar 1.5s ease-out forwards",
+        "node-glow": "node-glow 2s ease-in-out infinite",
+        "count-up": "count-up 0.4s ease-out",
       },
     },
   },
