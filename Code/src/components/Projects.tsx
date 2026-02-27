@@ -1,8 +1,11 @@
 import { ExternalLink, Github } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const Projects = () => {
+  const [sectionRef, isVisible] = useIntersectionObserver(0.1);
+
   const projects = [
     {
       title: "March Madness Outcome Prediction Model Development",
@@ -10,12 +13,11 @@ const Projects = () => {
       tags: ["Python", "Scikit-learn", "Pandas", "Numpy", "Machine Learning"],
       gradient: "from-primary/20 to-secondary/20",
       codeUrl: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis"
-      
     },
     {
       title: "War on Drugs Policy Analysis",
       description: "Statistical analysis of the impact of drug policies using Python",
-      tags: ["Pyton", "Pandas", "NumPy", "NumPy", "Matplotlib", "Seaborn", "Statsmodels"],
+      tags: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Statsmodels"],
       gradient: "from-secondary/20 to-accent/20",
       codeUrl: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy"
     },
@@ -38,21 +40,23 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center font-serif text-foreground animate-fade-in">
+      <div className="container mx-auto px-6" ref={sectionRef}>
+        <h2 className={`text-4xl md:text-5xl font-bold mb-8 text-center font-serif text-foreground transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           Featured Projects
         </h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto animate-fade-in [animation-delay:200ms]" style={{ animationDelay: '200ms', opacity: 0, animationFillMode: 'forwards' }}>
+        <p className={`text-center text-muted-foreground mb-16 max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           Explore my portfolio of data science and coding projects that demonstrate real-world problem-solving
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {projects.map((project, index) => (
-            <Card 
+            <Card
               key={index}
-              className={`bg-gradient-to-br ${project.gradient} border-border hover:shadow-mountain transition-all duration-500 hover:-translate-y-3 hover:scale-105 animate-fade-in-up group`}
-              style={{ animationDelay: `${400 + index * 150}ms`, opacity: 0, animationFillMode: 'forwards' }}
+              className={`bg-gradient-to-br ${project.gradient} border-border hover:shadow-data transition-all duration-500 hover:-translate-y-3 hover:scale-105 group overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+              style={{ transitionDelay: `${400 + index * 150}ms` }}
             >
+              {/* Gradient accent bar */}
+              <div className="h-1 bg-gradient-to-r from-primary via-accent to-secondary" />
               <CardHeader>
                 <CardTitle className="text-foreground group-hover:text-primary transition-colors duration-300">{project.title}</CardTitle>
                 <CardDescription className="text-muted-foreground">
@@ -62,9 +66,9 @@ const Projects = () => {
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag, tagIndex) => (
-                    <span 
+                    <span
                       key={tagIndex}
-                      className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full border border-primary/20"
+                      className="px-3 py-1 bg-primary/10 text-primary text-xs font-mono rounded-full border border-primary/20"
                     >
                       {tag}
                     </span>

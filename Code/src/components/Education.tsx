@@ -1,22 +1,40 @@
 import { GraduationCap, BookOpen, Calendar, Award } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+
+const courses = [
+  "CSE 331: Data Structures and Algorithms",
+  "CSE 232: Introduction to Programming C++",
+  "CMSE 201: Introduction to Computational Modeling",
+  "CMSE 202: Computational Modeling Tools",
+  "STT 380: Probability and Statistics for Data Science",
+  "STT 180: Introduction to Data Science",
+  "STT 200: Statistical Methods and Applications",
+  "CMSE/MTH 314: Linear Algebra with Applications",
+  "MTH 234: Calculus III",
+  "MTH 133: Calculus II",
+  "MTH 132: Calculus I",
+  "CSE 231: Introduction to Programming Python",
+];
 
 const Education = () => {
+  const [sectionRef, isVisible] = useIntersectionObserver(0.1);
+
   return (
-    <section className="py-24 bg-muted/30" id="education">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center font-serif text-foreground animate-fade-in">
+    <section className="py-24 bg-muted/30 bg-grid-pattern" id="education">
+      <div className="container mx-auto px-6" ref={sectionRef}>
+        <h2 className={`text-4xl md:text-5xl font-bold mb-8 text-center font-serif text-foreground transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           Education
         </h2>
-        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto animate-fade-in [animation-delay:200ms]" style={{ animationDelay: '200ms', opacity: 0, animationFillMode: 'forwards' }}>
+        <p className={`text-center text-muted-foreground mb-16 max-w-2xl mx-auto transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           My academic journey in data science and technology
         </p>
 
         <div className="max-w-5xl mx-auto">
           <Card
-            className="bg-gradient-to-br from-primary/20 to-secondary/20 border-border hover:shadow-mountain transition-all duration-500 hover:-translate-y-2 animate-fade-in-up group overflow-hidden"
-            style={{ animationDelay: '400ms', opacity: 0, animationFillMode: 'forwards' }}
+            className={`bg-gradient-to-br from-primary/20 to-secondary/20 border-border hover:shadow-data transition-all duration-500 hover:-translate-y-2 group overflow-hidden ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+            style={{ transitionDelay: '400ms' }}
           >
             <CardHeader>
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-2">
@@ -77,54 +95,20 @@ const Education = () => {
                   </span>
                 </div>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-2">
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CSE 331: Data Structures and Algorithms</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CSE 232: Introduction to Programming C++</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CMSE 201: Introduction to Computational Modeling</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CMSE 202: Computational Modeling Tools</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>STT 380: Probability and Statistics for Data Science</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>STT 180: Introduction to Data Science</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>STT 200: Statistical Methods and Applications</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CMSE/MTH 314: Linear Algebra with Applications</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>MTH 234: Calculus III</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>MTH 133: Calculus II</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>MTH 132: Calculus I</span>                  
-                  </div>
-                  <div className="text-muted-foreground flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
-                    <span>CSE 231: Introduction to Programming Python</span>
-                  </div>
+                  {courses.map((course, index) => {
+                    const colonIndex = course.indexOf(":");
+                    const code = course.substring(0, colonIndex);
+                    const name = course.substring(colonIndex);
+                    return (
+                      <div key={index} className="text-muted-foreground flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0"></span>
+                        <span>
+                          <span className="font-mono text-accent">{code}</span>
+                          {name}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </CardContent>
