@@ -22,7 +22,7 @@ const Contact = () => {
             &gt; ready_to_connect = True
           </p>
 
-          <div className={`flex flex-wrap gap-4 justify-center mb-12 transition-all duration-700 delay-[400ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`flex flex-wrap gap-4 justify-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
             {/* Email Button */}
             <a href="mailto:mihirrpatel05@gmail.com" className="block">
               <Button

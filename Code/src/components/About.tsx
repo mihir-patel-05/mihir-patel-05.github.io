@@ -35,7 +35,7 @@ const About = () => {
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 mt-16">
-            <div className={`text-center p-6 rounded-lg bg-card hover:shadow-card transition-all duration-500 border border-border hover:-translate-y-2 group delay-[400ms] ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+            <div className={`text-center p-6 rounded-lg bg-card hover:shadow-card transition-all duration-500 border border-border hover:-translate-y-2 group ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`} style={{ transitionDelay: '400ms' }}>
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center group-hover:animate-float">
                 <BrainCircuit className="w-8 h-8 text-white" />
               </div>
@@ -55,7 +55,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className={`text-center p-6 rounded-lg bg-card hover:shadow-card transition-all duration-500 border border-border hover:-translate-y-2 group delay-[600ms] ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+            <div className={`text-center p-6 rounded-lg bg-card hover:shadow-card transition-all duration-500 border border-border hover:-translate-y-2 group ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`} style={{ transitionDelay: '600ms' }}>
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center group-hover:animate-float">
                 <Workflow className="w-8 h-8 text-white" />
               </div>
