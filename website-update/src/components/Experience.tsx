@@ -18,8 +18,7 @@ const experiences: Exp[] = [
     company: "Meijer",
     loc: "Grand Rapids, MI",
     desc: [
-      "Incoming on the Data Science / ML team for Summer 2026.",
-      "Details under NDA until start date.",
+      "Incoming on the Data Science / ML team for Summer 2026."
     ],
     achievements: [],
     tags: ["Data Science", "Machine Learning", "Python"],
