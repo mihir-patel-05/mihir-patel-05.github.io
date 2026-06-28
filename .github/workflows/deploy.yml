@@ -1,0 +1,59 @@
+name: Deploy to AWS
+
+# Mirrors Railway's "push to deploy". Builds the Vite SPA in website-update/,
+# syncs the output to S3, and invalidates the CloudFront cache.
+#
+# Before this works, fill in the placeholders below and create an IAM role
+# trusted by GitHub's OIDC provider (token.actions.githubusercontent.com) with
+# permission to s3:PutObject / s3:DeleteObject / s3:ListBucket on the bucket and
+# cloudfront:CreateInvalidation on the distribution. See AWS_DEPLOYMENT.md.
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # required for AWS OIDC
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  # TODO: replace with your values
+  AWS_ROLE_ARN: arn:aws:iam::ACCOUNT_ID:role/github-deploy-role
+  S3_BUCKET: YOUR_BUCKET
+  CLOUDFRONT_DISTRIBUTION_ID: YOUR_DISTRIBUTION_ID
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website-update
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: website-update/package-lock.json
+
+      - run: npm ci --legacy-peer-deps
+      - run: npm run build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync dist/ "s3://${S3_BUCKET}/" --delete \
+            --cache-control "public,max-age=31536000,immutable" --exclude "index.html"
+          aws s3 cp dist/index.html "s3://${S3_BUCKET}/index.html" --cache-control "no-cache"
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${CLOUDFRONT_DISTRIBUTION_ID}" --paths "/*"
