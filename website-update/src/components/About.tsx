@@ -1,9 +1,9 @@
 const profileImageSrc = `${import.meta.env.BASE_URL}linkedin-profile.jpg`;
 
 const principles = [
-  { n: "P.01", t: "Signal over noise", d: "Start with the question the business actually needs answered. Everything else follows." },
-  { n: "P.02", t: "Boring pipelines", d: "Reliable plumbing is the unglamorous work that makes every downstream insight trustworthy." },
-  { n: "P.03", t: "Ship & measure", d: "A model in a notebook is a hypothesis. A model in production is an answer." },
+  { n: "P.01", t: "Systems before spectacle", d: "Clear architecture and dependable foundations make ambitious products possible." },
+  { n: "P.02", t: "Models earn trust", d: "Useful machine learning starts with honest baselines, good data, and explainable decisions." },
+  { n: "P.03", t: "Ship, learn, refine", d: "A working product creates the feedback that turns a promising idea into a better one." },
 ];
 
 const About = () => (
@@ -32,23 +32,24 @@ const About = () => (
         </div>
 
         <div className="reveal">
-          <h3 className="font-serif-title text-[clamp(32px,3.5vw,48px)] leading-[1.1] mb-6 md:mb-8" style={{ textWrap: "balance" as any }}>
-            Every dataset tells a story. My job is to find the{" "}
-            <em className="italic font-normal text-bronze-deep">one worth telling.</em>
+          <h3 className="font-serif-title text-[clamp(32px,3.5vw,48px)] leading-[1.1] mb-6 md:mb-8" style={{ textWrap: "balance" }}>
+            I like the seam between reliable software and{" "}
+            <em className="italic font-normal text-bronze-deep">useful machine learning.</em>
           </h3>
           <p className="text-[18px] leading-[1.6] text-ink-soft mb-4 max-w-[60ch]">
-            I'm an undergraduate at Michigan State studying Data Science with a minor in Business — a combination that
-            keeps me honest about why a model matters, not just whether it works.
+            I'm an undergraduate at Michigan State studying Data Science with a minor in Business. I work across the
+            stack — from interfaces and APIs to databases, data pipelines, and models — because the best technical
+            decisions make both the system and the user experience better.
           </p>
           <p className="text-[18px] leading-[1.6] text-ink-soft mb-4 max-w-[60ch]">
             Last summer at <strong className="font-medium text-ink">Voya Financial</strong> I engineered ingestion
-            pipelines in Microsoft Fabric and Spark that cut processing time by 32%. This spring I'm TA'ing CMSE 201,
-            and this summer I'm joining <strong className="font-medium text-ink">Meijer</strong> as a Data Science / ML
-            intern.
+            pipelines in Microsoft Fabric and Spark that cut processing time by 32%. At Michigan State, I help students
+            build confidence with Python and computational modeling as a learning assistant for CMSE 201.
           </p>
           <p className="text-[18px] leading-[1.6] text-ink-soft mb-4 max-w-[60ch]">
-            I care about the boring parts — clean schemas, honest baselines, pipelines that don't page you at 3am —
-            because those are the parts that make the interesting work possible.
+            My recent work ranges from a full-stack election data platform and offline-first iOS app to computer-vision
+            tooling and AI-assisted emergency guidance. I care about clean interfaces, thoughtful data models, honest
+            evaluation, and getting useful software into people's hands.
           </p>
 
           <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-3 border-t border-rule">

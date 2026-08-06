@@ -5,12 +5,12 @@ const Hero = () => {
       className="relative min-h-screen flex flex-col justify-between px-5 md:px-10 pt-24 md:pt-32 pb-10 md:pb-20 bg-cornsilk"
     >
       {/* Top strip */}
-      <div className="grid grid-cols-[1fr_auto] gap-10 font-mono text-[12px] text-ink-soft tracking-[0.05em]">
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 sm:gap-10 font-mono text-[12px] text-ink-soft tracking-[0.05em]">
         <div className="flex items-center gap-[10px]">
           <span className="w-2 h-2 rounded-full bg-[#7a9a3c] animate-soft-pulse" />
-          AVAILABLE · SUMMER '26 INTERNSHIP SECURED
+          SOFTWARE ENGINEERING · MACHINE LEARNING
         </div>
-        <div>PORTFOLIO · VOL. 02 · 2026</div>
+        <div className="sm:text-right">PORTFOLIO · VOL. 02 · 2026</div>
       </div>
 
       {/* Main */}
@@ -32,9 +32,9 @@ const Hero = () => {
           </h1>
 
           <div className="max-w-[380px] opacity-0 animate-fade-in [animation-delay:.7s]">
-            <p className="text-[17px] leading-[1.55] text-ink-soft" style={{ textWrap: "pretty" as any }}>
-              A data scientist and engineer at Michigan State, building scalable pipelines, predictive models, and
-              the occasional app that saves lives when seconds matter.
+            <p className="text-[17px] leading-[1.55] text-ink-soft" style={{ textWrap: "pretty" }}>
+              A software engineer and data science student at Michigan State, building full-stack products, reliable
+              data systems, and machine learning tools for real-world problems.
             </p>
             <div className="mt-6 font-serif italic text-[22px] text-ink">
               — working out of East Lansing, MI.
@@ -48,9 +48,9 @@ const Hero = () => {
             font-mono text-[12px] opacity-0 animate-fade-in [animation-delay:1.1s]"
         >
           {[
-            ["Role", "Data Scientist"],
-            ["Focus", "ML · Analytics · Pipelines"],
-            ["Next", "Meijer DS/ML Intern"],
+            ["Role", "Software + ML Engineer"],
+            ["Focus", "Products · Systems · Models"],
+            ["Building", "Useful, dependable software"],
             ["Based in", "East Lansing, MI"],
           ].map(([k, v]) => (
             <div key={k}>
