@@ -13,17 +13,6 @@ interface Exp {
 
 const experiences: Exp[] = [
   {
-    year: "2026 →",
-    role: "Data Science / ML Intern",
-    company: "Meijer",
-    loc: "Grand Rapids, MI",
-    desc: [
-      "Incoming on the Data Science / ML team for Summer 2026."
-    ],
-    achievements: [],
-    tags: ["Data Science", "Machine Learning", "Python"],
-  },
-  {
     year: "2026 —",
     role: "Undergraduate Learning Assistant",
     company: "CMSE 201 · Michigan State",

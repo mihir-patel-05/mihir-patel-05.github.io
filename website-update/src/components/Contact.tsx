@@ -20,8 +20,8 @@ const Contact = () => (
           <em className="italic text-bronze">thoughtful.</em>
         </h2>
         <p className="text-[17px] leading-[1.55] text-cornsilk/75 max-w-[38ch]">
-          If you're working on a problem where data has a real part to play — or you just want to say hi — I'd love to
-          hear from you. I answer every email.
+          If you're building a thoughtful software product, exploring an applied ML problem, or just want to say hi,
+          I'd love to hear from you. I answer every email.
         </p>
       </div>
 
