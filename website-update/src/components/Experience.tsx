@@ -13,34 +13,52 @@ interface Exp {
 
 const experiences: Exp[] = [
   {
-    year: "2026 —",
-    role: "Undergraduate Learning Assistant",
-    company: "CMSE 201 · Michigan State",
-    loc: "East Lansing, MI",
+    year: "May - Aug. 2026",
+    role: "Data Science Intern",
+    company: "Meijer",
+    loc: "Grand Rapids, MI",
     desc: [
-      "Hold weekly office hours for students learning introductory data analysis and computational methods.",
-      "Coach on the practical side of Jupyter, Python, Matplotlib, and scikit-learn — the gap between reading docs and writing real analysis.",
-      "Translate abstract statistics into concrete problem-solving intuition.",
+      "Designed and built a unified customer-journey data platform on Databricks, architecting the schema and ingestion layer to consolidate 20+ datasets (3M+ rows) into one queryable model powering cross-channel attribution.",
+      "Shipped a production LLM agent (Databricks Genie) for natural-language querying by non-technical stakeholders, with scoped table permissions, tuned retrieval context, and secured testing to eliminate hallucinated responses before release.",
+      "Modeled multi-channel attribution across 3 marketing channels, surfacing spend inefficiencies that drove budget reallocation and a ~30% lift in customer conversions.",
     ],
-    achievements: [],
-    tags: ["Python", "Jupyter", "Matplotlib", "Scikit-learn", "Teaching"],
+    achievements: [
+      { value: "20+", label: "Datasets unified" },
+      { value: "3M+", label: "Rows consolidated" },
+      { value: "~30%", label: "Lift in conversions" },
+    ],
+    tags: ["Databricks", "Databricks Genie", "LLM Integration", "Data Modeling", "Data Engineering"],
   },
   {
-    year: "2025",
-    role: "Data Analyst / Engineering Intern",
+    year: "June - Aug. 2025",
+    role: "Data Engineer Intern",
     company: "Voya Financial",
     loc: "Detroit, MI",
     desc: [
-      "Engineered scalable ingestion pipelines in Microsoft Fabric + Apache Spark, processing 2M+ row datasets from Oracle ERP/EPM.",
-      "Partnered with FP&A to design interactive Power BI dashboards serving 8 cost centers.",
-      "Built & optimized 5 semantic models linked to Fabric Dataflows — the bones of the reporting system.",
+      "Re-architected enterprise data pipelines from Alteryx to Microsoft Fabric on Apache Spark, cutting refresh time 32% through distributed processing and query optimization.",
+      "Automated recurring reporting into scheduled, monitored jobs across 8 cost centers, replacing hand-run refreshes with reliable, fault-tolerant execution.",
+      "Designed and optimized 5 semantic models (Power BI + Fabric Dataflows) over 2M+ row datasets from Oracle ERP/EPM systems, cutting reporting turnaround 30%.",
     ],
     achievements: [
-      { value: "32%", label: "Faster data processing" },
+      { value: "32%", label: "Faster refreshes" },
+      { value: "8", label: "Cost centers automated" },
       { value: "30%", label: "Faster reporting" },
-      { value: "2M+", label: "Rows per job" },
     ],
-    tags: ["Power BI", "Microsoft Fabric", "Apache Spark", "SQL", "Python", "ETL"],
+    tags: ["Alteryx", "Microsoft Fabric", "Apache Spark", "Power BI", "Fabric Dataflows", "Oracle ERP/EPM"],
+  },
+  {
+    year: "Jan. 2026 - Present",
+    role: "Undergraduate Learning Assistant",
+    company: "Michigan State University",
+    loc: "East Lansing, MI",
+    desc: [
+      "Mentored 30+ students per semester in Python programming, data structures, and computational problem-solving through one-on-one and small-group sessions.",
+      "Led weekly lab sessions on core scientific-computing libraries (NumPy, Pandas, Matplotlib), reinforcing debugging and data-modeling workflows.",
+    ],
+    achievements: [
+      { value: "30+", label: "Students mentored per semester" },
+    ],
+    tags: ["Python", "Data Structures", "NumPy", "Pandas", "Matplotlib", "Mentoring"],
   },
 ];
 
