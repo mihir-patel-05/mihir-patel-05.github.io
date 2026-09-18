@@ -13,21 +13,38 @@ interface Exp {
 
 const experiences: Exp[] = [
   {
+    year: "2026",
+    role: "Data Science Intern",
+    company: "Meijer",
+    loc: "Grand Rapids, MI",
+    desc: [
+      "Unified 20+ structured and semi-structured datasets (3M+ rows) of web and mobile-app behavioral events into a queryable model on Databricks, defining the experience-metric and monitoring layer for engagement and conversion.",
+      "Built statistical and machine-learning attribution models across web and app touchpoints with causal inference and experimentation, surfacing spend inefficiencies that drove a ~30% lift in customer conversions.",
+      "Built and evaluated a retrieval-grounded Databricks Genie GenAI agent for natural-language analytics, tuning retrieval to eliminate hallucinations before shipping it to non-technical stakeholders.",
+    ],
+    achievements: [
+      { value: "30%", label: "Lift in conversions" },
+      { value: "3M+", label: "Rows unified" },
+      { value: "20+", label: "Datasets joined" },
+    ],
+    tags: ["Databricks", "Apache Spark", "Causal Inference", "GenAI", "Python", "SQL"],
+  },
+  {
     year: "2026 —",
     role: "Undergraduate Learning Assistant",
     company: "CMSE 201 · Michigan State",
     loc: "East Lansing, MI",
     desc: [
-      "Hold weekly office hours for students learning introductory data analysis and computational methods.",
+      "Mentor 30+ students per semester in Python, data structures, and algorithms, strengthening core CS and analytical-reasoning fundamentals.",
       "Coach on the practical side of Jupyter, Python, Matplotlib, and scikit-learn — the gap between reading docs and writing real analysis.",
-      "Translate abstract statistics into concrete problem-solving intuition.",
+      "Lead weekly labs on scientific-computing libraries and translate abstract statistics into concrete problem-solving intuition.",
     ],
     achievements: [],
     tags: ["Python", "Jupyter", "Matplotlib", "Scikit-learn", "Teaching"],
   },
   {
     year: "2025",
-    role: "Data Analyst / Engineering Intern",
+    role: "Data Engineering Intern",
     company: "Voya Financial",
     loc: "Detroit, MI",
     desc: [

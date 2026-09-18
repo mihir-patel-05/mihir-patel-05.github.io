@@ -42,9 +42,12 @@ const About = () => (
             decisions make both the system and the user experience better.
           </p>
           <p className="text-[18px] leading-[1.6] text-ink-soft mb-4 max-w-[60ch]">
-            Last summer at <strong className="font-medium text-ink">Voya Financial</strong> I engineered ingestion
-            pipelines in Microsoft Fabric and Spark that cut processing time by 32%. At Michigan State, I help students
-            build confidence with Python and computational modeling as a learning assistant for CMSE 201.
+            This past summer at <strong className="font-medium text-ink">Meijer</strong>, I built ML attribution
+            models and a retrieval-grounded GenAI analytics agent on Databricks that drove a ~30% lift in customer
+            conversions. The summer before, at <strong className="font-medium text-ink">Voya Financial</strong>, I
+            engineered ingestion pipelines in Microsoft Fabric and Spark that cut processing time by 32%. At
+            Michigan State, I help students build confidence with Python and computational modeling as a learning
+            assistant for CMSE 201.
           </p>
           <p className="text-[18px] leading-[1.6] text-ink-soft mb-4 max-w-[60ch]">
             My recent work ranges from a full-stack election data platform and offline-first iOS app to computer-vision
