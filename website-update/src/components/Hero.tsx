@@ -14,14 +14,14 @@ const Hero = () => (
         </div>
       </div>
       <figure className="hero-portrait">
-        <div className="portrait-grid" aria-hidden="true"><span>01 / A little perspective</span><i>+</i></div>
+        <div className="portrait-grid" aria-hidden="true"><span>Michigan State / Class of ’27</span><i>+</i></div>
         <div className="portrait-frame">
           <img src={`${import.meta.env.BASE_URL}linkedin-profile.jpg`} alt="Mihir Patel" width="800" height="800" fetchPriority="high" />
         </div>
         <figcaption><span>East Lansing, Michigan</span><span className="portrait-coordinate" aria-hidden="true">↗</span></figcaption>
       </figure>
     </div>
-    <div className="principles" aria-label="What drives me">
+    <div className="principles" role="group" aria-label="What drives me">
       <div><span className="principle-number">01</span><h2>Analytics</h2><p>Follow the evidence.</p></div>
       <div><span className="principle-number">02</span><h2>Proactive</h2><p>Turn curiosity into action.</p></div>
       <div><span className="principle-number">03</span><h2>Strategic</h2><p>Keep the bigger picture in view.</p></div>

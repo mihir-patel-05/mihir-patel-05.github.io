@@ -11,9 +11,11 @@ const links = [
 const Nav = () => {
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const menuLinks = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    menuLinks.current?.querySelector("a")?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
@@ -31,7 +33,7 @@ const Nav = () => {
           <span className="monogram" aria-hidden="true">mp.</span>
           <span>Mihir Patel</span>
         </a>
-        <div id="navigation-links" className={`nav-links ${open ? "is-open" : ""}`}>
+        <div ref={menuLinks} id="navigation-links" className={`nav-links ${open ? "is-open" : ""}`}>
           {links.map((link) => <a key={link.href} href={link.href} onClick={() => setOpen(false)}>{link.label}</a>)}
           <a href="#contact" className="nav-contact" onClick={() => setOpen(false)}>Let’s talk <ArrowUpRight size={15} aria-hidden="true" /></a>
         </div>

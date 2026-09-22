@@ -13,21 +13,20 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="mihir-portfolio-theme" disableTransitionOnChange>
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <Analytics />
-      <SpeedInsights />
-    </TooltipProvider>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <Analytics />
+        <SpeedInsights />
+      </TooltipProvider>
+    </QueryClientProvider>
   </ThemeProvider>
 );
 
