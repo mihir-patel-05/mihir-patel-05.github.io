@@ -2,65 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================================
-   Design tokens — warm editorial palette
-   Tea Green / Beige / Cornsilk / Papaya Whip / Light Bronze
-   All colors in HSL so Tailwind's `hsl(var(--x))` pattern works.
-   ============================================================ */
-
+/* Coolors palette; deeper blue shades keep dark-mode surfaces readable. */
 @layer base {
   :root {
-    /* Palette */
-    --tea:        74 32% 76%;   /* #ccd5ae */
-    --beige:      67 50% 86%;   /* #e9edc9 */
-    --cornsilk:   52 94% 94%;   /* #fefae0 */
-    --papaya:     43 82% 89%;   /* #faedcd */
-    --bronze:     30 53% 64%;   /* #d4a373 */
-    --bronze-deep:28 40% 50%;   /* #b0824f */
-    --ink:        30 33% 18%;   /* #3d2e1f */
-    --ink-soft:   34 22% 34%;   /* #6b5942 */
-    --ink-faint:  34 25% 56%;   /* #a89576 */
-    --rule:       40 36% 77%;   /* #d9cdb0 */
-
-    /* shadcn mappings */
-    --background: var(--cornsilk);
-    --foreground: var(--ink);
-
-    --card:       52 94% 94%;
-    --card-foreground: var(--ink);
-
-    --popover:    52 94% 94%;
-    --popover-foreground: var(--ink);
-
-    --primary:    30 40% 50%;   /* bronze-deep */
-    --primary-foreground: 52 94% 94%;
-
-    --secondary:  67 50% 86%;
-    --secondary-foreground: var(--ink);
-
-    --muted:      43 82% 89%;
-    --muted-foreground: 34 22% 34%;
-
-    --accent:     30 53% 64%;
-    --accent-foreground: var(--ink);
-
-    --destructive: 0 70% 50%;
+    color-scheme: light;
+    --cloud: #e7ecef;
+    --navy: #274c77;
+    --steel: #6096ba;
+    --sky: #a3cef1;
+    --stone: #8b8c89;
+    --page: #f7f9fa;
+    --surface: #e7ecef;
+    --surface-raised: #ffffff;
+    --text: #203b59;
+    --text-muted: #506579;
+    --line: #cbd5de;
+    --link: #274c77;
+    --button: #274c77;
+    --button-text: #ffffff;
+    --wash: #dceaf4;
+    --background: 200 23% 97%;
+    --foreground: 212 47% 24%;
+    --card: 0 0% 100%;
+    --card-foreground: var(--foreground);
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
+    --primary: 212 51% 31%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 205 38% 55%;
+    --secondary-foreground: 212 47% 24%;
+    --muted: 203 20% 92%;
+    --muted-foreground: 209 20% 39%;
+    --accent: 207 74% 79%;
+    --accent-foreground: var(--foreground);
+    --border: 208 22% 83%;
+    --input: var(--border);
+    --ring: var(--primary);
+    --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
-
-    --border:     40 36% 77%;
-    --input:      40 36% 77%;
-    --ring:       30 40% 50%;
-
-    --radius: 0.25rem;
-
-    --sidebar-background: 52 94% 94%;
-    --sidebar-foreground: 34 22% 34%;
-    --sidebar-primary: 30 40% 50%;
-    --sidebar-primary-foreground: 52 94% 94%;
-    --sidebar-accent: 43 82% 89%;
-    --sidebar-accent-foreground: 30 33% 18%;
-    --sidebar-border: 40 36% 77%;
-    --sidebar-ring: 30 40% 50%;
+    --radius: .5rem;
+    /* Compatibility for the existing layout during the theme migration. */
+    --cornsilk: var(--background);
+    --tea: 207 50% 87%;
+    --beige: var(--muted);
+    --papaya: 204 32% 94%;
+    --bronze: var(--accent);
+    --bronze-deep: var(--primary);
+    --ink: var(--foreground);
+    --ink-soft: var(--muted-foreground);
+    --ink-faint: var(--muted-foreground);
+    --rule: var(--border);
+  }
+  .dark {
+    color-scheme: dark;
+    --page: #101c2b;
+    --surface: #192a3d;
+    --surface-raised: #1d3147;
+    --text: #e7ecef;
+    --text-muted: #b0c1d0;
+    --line: #354b61;
+    --link: #a3cef1;
+    --button: #a3cef1;
+    --button-text: #152b43;
+    --wash: #203b55;
+    --background: 213 46% 12%;
+    --foreground: 203 20% 92%;
+    --card: 211 42% 20%;
+    --primary: 207 74% 79%;
+    --primary-foreground: 212 52% 17%;
+    --muted: 212 42% 17%;
+    --muted-foreground: 206 25% 75%;
+    --border: 211 29% 29%;
+    --tea: 210 45% 23%;
+    --papaya: var(--muted);
   }
 }
 
@@ -108,4 +122,27 @@
 
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-raised);
+  color: var(--text);
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--wash); }
+:focus-visible { outline: 3px solid var(--link); outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal, .animate-fade-in { opacity: 1 !important; transform: none !important; }
 }

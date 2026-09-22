@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { href: "#about", label: "About" },
@@ -43,6 +44,7 @@ const Nav = () => {
         ))}
       </div>
 
+      <ThemeToggle />
       <a
         href="#contact"
         className="font-mono text-[12px] px-[14px] py-2 border border-ink rounded-full
