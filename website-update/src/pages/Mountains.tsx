@@ -87,7 +87,7 @@ const Mountains = () => {
           <a className="alpine-email" href="mailto:mihirrpatel05@gmail.com">mihirrpatel05@gmail.com <ArrowUpRight size={20} aria-hidden="true" /></a>
           <div className="alpine-socials"><a href="https://www.linkedin.com/in/mihir-patel-a9a19821a/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={16} aria-hidden="true" /></a><a href="https://github.com/mihir-patel-05" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={16} aria-hidden="true" /></a></div>
         </div>
-        <footer className="alpine-footer"><span>© {new Date().getFullYear()} Mihir Patel</span><a href="/">Compare with original <ArrowUpRight size={14} aria-hidden="true" /></a><a href="/civic.html">Civic version <ArrowUpRight size={14} aria-hidden="true" /></a><a href="#basecamp">Back to basecamp ↑</a></footer>
+        <footer className="alpine-footer"><span>© {new Date().getFullYear()} Mihir Patel</span><a href="/">Compare with original <ArrowUpRight size={14} aria-hidden="true" /></a><a href="/library.html">Library version <ArrowUpRight size={14} aria-hidden="true" /></a><a href="#basecamp">Back to basecamp ↑</a></footer>
       </section>
     </main>
   </div>
