@@ -50,7 +50,7 @@
 .alpine-page h2 { font-size: clamp(2.7rem, 4.5vw, 4.6rem); line-height: 1.02; margin: 25px 0 30px; }
 .alpine-page h2 em { font-weight: 400; color: var(--alpine-muted); }
 .alpine-kicker { display: flex; align-items: center; gap: 10px; font: .7rem/1.8 'JetBrains Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
-.alpine-kicker > span:last-child:not(:first-child) { margin-left: auto; }
+.alpine-kicker > span:last-child:not(.alpine-status) { margin-left: auto; }
 .alpine-skip { position: fixed; top: -100px; left: 20px; z-index: 100; background: var(--alpine-paper); padding: 12px 18px; }
 .alpine-skip:focus { top: 12px; }
 .alpine-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 30px; min-height: 88px; padding: 14px 4.5%; background: var(--alpine-paper); border-bottom: 1px solid var(--alpine-line); }
@@ -104,7 +104,7 @@
 .alpine-project h3 { font-size: 1.15rem; line-height: 1.4; margin: 15px 0 12px; letter-spacing: -.035em; }
 .alpine-project h3 a { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .alpine-project h3 a:hover { color: var(--alpine-accent); text-decoration: underline; text-underline-offset: 4px; }
-.alpine-project > p { color: var(--alpine-muted); font-size: .875rem; line-height: 1.8; }
+.alpine-project > p { color: var(--alpine-muted); font-size: 1rem; line-height: 1.8; }
 .alpine-project .alpine-tools { margin-top: 17px; font: .6875rem/1.8 'JetBrains Mono', monospace; }
 .alpine-text-link { display: inline-flex; gap: 12px; align-items: center; font-size: .875rem; padding-block: 12px; border-bottom: 1px solid var(--alpine-accent); }
 .alpine-text-link:hover { color: var(--alpine-accent); }
@@ -181,10 +181,10 @@
 .dark .alpine-stars { opacity: .7; }
 .alpine-hero-mist { opacity: max(.05, calc(1 - var(--trail-progress) * 4)); }
 .alpine-landscape-caption { position: absolute; bottom: 10px; right: 18px; color: #f5f4ed; font: .5625rem/1.5 'JetBrains Mono', monospace; letter-spacing: .035em; background: #203c30b8; padding: 4px 7px; border-radius: 2px; }
-.alpine-header { background: color-mix(in srgb, var(--alpine-paper) 93%, transparent); backdrop-filter: blur(16px); }
+.alpine-header { background: var(--alpine-paper); }
 .alpine-hero-copy { position: relative; }
 .alpine-hero-bottom { background: var(--alpine-paper); padding: 14px 18px; border: 1px solid var(--alpine-line); border-radius: 3px; }
-.alpine-paper { background: color-mix(in srgb, var(--alpine-paper) 96%, transparent); backdrop-filter: blur(12px); }
+.alpine-paper { background: var(--alpine-paper); }
 .alpine-field-note { background: color-mix(in srgb, var(--alpine-paper) 92%, transparent); padding: 22px 25px; border-left: 2px solid var(--alpine-accent); }
 .alpine-footer { background: var(--alpine-paper); border: 1px solid var(--alpine-line); padding: 15px 20px; border-radius: 3px; }
 .alpine-trail-indicator { position: fixed; z-index: 10; left: 23px; top: 50%; transform: translateY(-35%); width: 50px; text-align: center; background: color-mix(in srgb, var(--alpine-paper) 94%, transparent); border: 1px solid var(--alpine-line); border-radius: 30px; padding: 20px 0; }
@@ -215,11 +215,22 @@
 }
 @media (max-width: 700px) {
   .alpine-terrain { width: 170%; margin-left: -68%; }
-  .alpine-hero-copy { background: color-mix(in srgb, var(--alpine-sky) 80%, transparent); border-radius: 3px; padding: 22px; margin: -22px; width: calc(100% + 44px); max-width: none; }
+  .alpine-hero-copy { background: color-mix(in srgb, var(--alpine-sky) 80%, transparent); border-radius: 3px; padding: 22px 0; width: 100%; max-width: none; }
   .alpine-hero-bottom { gap: 9px; padding: 12px; }
   .alpine-footer { gap: 12px 20px; padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .alpine-page [data-reveal], .alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 1; transform: none; transition: none; }
   .alpine-layer, .alpine-route-layer, .alpine-sky-details { transform: none; will-change: auto; }
+}
+
+@media (max-width: 360px) {
+  .alpine-header { padding-inline: 14px; }
+  .alpine-nav { gap: 0; }
+  .alpine-nav a { padding-inline: 7px; }
+  .alpine-stage { width: calc(100% - 28px); }
+  .alpine-paper { padding-inline: 20px; }
+  .alpine-hero h1 { font-size: 4.4rem; }
+  .alpine-values { flex-wrap: wrap; }
+  .alpine-email { font-size: .75rem; gap: 6px; }
 }

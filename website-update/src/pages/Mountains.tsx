@@ -6,11 +6,11 @@ import { alpineExperience, alpineProjects, trailStops } from "@/components/alpin
 import "@/styles/alpine.css";
 
 const Mountains = () => {
-  const { root, activeStop } = useAlpineJourney();
+  const { root, activeStop, handleNavigation } = useAlpineJourney();
   const current = trailStops.find(stop => stop.id === activeStop)!;
 
   return (
-  <div ref={root} className="alpine-page" data-stage={activeStop}>
+  <div ref={root} onClick={handleNavigation} className="alpine-page" data-stage={activeStop}>
     <AlpineLandscape />
     <a className="alpine-skip" href="#alpine-main">Skip to content</a>
     <header className="alpine-header">

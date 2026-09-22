@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { trailStops } from "./trail";
 
 export function useAlpineJourney() {
@@ -72,6 +72,17 @@ export function useAlpineJourney() {
     };
     configureReveals();
     update();
+    const initialStop = trailStops.find(stop => `#${stop.id}` === window.location.hash);
+    const initialFrame = requestAnimationFrame(() => {
+      if (!initialStop) return;
+      const target = document.getElementById(initialStop.id)!;
+      const headerHeight = page.querySelector("header")!.getBoundingClientRect().height;
+      window.scrollTo({
+        top: initialStop.id === "basecamp" ? 0 : window.scrollY + target.getBoundingClientRect().top - headerHeight - 20,
+        behavior: "instant",
+      });
+      update();
+    });
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     window.addEventListener("hashchange", schedule);
@@ -82,6 +93,7 @@ export function useAlpineJourney() {
     resizeObserver?.observe(page);
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(initialFrame);
       observer?.disconnect();
       resizeObserver?.disconnect();
       window.removeEventListener("scroll", schedule);
@@ -92,5 +104,21 @@ export function useAlpineJourney() {
     };
   }, []);
 
-  return { root, activeStop };
+  const handleNavigation = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const anchor = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href^="#"]') : null;
+    if (!anchor || !root.current) return;
+    const target = document.getElementById(anchor.hash.slice(1));
+    if (!target || !root.current.contains(target)) return;
+    event.preventDefault();
+    if (window.location.hash !== anchor.hash) window.history.pushState(null, "", anchor.hash);
+    target.focus({ preventScroll: true });
+    const headerHeight = root.current.querySelector("header")!.getBoundingClientRect().height;
+    const top = target.id === "basecamp" || target.id === "alpine-main"
+      ? 0
+      : window.scrollY + target.getBoundingClientRect().top - headerHeight - 20;
+    window.scrollTo({ top, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+  };
+
+  return { root, activeStop, handleNavigation };
 }

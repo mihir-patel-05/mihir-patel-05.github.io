@@ -36,3 +36,36 @@ Check desktop and narrow mobile layouts in both themes. Verify theme persistence
 ## Rollback
 
 The redesign is separated into theme foundation, page redesign, and final polish commits. Use `git log --oneline` to identify the change to undo, then `git revert <commit>` to preserve history. To undo the whole redesign, revert its commits newest first. Later commits build on earlier ones, so reverting only the foundation while keeping the layout requires reconciling theme dependencies.
+
+## Alternative: the alpine portfolio
+
+Compare the original at `/` with the mountain design at `/mountains.html`.
+The original page and its components are unchanged. Vite builds two actual HTML
+entry points, so `mountains.html` also works on static hosting without an SPA rewrite.
+
+- `src/pages/Mountains.tsx`: the standalone alternative's page composition.
+- `src/components/alpine/trail.ts`: five elevation stops, selected projects, and experience.
+- `src/components/alpine/AlpineLandscape.tsx`: original layered SVG terrain, snow, forest, contours, and the ascent route.
+- `src/components/alpine/useAlpineJourney.ts`: scroll progress, route marker, active sections, progressive reveals, direct-link alignment, and keyboard focus.
+- `src/styles/alpine.css`: scoped natural alpine day/night palettes and responsive layout.
+
+The landscape is an Alps-inspired illustration, not a map of a real trail; elevations
+are narrative markers. Scroll follows Basecamp → Treeline (About) → Ridgeline
+(Projects) → High pass (Experience) → Summit (Contact). The persistent section
+navigation works without scrolling through every chapter. The Original link returns
+to the first design for comparison.
+
+Layered SVG supplies scroll-driven depth without Three.js or an additional rendering
+dependency. The alternative is lazy-loaded. Scroll work is batched into animation
+frames, and React only updates when the active section changes. Reduced-motion
+preferences disable parallax and reveals; content remains visible if IntersectionObserver
+is unavailable. Both designs share the saved light/dark preference, with separate palettes.
+
+Verification includes production builds, TypeScript, lint on changed files, direct
+static-page loading, chapter deep links, section navigation/focus, both themes, mobile
+widths down to 320 px, desktop text enlargement, reduced motion, and return to the
+original. Accessibility scans reported no violations; text over illustrated backgrounds
+also requires visual review because automated contrast detection cannot resolve SVG layers.
+
+The alternative is committed separately as page foundation, animated landscape, and
+navigation/accessibility polish. Revert those commits newest first to remove it.
