@@ -13,6 +13,7 @@ const featured: { id: LibraryBook; title: string; x: number; color: number }[] =
 const views = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
   ...featured.map(book => ({ target: [book.x, 3.38, -3.85] as const, position: [book.x, 3.45, 0.65] as const })),
+  { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
 ];
 
 function spineTexture(title: string, color: number) {
@@ -268,16 +269,17 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const desiredPosition = new THREE.Vector3();
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const animate = () => {
-      const progress = Math.max(0, Math.min(4, progressRef.current));
-      const index = Math.min(3, Math.floor(progress));
+      const progress = Math.max(0, Math.min(5, progressRef.current));
+      const index = Math.min(4, Math.floor(progress));
       const t = reducedMotion.matches ? Math.round(progress) - index : THREE.MathUtils.smoothstep(progress - index, 0, 1);
       desiredTarget.fromArray(views[index].target).lerp(new THREE.Vector3(...views[index + 1].target), t);
       desiredPosition.fromArray(views[index].position).lerp(new THREE.Vector3(...views[index + 1].position), t);
       if (width < 650) {
-        const readingCorner = THREE.MathUtils.clamp(1 - progress * 2, 0, 1) * 2.8;
+        const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - 4, 0, 1));
+        const readingCorner = overview * 2.8;
         desiredPosition.x += readingCorner;
         desiredTarget.x += readingCorner;
-        desiredPosition.z += progress > .5 ? .55 : 2.5;
+        desiredPosition.z += THREE.MathUtils.lerp(.55, 2.5, overview);
       }
       camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : .065);
       currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : .065);

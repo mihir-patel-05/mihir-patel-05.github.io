@@ -56,11 +56,11 @@ export default function Library() {
   useEffect(() => {
     const journey = journeyRef.current;
     if (!journey) return;
-    const stages = [document.getElementById("library-start")!, ...volumes.map(volume => document.getElementById(`library-${volume.id}`)!)];
+    const stages = [document.getElementById("library-start")!, ...volumes.map(volume => document.getElementById(`library-${volume.id}`)!), document.getElementById("library-return")!];
     let frame = 0;
     const update = () => {
       frame = 0;
-      const focus = scrollY + innerHeight * .52;
+      const focus = scrollY + innerHeight * .5;
       const centers = stages.map(stage => { const rect = stage.getBoundingClientRect(); return scrollY + rect.top + rect.height / 2; });
       let progress = 0;
       for (let i = 0; i < centers.length - 1; i++) {
@@ -68,8 +68,8 @@ export default function Library() {
         else if (focus > centers[i]) { progress = i + (focus - centers[i]) / (centers[i + 1] - centers[i]); break; }
         else break;
       }
-      progressRef.current = Math.min(4, progress);
-      journey.style.setProperty("--library-progress", String(progressRef.current / 4));
+      progressRef.current = Math.min(5, progress);
+      journey.style.setProperty("--library-progress", String(progressRef.current / 5));
       setActiveIndex(previous => { const next = Math.round(progressRef.current); return previous === next ? previous : next; });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -97,7 +97,7 @@ export default function Library() {
     };
     addEventListener("keydown", onKeyDown);
     const frame = requestAnimationFrame(() => closeRef.current?.focus());
-    return () => { document.body.style.overflow = previousOverflow; removeEventListener("keydown", onKeyDown); cancelAnimationFrame(frame); previousFocus?.focus(); };
+    return () => { document.body.style.overflow = previousOverflow; removeEventListener("keydown", onKeyDown); cancelAnimationFrame(frame); previousFocus?.focus({ preventScroll: true }); };
   }, [openBook]);
 
   const selectBook = (book: LibraryBook) => { openRef.current = book; setOpenBook(book); };
@@ -113,6 +113,7 @@ export default function Library() {
       <main id="library-main">
         <section id="library-start" className="library-stage library-start" aria-label="Library entrance" />
         {volumes.map((volume, index) => <section key={volume.id} id={`library-${volume.id}`} className="library-stage library-book-stage" aria-label={`Volume ${index + 1}: ${volume.label}`}><h2 className="library-visually-hidden">{volume.label}</h2></section>)}
+        <section id="library-return" className="library-stage library-start" aria-label="Return to the full library view" />
       </main>
       <div className="library-reading-ui">{current ? <div className="library-chapter-note" aria-live="polite"><span>0{activeIndex} / 04 · {current.caption}</span><strong>{current.label}</strong><small>Click the highlighted spine or open the book below.</small><button type="button" onClick={() => selectBook(current.id)}>Open {current.label} <ArrowUpRight size={17} /></button></div> : <div className="library-entry-cue"><span>Four volumes · one portfolio</span><p>Scroll toward a book, then click its binding to open a chapter.</p><button type="button" onClick={() => scrollTo("library-about")}>Start with About <ArrowUpRight size={16} /></button></div>}<nav className="library-volume-nav" aria-label="Library volumes">{volumes.map((volume, index) => <button key={volume.id} type="button" className={activeIndex === index + 1 ? "is-active" : ""} aria-current={activeIndex === index + 1 ? "location" : undefined} onClick={() => scrollTo(`library-${volume.id}`)}><span>0{index + 1}</span>{volume.label}</button>)}</nav><div className="library-progress" aria-hidden="true"><span /></div></div>
     </div>
