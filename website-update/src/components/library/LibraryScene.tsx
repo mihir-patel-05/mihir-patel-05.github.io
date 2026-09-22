@@ -10,7 +10,7 @@ const featured: { id: LibraryBook; title: string; x: number; color: number }[] =
   { id: "contact", title: "CONTACT", x: 5.35, color: 0x694c2e },
 ];
 
-const views = [
+const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
   ...featured.map(book => ({ target: [book.x, 3.38, -3.85] as const, position: [book.x, 3.45, 0.65] as const })),
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },

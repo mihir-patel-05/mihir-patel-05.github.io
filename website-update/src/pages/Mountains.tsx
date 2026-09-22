@@ -18,7 +18,7 @@ const Mountains = () => {
       <nav className="alpine-nav" aria-label="Mountain portfolio sections">
         {trailStops.map(stop => <a key={stop.id} href={`#${stop.id}`} aria-current={activeStop === stop.id ? "location" : undefined}>{stop.label}</a>)}
       </nav>
-      <div className="alpine-header-tools"><a className="alpine-original" href="/" aria-label="Compare with the original portfolio"><ArrowLeft size={15} aria-hidden="true" /><span>Original</span></a><ThemeToggle /></div>
+      <div className="alpine-header-tools"><a className="alpine-original" href="/designs/original.html" aria-label="Compare with the original portfolio"><ArrowLeft size={15} aria-hidden="true" /><span>Original</span></a><ThemeToggle /></div>
     </header>
 
     <aside className="alpine-trail-indicator" aria-label="Your place on the mountain">
@@ -87,7 +87,7 @@ const Mountains = () => {
           <a className="alpine-email" href="mailto:mihirrpatel05@gmail.com">mihirrpatel05@gmail.com <ArrowUpRight size={20} aria-hidden="true" /></a>
           <div className="alpine-socials"><a href="https://www.linkedin.com/in/mihir-patel-a9a19821a/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={16} aria-hidden="true" /></a><a href="https://github.com/mihir-patel-05" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={16} aria-hidden="true" /></a></div>
         </div>
-        <footer className="alpine-footer"><span>© {new Date().getFullYear()} Mihir Patel</span><a href="/">Compare with original <ArrowUpRight size={14} aria-hidden="true" /></a><a href="/library.html">Library version <ArrowUpRight size={14} aria-hidden="true" /></a><a href="#basecamp">Back to basecamp ↑</a></footer>
+        <footer className="alpine-footer"><span>© {new Date().getFullYear()} Mihir Patel</span><a href="/designs/original.html">Compare with original <ArrowUpRight size={14} aria-hidden="true" /></a><a href="/">Library version <ArrowUpRight size={14} aria-hidden="true" /></a><a href="#basecamp">Back to basecamp ↑</a></footer>
       </section>
     </main>
   </div>

@@ -15,6 +15,7 @@
 .library-brand span { color: #bba789; font: .65rem/1.2 'JetBrains Mono', monospace; letter-spacing: .11em; white-space: nowrap; }
 .library-header h1 { margin: 0; color: #efe1c8; font-size: clamp(1.25rem, 1.9vw, 1.75rem); line-height: 1.1; letter-spacing: -.035em; text-align: center; white-space: nowrap; }
 .library-header h1 em { color: #d7ae78; font-weight: 400; }
+.library-header-end { justify-self: end; color: #bba789; font: .65rem/1.2 'JetBrains Mono', monospace; letter-spacing: .11em; text-transform: uppercase; }
 .library-header > div { display: flex; align-items: center; justify-content: flex-end; gap: 26px; }
 .library-header > div a { display: inline-flex; align-items: center; gap: 6px; color: #e3d3b7; font-size: .82rem; }
 .library-header a:hover { color: #e7b77b; }
@@ -126,6 +127,7 @@
 @media (max-width: 600px) {
   .library-header { grid-template-columns: auto 1fr auto; padding: 11px 16px; }
   .library-brand span { display: none; }
+  .library-header-end { display: none; }
   .library-header h1 { font-size: clamp(.95rem, 4.4vw, 1.22rem); white-space: normal; }
   .library-header > div { gap: 12px; }
   .library-header > div a { font-size: .7rem; }

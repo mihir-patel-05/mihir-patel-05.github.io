@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowUpRight, BookOpen, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, ChevronLeft, ChevronRight, X } from "lucide-react";
 import LibraryScene, { type LibraryBook } from "@/components/library/LibraryScene";
 import { alpineExperience, alpineProjects } from "@/components/alpine/trail";
 import "@/styles/library.css";
@@ -109,7 +109,7 @@ export default function Library() {
     <a className="library-skip" href="#library-main">Skip to content</a>
     <div className="library-journey" ref={journeyRef}>
       <div className="library-canvas"><LibraryScene progressRef={progressRef} openRef={openRef} onSelect={selectBook} /></div>
-      <header className="library-header"><a href="#library-start" className="library-brand" aria-label="Back to the library entrance" onClick={event => { event.preventDefault(); scrollTo("library-start"); }}><BookOpen size={25} strokeWidth={1.5} /><span>MP · THE LIBRARY</span></a><h1 id="library-title">The library of <em>Mihir Patel.</em></h1><div><a href="/mountains.html">Mountain version</a><a href="/"><ArrowLeft size={15} /> Original</a></div></header>
+      <header className="library-header"><a href="#library-start" className="library-brand" aria-label="Back to the library entrance" onClick={event => { event.preventDefault(); scrollTo("library-start"); }}><BookOpen size={25} strokeWidth={1.5} /><span>MP · THE LIBRARY</span></a><h1 id="library-title">The library of <em>Mihir Patel.</em></h1><span className="library-header-end" aria-hidden="true">Four volumes · One story</span></header>
       <main id="library-main">
         <section id="library-start" className="library-stage library-start" aria-label="Library entrance" />
         {volumes.map((volume, index) => <section key={volume.id} id={`library-${volume.id}`} className="library-stage library-book-stage" aria-label={`Volume ${index + 1}: ${volume.label}`}><h2 className="library-visually-hidden">{volume.label}</h2></section>)}

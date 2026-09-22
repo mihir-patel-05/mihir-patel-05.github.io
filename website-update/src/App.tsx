@@ -22,8 +22,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/mountains.html" element={<Suspense fallback={<main className="not-found"><p>Opening the mountain portfolio…</p></main>}><Mountains /></Suspense>} />
+            <Route path="/designs/original.html" element={<Index />} />
+            <Route path="/designs/mountains.html" element={<Suspense fallback={<main className="not-found"><p>Opening the mountain portfolio…</p></main>}><Mountains /></Suspense>} />
             <Route path="/library.html" element={<Suspense fallback={<main className="not-found"><p>Opening the library…</p></main>}><Library /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
