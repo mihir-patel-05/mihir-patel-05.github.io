@@ -51,6 +51,10 @@
 .library-page { min-width: 0; padding: clamp(28px, 4vw, 50px); overflow-y: auto; color: #32241c; background: linear-gradient(90deg, #e4d2af, #f5ebd7 12%, #eee1c5 90%, #dfc9a4); animation: library-page-in .5s .3s both; }
 .library-page + .library-page { border-left: 1px solid #ac9271; background: linear-gradient(90deg, #ddc7a5, #efe1c5 9%, #f5ead4 95%); }
 .library-page-title { display: flex; flex-direction: column; }
+.library-headshot { width: 132px; height: 148px; flex-shrink: 0; object-fit: cover; object-position: center 30%; margin-top: 20px; border: 5px solid #f7edd9; outline: 1px solid #b9a689; box-shadow: 3px 4px 8px #32241c25; }
+.library-about-page h2 { font-size: clamp(2rem, 3vw, 3rem); margin: 20px 0 14px; }
+.library-about-page > p { font-size: .9rem; line-height: 1.65; }
+.library-about-page .library-page-footer { padding-top: 18px; }
 .library-page-number { color: #8b5c3b; font-size: .7rem; }
 .library-page-title h2 { margin: 38px 0 24px; font-size: clamp(3.2rem, 5vw, 5.3rem); line-height: 1.05; letter-spacing: -.05em; }
 .library-page-title h2 em { color: #8f5c3d; }
