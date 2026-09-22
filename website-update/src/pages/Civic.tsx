@@ -137,9 +137,11 @@ export default function Civic() {
             </section>
           </div>
 
-          <aside className="civic-map-panel" aria-label="Scroll through a stylized 3D National Mall">
-            <div className="civic-map-heading"><span><MapPin size={15} aria-hidden="true" /> Washington, D.C.</span><span>Scroll to travel / 01—03</span></div>
+          <aside className="civic-map-panel" aria-label="Full-screen stylized 3D National Mall">
             <CivicScene progressRef={progressRef} />
+          </aside>
+          <div className="civic-map-ui">
+            <div className="civic-map-heading"><span><MapPin size={15} aria-hidden="true" /> Washington, D.C.</span><span>Scroll to travel / 01—03</span></div>
             <div className="civic-map-compass" aria-hidden="true">N <span>↑</span></div>
             <div className="civic-landmarks" role="navigation" aria-label="Landmark stops">
               {landmarks.map(landmark => (
@@ -150,7 +152,7 @@ export default function Civic() {
             </div>
             <p className="civic-map-note">A stylized National Mall, not to scale. <a href="https://www.nps.gov/places/000/national-mall.htm" target="_blank" rel="noopener noreferrer">About the Mall <ArrowUpRight size={12} aria-hidden="true" /></a></p>
             <div className="civic-map-progress" aria-hidden="true"><span /></div>
-          </aside>
+          </div>
         </div>
 
         <section id="civic-contact" className="civic-contact" aria-labelledby="civic-contact-title">
