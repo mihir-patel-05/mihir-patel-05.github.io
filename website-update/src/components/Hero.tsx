@@ -11,6 +11,7 @@ const Hero = () => (
         <div className="hero-actions">
           <a className="button-primary" href="#projects">Explore my work <ArrowDown size={17} aria-hidden="true" /></a>
           <a className="text-link" href="https://github.com/mihir-patel-05" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a className="text-link" href="/civic.html">Civic version <ArrowUpRight size={17} aria-hidden="true" /></a>
         </div>
       </div>
       <figure className="hero-portrait">
