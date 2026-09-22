@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => ({
       input: {
         main: path.resolve(__dirname, "index.html"),
         mountains: path.resolve(__dirname, "mountains.html"),
+        library: path.resolve(__dirname, "library.html"),
         civic: path.resolve(__dirname, "civic.html"),
       },
     },
