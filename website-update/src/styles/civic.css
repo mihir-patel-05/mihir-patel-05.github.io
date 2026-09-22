@@ -1,0 +1,218 @@
+.civic-page {
+  --civic-bg: #e7ecef;
+  --civic-paper: #f8fafb;
+  --civic-ink: #203e61;
+  --civic-muted: #536b80;
+  --civic-blue: #274c77;
+  --civic-steel: #6096ba;
+  --civic-sky: #a3cef1;
+  --civic-line: #bfd0dc;
+  --civic-grid: #d4dfe7;
+  min-height: 100vh;
+  background: var(--civic-bg);
+  color: var(--civic-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: clip;
+}
+.dark .civic-page {
+  --civic-bg: #101f31;
+  --civic-paper: #1a314b;
+  --civic-ink: #e7ecef;
+  --civic-muted: #afc4d4;
+  --civic-blue: #a3cef1;
+  --civic-steel: #85b5d6;
+  --civic-sky: #274c77;
+  --civic-line: #355572;
+  --civic-grid: #28445e;
+}
+.civic-page :focus-visible { outline: 3px solid var(--civic-steel); outline-offset: 4px; }
+.civic-page main:focus { outline: none; }
+.civic-page ::selection { color: #203e61; background: #a3cef1; }
+.civic-page h1, .civic-page h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 400; letter-spacing: -.055em; }
+.civic-page h2 em, .civic-page h1 em { font-weight: 400; color: var(--civic-steel); }
+.civic-skip { position: fixed; top: -100px; left: 20px; z-index: 100; padding: 12px 18px; background: var(--civic-paper); border: 1px solid var(--civic-line); }
+.civic-skip:focus { top: 12px; }
+.civic-header { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 32px; min-height: 82px; padding: 12px clamp(22px, 4vw, 70px); background: var(--civic-paper); border-bottom: 1px solid var(--civic-line); }
+.civic-wordmark { display: flex; align-items: center; gap: 12px; margin-right: auto; color: var(--civic-blue); }
+.civic-wordmark strong, .civic-wordmark small { display: block; }
+.civic-wordmark strong { font-size: .92rem; letter-spacing: -.02em; }
+.civic-wordmark small { color: var(--civic-muted); font: .63rem/1.5 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; }
+.civic-nav, .civic-header-actions { display: flex; align-items: center; gap: 26px; }
+.civic-nav a, .civic-back { padding-block: 8px; font-size: .83rem; font-weight: 500; }
+.civic-nav a:hover, .civic-back:hover { color: var(--civic-steel); text-decoration: underline; text-underline-offset: 5px; }
+.civic-back { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.civic-header .theme-toggle { width: 38px; height: 38px; color: var(--civic-ink); border-color: var(--civic-line); background: transparent; }
+.civic-header .theme-toggle:hover { background: var(--civic-bg); }
+.civic-hero { display: grid; grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); min-height: min(830px, calc(100svh - 82px)); border-bottom: 1px solid var(--civic-line); }
+.civic-hero-copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 72px clamp(34px, 5.2vw, 88px); }
+.civic-eyebrow, .civic-overline, .civic-section-index, .civic-map-heading, .civic-map-note, .civic-project-top, .civic-tools, .civic-job-date, .civic-credentials { font-family: 'JetBrains Mono', monospace; }
+.civic-eyebrow { display: flex; align-items: center; gap: 10px; color: var(--civic-blue); font-size: .69rem; line-height: 1.65; text-transform: uppercase; letter-spacing: .07em; }
+.civic-status { display: block; flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%; background: var(--civic-steel); box-shadow: 0 0 0 4px color-mix(in srgb, var(--civic-steel) 20%, transparent); }
+.civic-overline { margin-top: 70px; font-size: .69rem; color: var(--civic-muted); letter-spacing: .12em; text-transform: uppercase; }
+.civic-hero h1 { max-width: 760px; margin: 22px 0 27px; font-size: clamp(4.3rem, 5.7vw, 7rem); line-height: .98; }
+.civic-hero h1 em { display: inline; }
+.civic-lede { max-width: 595px; color: var(--civic-muted); font-size: 1.05rem; line-height: 1.85; }
+.civic-hero-links { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; margin-top: 30px; }
+.civic-primary { display: inline-flex; align-items: center; gap: 30px; justify-content: space-between; min-width: 178px; padding: 15px 20px; background: var(--civic-blue); color: var(--civic-paper); border-radius: 3px; font-size: .86rem; font-weight: 500; }
+.dark .civic-primary { color: #203e61; }
+.civic-primary:hover { background: var(--civic-steel); }
+.civic-secondary { display: inline-flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--civic-steel); padding: 11px 0; font-size: .85rem; font-weight: 500; }
+.civic-secondary:hover, .civic-inline-link:hover { color: var(--civic-steel); }
+.civic-credentials { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: auto; padding-top: 54px; font-size: .65rem; line-height: 1.7; color: var(--civic-muted); }
+.civic-credentials span + span::before { content: '·'; margin-right: 18px; }
+.civic-map-panel { position: relative; display: flex; flex-direction: column; min-height: 640px; border-left: 1px solid var(--civic-line); background-color: #cfdae2; background-image: linear-gradient(var(--civic-grid) 1px, transparent 1px), linear-gradient(90deg, var(--civic-grid) 1px, transparent 1px); background-size: 32px 32px; }
+.dark .civic-map-panel { background-color: #213b54; }
+.civic-map-heading { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 16px; margin: 26px 32px 0; font-size: .66rem; letter-spacing: .09em; text-transform: uppercase; }
+.civic-map-heading span:first-child { display: flex; align-items: center; gap: 8px; }
+.civic-scene { position: absolute; inset: 0 0 136px; }
+.civic-scene canvas { display: block; width: 100%; height: 100%; }
+.civic-scene[data-failed]::after { content: 'The 3D study is unavailable in this browser. Explore the landmarks below.'; position: absolute; top: 42%; left: 12%; right: 12%; text-align: center; color: var(--civic-ink); font: 1rem/1.7 'Inter', sans-serif; }
+.civic-map-compass { position: absolute; top: 74px; right: 32px; z-index: 2; display: flex; align-items: center; gap: 6px; font: .72rem/1 'JetBrains Mono', monospace; }
+.civic-map-compass span { font-size: 1.15rem; }
+.civic-landmarks { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: auto; padding: 0 22px; }
+.civic-landmarks a { min-width: 0; padding: 13px 12px 15px; border: 1px solid var(--civic-line); background: color-mix(in srgb, var(--civic-paper) 94%, transparent); text-align: left; color: var(--civic-ink); }
+.civic-landmarks a:hover, .civic-landmarks a.is-active { background: var(--civic-blue); border-color: var(--civic-blue); color: var(--civic-paper); }
+.dark .civic-landmarks a:hover, .dark .civic-landmarks a.is-active { color: #203e61; }
+.civic-landmarks span, .civic-landmarks small { display: block; }
+.civic-landmarks span { font-size: .8rem; font-weight: 600; }
+.civic-landmarks small { margin-top: 5px; font-size: .65rem; line-height: 1.35; opacity: .8; }
+.civic-map-note { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 15px 23px; color: var(--civic-muted); font-size: .62rem; line-height: 1.55; }
+.civic-map-note a { display: inline-flex; align-items: center; gap: 4px; color: var(--civic-blue); text-decoration: underline; text-underline-offset: 3px; }
+.civic-section { padding: 108px clamp(25px, 7vw, 110px); }
+.civic-section-index { color: var(--civic-steel); font-size: .71rem; letter-spacing: .13em; text-transform: uppercase; }
+.civic-section-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 300px); align-items: end; gap: 16px 40px; margin-bottom: 38px; }
+.civic-section-intro .civic-section-index { grid-column: 1 / -1; }
+.civic-section h2, .civic-contact h2 { margin: 0; font-size: clamp(3rem, 5vw, 5.5rem); line-height: 1.05; }
+.civic-section-intro > p:last-child { color: var(--civic-muted); line-height: 1.75; font-size: .95rem; }
+.civic-work { background: var(--civic-paper); }
+.civic-project-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--civic-line); border-left: 1px solid var(--civic-line); }
+.civic-project { display: flex; flex-direction: column; min-height: 310px; padding: 25px 24px 28px; border-right: 1px solid var(--civic-line); border-bottom: 1px solid var(--civic-line); }
+.civic-project-top { display: flex; justify-content: space-between; align-items: start; gap: 14px; color: var(--civic-steel); font-size: .63rem; line-height: 1.55; text-transform: uppercase; letter-spacing: .04em; }
+.civic-project h3 { margin: 48px 0 12px; font-size: 1.16rem; line-height: 1.35; }
+.civic-project h3 a:hover { color: var(--civic-steel); text-decoration: underline; text-underline-offset: 4px; }
+.civic-project > p:not(.civic-tools) { color: var(--civic-muted); line-height: 1.65; font-size: .87rem; }
+.civic-project .civic-tools { margin-top: auto; padding-top: 22px; color: var(--civic-muted); font-size: .65rem; line-height: 1.7; }
+.civic-inline-link { display: inline-flex; align-items: center; gap: 14px; margin-top: 28px; padding-bottom: 8px; border-bottom: 1px solid var(--civic-steel); font-size: .88rem; font-weight: 500; }
+.civic-inquiry { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(45px, 8vw, 130px); border-block: 1px solid var(--civic-line); }
+.civic-inquiry-heading > svg { display: block; margin: 55px 0 22px; color: var(--civic-steel); }
+.civic-inquiry h2 { font-size: clamp(2.8rem, 4.4vw, 5.1rem); }
+.civic-inquiry-body { padding-top: 100px; }
+.civic-inquiry-body > p { margin-bottom: 22px; max-width: 600px; font-size: 1.04rem; line-height: 1.8; }
+.civic-inquiry-body > p + p { color: var(--civic-muted); }
+.civic-skill-groups { margin-top: 38px; border-top: 1px solid var(--civic-line); }
+.civic-skill-groups > div { display: grid; grid-template-columns: 125px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--civic-line); font-size: .83rem; line-height: 1.65; }
+.civic-skill-groups span { color: var(--civic-muted); }
+.civic-experience { background: var(--civic-paper); }
+.civic-job-list { border-top: 1px solid var(--civic-line); }
+.civic-job { display: grid; grid-template-columns: 140px minmax(0, 1fr) minmax(120px, 240px); gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--civic-line); }
+.civic-job-date { color: var(--civic-steel); font-size: .73rem; }
+.civic-job h3 { margin: 0 0 3px; font-size: 1.22rem; }
+.civic-job p { max-width: 600px; color: var(--civic-muted); font-size: .9rem; line-height: 1.65; }
+.civic-job .civic-job-role { margin-bottom: 12px; color: var(--civic-blue); font-weight: 600; }
+.civic-job > strong { align-self: center; font-size: .86rem; font-weight: 500; }
+.civic-contact { padding: 110px clamp(25px, 7vw, 110px) 120px; background: var(--civic-blue); color: #f8fafb; }
+.dark .civic-contact { color: #203e61; }
+.civic-contact .civic-section-index, .civic-contact h2 em { color: #a3cef1; }
+.dark .civic-contact .civic-section-index, .dark .civic-contact h2 em { color: #416b8b; }
+.civic-contact h2 { max-width: 950px; margin: 24px 0; }
+.civic-contact > p:not(.civic-section-index) { max-width: 620px; font-size: 1.05rem; line-height: 1.75; }
+.civic-contact-email { display: inline-flex; align-items: center; gap: 26px; margin-top: 34px; padding-bottom: 10px; border-bottom: 1px solid currentColor; font-size: clamp(1.2rem, 2vw, 1.8rem); }
+.civic-contact-email:hover, .civic-contact-links a:hover { opacity: .75; }
+.civic-contact-links { display: flex; flex-wrap: wrap; gap: 25px; margin-top: 75px; }
+.civic-contact-links a { display: inline-flex; align-items: center; gap: 8px; font-size: .83rem; }
+.civic-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding: 22px clamp(25px, 7vw, 110px); color: var(--civic-muted); font-size: .75rem; }
+.civic-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* The chapters set the pace; the map remains in view for the full walk. */
+.civic-journey { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); position: relative; --civic-progress: 0; }
+.civic-chapters { grid-column: 1; grid-row: 1; min-width: 0; }
+.civic-chapter { display: flex; align-items: center; min-height: 115svh; padding: 90px clamp(32px, 5.2vw, 86px); border-bottom: 1px solid var(--civic-line); scroll-margin-top: 82px; }
+.civic-chapter-card { width: 100%; max-width: 620px; }
+.civic-chapter h2 { margin: 0; font-size: clamp(2.9rem, 4.3vw, 4.9rem); line-height: 1.07; }
+.civic-hero { display: flex; min-height: calc(100svh - 82px); }
+.civic-hero-copy { width: 100%; padding: 0; }
+.civic-hero h1 { font-size: clamp(3.8rem, 5.2vw, 6rem); }
+.civic-credentials { margin-top: 0; padding-top: 44px; }
+.civic-chapter.civic-inquiry { display: flex; gap: 0; border-top: 0; }
+.civic-inquiry .civic-chapter-card > svg { display: block; margin: 40px 0 18px; color: var(--civic-steel); }
+.civic-inquiry-body { padding-top: 24px; }
+.civic-chapter.civic-work { min-height: 160svh; background: var(--civic-paper); }
+.civic-work .civic-section-intro, .civic-experience .civic-section-intro { display: block; }
+.civic-section-intro h2 { margin: 16px 0; }
+.civic-section-intro > p:last-child { max-width: 440px; }
+.civic-project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.civic-project { min-height: 290px; padding: 20px; }
+.civic-project h3 { margin-top: 30px; }
+.civic-chapter.civic-experience { min-height: 130svh; }
+.civic-job { grid-template-columns: 85px minmax(0, 1fr); gap: 16px; }
+.civic-job > strong { grid-column: 2; }
+.civic-journey .civic-map-panel { grid-column: 2; grid-row: 1; position: sticky; top: 82px; align-self: start; height: calc(100svh - 82px); min-height: 0; overflow: hidden; }
+.civic-map-progress { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 3px; background: var(--civic-line); }
+.civic-map-progress span { display: block; height: 100%; width: 100%; background: var(--civic-blue); transform: scaleX(var(--civic-progress)); transform-origin: left; }
+.civic-contact { scroll-margin-top: 82px; }
+@media (max-width: 1180px) {
+  .civic-chapter { padding-inline: 35px; }
+  .civic-hero h1 { font-size: clamp(3.7rem, 5.1vw, 5.5rem); }
+}
+@media (max-width: 800px) {
+  .civic-header { flex-wrap: wrap; gap: 8px 18px; padding: 11px 22px; }
+  .civic-header-actions { margin-left: auto; gap: 13px; }
+  .civic-nav { order: 3; width: 100%; justify-content: space-between; gap: 16px; }
+  .civic-nav a { padding: 5px 0; }
+  .civic-journey { display: flex; flex-direction: column; }
+  .civic-chapters { order: 1; }
+  .civic-chapter { min-height: 112svh; padding: 90px 32px 110px; scroll-margin-top: 45svh; }
+  .civic-hero { display: flex; min-height: 100svh; }
+  .civic-hero-copy { min-height: 0; padding: 0; }
+  .civic-overline { margin-top: 56px; }
+  .civic-journey .civic-map-panel { order: 0; grid-column: auto; grid-row: auto; align-self: stretch; top: 102px; height: 45svh; min-height: 340px; border-left: 0; border-bottom: 1px solid var(--civic-line); z-index: 10; }
+  .civic-scene { inset: 0 0 126px; }
+  .civic-map-heading { margin-top: 16px; }
+  .civic-map-compass { top: 19px; }
+  .civic-inquiry-body { padding-top: 24px; }
+  .civic-chapter.civic-work { min-height: 170svh; }
+  .civic-chapter.civic-experience { min-height: 125svh; }
+  .civic-contact { scroll-margin-top: 102px; }
+}
+@media (max-width: 560px) {
+  .civic-wordmark strong { font-size: .85rem; }
+  .civic-header .theme-toggle { width: 34px; height: 34px; }
+  .civic-back { font-size: .75rem; }
+  .civic-nav a { font-size: .75rem; }
+  .civic-chapter { min-height: 110svh; padding: 90px 22px 100px; scroll-margin-top: 43svh; }
+  .civic-hero { min-height: 100svh; }
+  .civic-hero-copy { padding: 0; }
+  .civic-eyebrow { font-size: .61rem; }
+  .civic-overline { margin-top: 48px; }
+  .civic-hero h1 { font-size: clamp(3.3rem, 10.5vw, 4.8rem); }
+  .civic-hero h1 em { white-space: normal; }
+  .civic-lede { font-size: .95rem; }
+  .civic-credentials { padding-top: 42px; }
+  .civic-credentials span { width: 100%; }
+  .civic-credentials span + span::before { content: none; }
+  .civic-journey .civic-map-panel { min-height: 340px; height: 43svh; }
+  .civic-map-heading { margin: 19px 17px 0; font-size: .59rem; }
+  .civic-map-heading > span:last-child { display: none; }
+  .civic-map-compass { right: 18px; top: 22px; }
+  .civic-scene { inset: 0 0 118px; }
+  .civic-landmarks { grid-template-columns: repeat(2, 1fr); padding-inline: 14px; }
+  .civic-landmarks a { padding: 8px 12px; }
+  .civic-map-note { padding: 12px 15px; }
+  .civic-section-intro { display: block; }
+  .civic-section-intro h2 { margin: 17px 0; }
+  .civic-project-grid { grid-template-columns: 1fr; }
+  .civic-project { min-height: 245px; }
+  .civic-project h3 { margin-top: 35px; }
+  .civic-inquiry .civic-chapter-card > svg { margin-top: 36px; }
+  .civic-inquiry h2 { font-size: 2.9rem; }
+  .civic-skill-groups > div { grid-template-columns: 1fr; gap: 3px; }
+  .civic-job { grid-template-columns: 1fr; gap: 9px; }
+  .civic-job > strong { margin-top: 5px; }
+  .civic-contact { padding-block: 75px 85px; }
+  .civic-contact h2 { font-size: 3rem; }
+  .civic-contact-email { font-size: 1rem; gap: 10px; }
+  .civic-contact-links { margin-top: 50px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .civic-page { scroll-behavior: auto; }
+}

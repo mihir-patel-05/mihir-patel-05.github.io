@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 const Mountains = lazy(() => import("./pages/Mountains"));
+const Civic = lazy(() => import("./pages/Civic"));
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -23,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/mountains.html" element={<Suspense fallback={<main className="not-found"><p>Opening the mountain portfolio…</p></main>}><Mountains /></Suspense>} />
+            <Route path="/civic.html" element={<Suspense fallback={<main className="not-found"><p>Opening the civic portfolio…</p></main>}><Civic /></Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
