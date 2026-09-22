@@ -80,6 +80,8 @@
 .library-featured-entry strong { color: #80513a; font-size: 1.02rem; }
 .library-featured-entry p { max-width: 380px; margin: 27px 0; font-size: .98rem; line-height: 1.8; }
 .library-featured-entry > small { padding-top: 19px; border-top: 1px solid #c4ae8e; }
+.library-project-feature > a { display: inline-flex; align-items: center; gap: 8px; margin-top: 27px; padding-bottom: 5px; border-bottom: 1px solid #8e644a; color: #6a3e2c; font-size: .9rem; text-decoration: none; }
+.library-project-feature > a:hover { color: #a24e35; }
 .library-page-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 16px; border-top: 1px solid #b9a689; }
 .library-page-controls button { display: inline-flex; align-items: center; gap: 5px; padding: 8px 0; color: #6a3e2c; font-size: .82rem; }
 .library-page-controls button:hover:not(:disabled) { color: #a24e35; }

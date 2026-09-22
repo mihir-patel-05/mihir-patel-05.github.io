@@ -21,15 +21,22 @@ function ExperiencePages() {
   </>;
 }
 
+function ProjectPages() {
+  const [page, setPage] = useState(0);
+  const project = alpineProjects[page];
+
+  return <>
+    <div className="library-page library-page-title"><span className="library-page-number">Volume II · Projects</span><h2 id="open-volume-title">Ideas made<br /><em>useful.</em></h2><p>Four projects that show how I approach research, modeling, and shipping software.</p><a className="library-page-link" href="https://github.com/mihir-patel-05?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories <ArrowUpRight size={17} /></a><span className="library-page-footer">Selected work · 2025—2026</span></div>
+    <div className="library-page library-page-detail library-paged-detail"><span className="library-page-number">Project · {project.number}</span><article key={project.href} className="library-featured-entry library-project-feature" aria-live="polite"><span>{project.discipline}</span><h3>{project.name}</h3><p>{project.description}</p><small>{project.tools}</small><a href={project.href} target="_blank" rel="noopener noreferrer">View repository <ArrowUpRight size={18} /></a></article><nav className="library-page-controls" aria-label="Project pages"><button type="button" onClick={() => setPage(previous => previous - 1)} disabled={page === 0} aria-label="Previous project"><ChevronLeft size={18} /> Previous</button><span>Page {page + 1} of {alpineProjects.length}</span><button type="button" onClick={() => setPage(previous => previous + 1)} disabled={page === alpineProjects.length - 1} aria-label="Next project">Next <ChevronRight size={18} /></button></nav></div>
+  </>;
+}
+
 function VolumeContent({ book }: { book: LibraryBook }) {
   if (book === "about") return <>
     <div className="library-page library-page-title"><span className="library-page-number">Volume I · About</span><h2 id="open-volume-title">A curious mind,<br /><em>put to work.</em></h2><p>I’m Mihir Patel, a Data Science student at Michigan State University with a Business minor. I like finding the structure in complicated information, then building something useful from it.</p><span className="library-page-footer">Michigan State University · Class of 2027</span></div>
     <div className="library-page library-page-detail"><h3>What I bring to the table</h3><p>I move between analysis and implementation: exploring data, testing ideas, and turning the results into software people can use.</p><dl className="library-skills"><div><dt>Analysis</dt><dd>Python, SQL, Pandas, Scikit-learn</dd></div><div><dt>Software</dt><dd>TypeScript, React, Next.js, Node.js</dd></div><div><dt>Data systems</dt><dd>PostgreSQL, Spark, Databricks, AWS</dd></div></dl><p className="library-margin-note">Currently open to Data Science and Software Engineering opportunities.</p></div>
   </>;
-  if (book === "projects") return <>
-    <div className="library-page library-page-title"><span className="library-page-number">Volume II · Projects</span><h2 id="open-volume-title">Ideas made<br /><em>useful.</em></h2><p>Four projects that show how I approach research, modeling, and shipping software.</p><a className="library-page-link" href="https://github.com/mihir-patel-05?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories <ArrowUpRight size={17} /></a><span className="library-page-footer">Selected work · 2025—2026</span></div>
-    <div className="library-page library-page-detail"><h3>Selected work</h3><div className="library-projects">{alpineProjects.map(project => <article key={project.href}><span>{project.number} / {project.discipline}</span><h4><a href={project.href} target="_blank" rel="noopener noreferrer">{project.name} <ArrowUpRight size={15} /></a></h4><p>{project.description}</p><small>{project.tools}</small></article>)}</div></div>
-  </>;
+  if (book === "projects") return <ProjectPages />;
   if (book === "experience") return <ExperiencePages />;
   return <>
     <div className="library-page library-page-title"><span className="library-page-number">Volume IV · Contact</span><h2 id="open-volume-title">A new<br /><em>chapter?</em></h2><p>I’m looking for Data Science and Software Engineering roles. If you have a problem worth thinking through, I’d love to compare notes.</p><span className="library-page-footer">Open to opportunities</span></div>
