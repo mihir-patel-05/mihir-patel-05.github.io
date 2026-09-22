@@ -166,3 +166,60 @@
   .alpine-footer { flex-wrap: wrap; gap: 16px; font-size: .6875rem; }
   .alpine-footer > span { width: 100%; }
 }
+
+/* A fixed, layered landscape is the continuous thread between chapters. */
+.alpine-landscape { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.alpine-terrain { width: 100%; height: 100%; display: block; }
+.alpine-layer { transform-origin: 65% 40%; will-change: transform; }
+.alpine-far-range { transform: translateY(calc(var(--trail-progress) * 45px)); }
+.alpine-main-range { transform: translateY(calc(var(--trail-progress) * 100px)); }
+.alpine-near-range { transform: translateY(calc(var(--trail-progress) * 360px)); }
+.alpine-route-layer { transform: translateY(calc(var(--trail-progress) * 100px)); }
+.alpine-route-drawn { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--trail-progress)); }
+.alpine-sky-details { transform: translateY(calc(var(--trail-progress) * -40px)); }
+.alpine-stars { opacity: 0; }
+.dark .alpine-stars { opacity: .7; }
+.alpine-hero-mist { opacity: max(.05, calc(1 - var(--trail-progress) * 4)); }
+.alpine-landscape-caption { position: absolute; bottom: 10px; right: 18px; color: #f5f4ed; font: .5625rem/1.5 'JetBrains Mono', monospace; letter-spacing: .035em; background: #203c30b8; padding: 4px 7px; border-radius: 2px; }
+.alpine-header { background: color-mix(in srgb, var(--alpine-paper) 93%, transparent); backdrop-filter: blur(16px); }
+.alpine-hero-copy { position: relative; }
+.alpine-hero-bottom { background: var(--alpine-paper); padding: 14px 18px; border: 1px solid var(--alpine-line); border-radius: 3px; }
+.alpine-paper { background: color-mix(in srgb, var(--alpine-paper) 96%, transparent); backdrop-filter: blur(12px); }
+.alpine-field-note { background: color-mix(in srgb, var(--alpine-paper) 92%, transparent); padding: 22px 25px; border-left: 2px solid var(--alpine-accent); }
+.alpine-footer { background: var(--alpine-paper); border: 1px solid var(--alpine-line); padding: 15px 20px; border-radius: 3px; }
+.alpine-trail-indicator { position: fixed; z-index: 10; left: 23px; top: 50%; transform: translateY(-35%); width: 50px; text-align: center; background: color-mix(in srgb, var(--alpine-paper) 94%, transparent); border: 1px solid var(--alpine-line); border-radius: 30px; padding: 20px 0; }
+.alpine-trail-label { font: .5625rem/1.4 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; writing-mode: vertical-rl; margin-bottom: 16px; }
+.alpine-waypoints { position: relative; }
+.alpine-waypoints::before { content: ''; position: absolute; width: 1px; background: var(--alpine-line); top: 20px; bottom: 20px; right: 13px; }
+.alpine-waypoints a { position: relative; display: flex; justify-content: center; align-items: center; gap: 6px; height: 40px; font: .5625rem/1.5 'JetBrains Mono', monospace; }
+.alpine-waypoints i { display: block; width: 7px; height: 7px; border: 1px solid var(--alpine-muted); border-radius: 50%; background: var(--alpine-paper); }
+.alpine-waypoints .is-current { color: var(--alpine-accent); }
+.alpine-waypoints .is-current i { background: var(--alpine-accent); border-color: var(--alpine-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--alpine-accent) 15%, transparent); }
+.alpine-current-elevation { display: block; margin-top: 20px; font: .625rem/1.5 'JetBrains Mono', monospace; }
+.alpine-current-elevation small { display: block; font-size: .5rem; text-transform: uppercase; color: var(--alpine-muted); margin-top: 4px; }
+.alpine-scroll-meter { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 3px; pointer-events: none; }
+.alpine-scroll-meter span { display: block; height: 100%; background: var(--alpine-accent); transform-origin: left; transform: scaleX(var(--trail-progress)); }
+.alpine-page [data-reveal] { transition: opacity .7s ease, transform .7s cubic-bezier(.2,.6,.3,1); }
+.alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(30px); }
+@media (max-width: 1100px) {
+  .alpine-trail-indicator { left: 12px; width: 42px; }
+  .alpine-waypoints::before { right: 9px; }
+}
+@media (max-width: 800px) {
+  .alpine-trail-indicator { display: none; }
+  .alpine-terrain { width: 135%; margin-left: -35%; }
+  .alpine-hero-mist { opacity: max(.22, calc(1 - var(--trail-progress) * 3)); }
+  .alpine-header { scroll-margin-top: 140px; }
+  .alpine-stage { scroll-margin-top: 35px; }
+  .alpine-landscape-caption { font-size: .5rem; bottom: 6px; right: 8px; }
+}
+@media (max-width: 700px) {
+  .alpine-terrain { width: 170%; margin-left: -68%; }
+  .alpine-hero-copy { background: color-mix(in srgb, var(--alpine-sky) 80%, transparent); border-radius: 3px; padding: 22px; margin: -22px; width: calc(100% + 44px); max-width: none; }
+  .alpine-hero-bottom { gap: 9px; padding: 12px; }
+  .alpine-footer { gap: 12px 20px; padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .alpine-page [data-reveal], .alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 1; transform: none; transition: none; }
+  .alpine-layer, .alpine-route-layer, .alpine-sky-details { transform: none; will-change: auto; }
+}

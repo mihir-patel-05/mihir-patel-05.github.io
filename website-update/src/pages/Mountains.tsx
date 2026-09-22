@@ -1,19 +1,32 @@
 import { ArrowDown, ArrowLeft, ArrowUpRight, Mountain, Footprints, Compass } from "lucide-react";
+import AlpineLandscape from "@/components/alpine/AlpineLandscape";
+import { useAlpineJourney } from "@/components/alpine/useAlpineJourney";
 import ThemeToggle from "@/components/ThemeToggle";
 import { alpineExperience, alpineProjects, trailStops } from "@/components/alpine/trail";
 import "@/styles/alpine.css";
 
-const Mountains = () => (
-  <div className="alpine-page">
+const Mountains = () => {
+  const { root, activeStop } = useAlpineJourney();
+  const current = trailStops.find(stop => stop.id === activeStop)!;
+
+  return (
+  <div ref={root} className="alpine-page" data-stage={activeStop}>
+    <AlpineLandscape />
     <a className="alpine-skip" href="#alpine-main">Skip to content</a>
     <header className="alpine-header">
       <a className="alpine-brand" href="#basecamp"><Mountain size={25} strokeWidth={1.4} aria-hidden="true" /><span>Mihir Patel<span className="alpine-brand-caption">The scenic route</span></span></a>
       <nav className="alpine-nav" aria-label="Mountain portfolio sections">
-        {trailStops.map(stop => <a key={stop.id} href={`#${stop.id}`}>{stop.label}</a>)}
+        {trailStops.map(stop => <a key={stop.id} href={`#${stop.id}`} aria-current={activeStop === stop.id ? "location" : undefined}>{stop.label}</a>)}
       </nav>
       <div className="alpine-header-tools"><a className="alpine-original" href="/" aria-label="Compare with the original portfolio"><ArrowLeft size={15} aria-hidden="true" /><span>Original</span></a><ThemeToggle /></div>
     </header>
 
+    <aside className="alpine-trail-indicator" aria-label="Your place on the mountain">
+      <span className="alpine-trail-label">The ascent</span>
+      <div className="alpine-waypoints">{trailStops.map((stop, index) => <a key={stop.id} href={`#${stop.id}`} className={activeStop === stop.id ? "is-current" : ""} aria-label={`${stop.terrain}: ${stop.label}`} aria-current={activeStop === stop.id ? "location" : undefined}><span>{String(index).padStart(2, "0")}</span><i /></a>)}</div>
+      <span className="alpine-current-elevation">{current.elevation}<small>meters</small></span>
+    </aside>
+    <div className="alpine-scroll-meter" aria-hidden="true"><span /></div>
     <main id="alpine-main" tabIndex={-1}>
       <section id="basecamp" className="alpine-stage alpine-hero" aria-labelledby="alpine-title" tabIndex={-1}>
         <div className="alpine-hero-copy" data-reveal>
@@ -78,5 +91,6 @@ const Mountains = () => (
       </section>
     </main>
   </div>
-);
+  );
+};
 export default Mountains;
