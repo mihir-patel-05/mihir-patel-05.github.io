@@ -10,8 +10,8 @@
   --alpine-button-ink: #e7ecef;
   --alpine-snow: #e7ecef;
   --alpine-distant: #a3cef1;
-  --alpine-rock: #6096ba;
-  --alpine-shadow: #274c77;
+  --alpine-rock: #8b8c89;
+  --alpine-shadow: #6096ba;
   --alpine-ridge: #4f7fa5;
   --alpine-forest: #315b85;
   --alpine-foreground: #274c77;
@@ -64,7 +64,7 @@
 .alpine-original:hover { text-decoration: underline; text-underline-offset: 4px; }
 .alpine-page .theme-toggle { color: var(--alpine-ink); border-color: var(--alpine-line); width: 40px; height: 40px; }
 .alpine-page .theme-toggle:hover { background: var(--alpine-line); }
-.alpine-stage { position: relative; z-index: 2; min-height: 100svh; display: flex; align-items: center; width: min(1180px, 84%); margin: 0 auto; padding-block: 140px; scroll-margin-top: 0; }
+.alpine-stage { position: relative; z-index: 2; min-height: 145svh; display: flex; align-items: center; width: min(1180px, 84%); margin: 0 auto; padding-block: clamp(190px, 26svh, 310px); scroll-margin-top: 0; }
 .alpine-hero { min-height: calc(100svh - 88px); padding-block: 72px 150px; }
 .alpine-hero-copy { width: 620px; max-width: 100%; }
 .alpine-status { width: 6px; height: 6px; border-radius: 50%; background: var(--alpine-accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--alpine-accent) 13%, transparent); }
@@ -171,12 +171,12 @@
 .alpine-landscape { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .alpine-terrain { width: 100%; height: 100%; display: block; }
 .alpine-layer { transform-origin: 65% 40%; will-change: transform; }
-.alpine-far-range { transform: translateY(calc(var(--trail-progress) * 45px)); }
-.alpine-main-range { transform: translateY(calc(var(--trail-progress) * 100px)); }
-.alpine-near-range { transform: translateY(calc(var(--trail-progress) * 360px)); }
-.alpine-route-layer { transform: translateY(calc(var(--trail-progress) * 100px)); }
+.alpine-far-range { transform: translate3d(0, calc(var(--trail-progress) * 90px), 0) scale(calc(1 + var(--trail-progress) * .015)); }
+.alpine-main-range { transform: translate3d(0, calc(var(--trail-progress) * 190px), 0) scale(calc(1 + var(--trail-progress) * .04)); }
+.alpine-near-range { transform: translate3d(0, calc(var(--trail-progress) * 540px), 0) scale(calc(1 + var(--trail-progress) * .08)); }
+.alpine-route-layer { transform: translate3d(0, calc(var(--trail-progress) * 190px), 0) scale(calc(1 + var(--trail-progress) * .04)); transform-origin: 65% 40%; }
 .alpine-route-drawn { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--trail-progress)); }
-.alpine-sky-details { transform: translateY(calc(var(--trail-progress) * -40px)); }
+.alpine-sky-details { transform: translate3d(0, calc(var(--trail-progress) * -90px), 0); }
 .alpine-stars { opacity: 0; }
 .dark .alpine-stars { opacity: .7; }
 .alpine-hero-mist { opacity: max(.05, calc(1 - var(--trail-progress) * 4)); }
@@ -199,8 +199,14 @@
 .alpine-current-elevation small { display: block; font-size: .5rem; text-transform: uppercase; color: var(--alpine-muted); margin-top: 4px; }
 .alpine-scroll-meter { position: fixed; top: 0; left: 0; right: 0; z-index: 60; height: 3px; pointer-events: none; }
 .alpine-scroll-meter span { display: block; height: 100%; background: var(--alpine-accent); transform-origin: left; transform: scaleX(var(--trail-progress)); }
-.alpine-page [data-reveal] { transition: opacity .7s ease, transform .7s cubic-bezier(.2,.6,.3,1); }
-.alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(30px); }
+.alpine-page [data-reveal] { transition: opacity .95s ease, transform 1.05s cubic-bezier(.16,.72,.24,1); }
+.alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(64px) scale(.985); }
+.alpine-enhanced .alpine-about[data-reveal]:not(.is-visible),
+.alpine-enhanced .alpine-work[data-reveal]:not(.is-visible) { transform: translate(72px, 48px) scale(.985); }
+.alpine-enhanced .alpine-projects[data-reveal]:not(.is-visible) { transform: translate(-72px, 48px) scale(.985); }
+.alpine-project:nth-child(2), .alpine-experience-list article:nth-child(2) { transition-delay: .08s; }
+.alpine-project:nth-child(3), .alpine-experience-list article:nth-child(3) { transition-delay: .16s; }
+.alpine-project:nth-child(4) { transition-delay: .24s; }
 @media (max-width: 1100px) {
   .alpine-trail-indicator { left: 12px; width: 42px; }
   .alpine-waypoints::before { right: 9px; }
@@ -210,7 +216,7 @@
   .alpine-terrain { width: 135%; margin-left: -35%; }
   .alpine-hero-mist { opacity: max(.22, calc(1 - var(--trail-progress) * 3)); }
   .alpine-header { scroll-margin-top: 140px; }
-  .alpine-stage { scroll-margin-top: 35px; }
+  .alpine-stage:not(.alpine-hero) { min-height: 130svh; scroll-margin-top: 35px; }
   .alpine-landscape-caption { font-size: .5rem; bottom: 6px; right: 8px; }
 }
 @media (max-width: 700px) {
@@ -218,6 +224,9 @@
   .alpine-hero-copy { background: color-mix(in srgb, var(--alpine-sky) 80%, transparent); border-radius: 3px; padding: 22px 0; width: 100%; max-width: none; }
   .alpine-hero-bottom { gap: 9px; padding: 12px; }
   .alpine-footer { gap: 12px 20px; padding: 16px; }
+  .alpine-enhanced .alpine-about[data-reveal]:not(.is-visible),
+  .alpine-enhanced .alpine-work[data-reveal]:not(.is-visible),
+  .alpine-enhanced .alpine-projects[data-reveal]:not(.is-visible) { transform: translateY(48px) scale(.99); }
 }
 @media (prefers-reduced-motion: reduce) {
   .alpine-page [data-reveal], .alpine-enhanced [data-reveal]:not(.is-visible) { opacity: 1; transform: none; transition: none; }
