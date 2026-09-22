@@ -1,22 +1,22 @@
 /* Scoped to the alternative. The original portfolio keeps its own palette and layout. */
 .alpine-page {
-  --alpine-sky: #e7ede9;
-  --alpine-ink: #243d34;
-  --alpine-muted: #53685e;
-  --alpine-paper: #f5f4ed;
-  --alpine-line: #c4cec2;
-  --alpine-accent: #9b492e;
-  --alpine-button: #2f4b3c;
-  --alpine-button-ink: #f5f4ed;
-  --alpine-snow: #f5f4ed;
-  --alpine-distant: #aebeb5;
-  --alpine-rock: #83968e;
-  --alpine-shadow: #647b71;
-  --alpine-ridge: #4b6a59;
-  --alpine-forest: #304e3d;
-  --alpine-foreground: #203c30;
-  --alpine-trail: #dfbc81;
-  --alpine-sun: #e4d5aa;
+  --alpine-sky: #e7ecef;
+  --alpine-ink: #274c77;
+  --alpine-muted: #66788a;
+  --alpine-paper: #f7f9fa;
+  --alpine-line: #a3cef1;
+  --alpine-accent: #6096ba;
+  --alpine-button: #274c77;
+  --alpine-button-ink: #e7ecef;
+  --alpine-snow: #e7ecef;
+  --alpine-distant: #a3cef1;
+  --alpine-rock: #6096ba;
+  --alpine-shadow: #274c77;
+  --alpine-ridge: #4f7fa5;
+  --alpine-forest: #315b85;
+  --alpine-foreground: #274c77;
+  --alpine-trail: #a3cef1;
+  --alpine-sun: #a3cef1;
   --trail-progress: 0;
   color: var(--alpine-ink);
   background: var(--alpine-sky);
@@ -25,27 +25,27 @@
   overflow: clip;
 }
 .dark .alpine-page {
-  --alpine-sky: #172924;
-  --alpine-ink: #f1f0e5;
-  --alpine-muted: #bdcbbb;
-  --alpine-paper: #20372e;
-  --alpine-line: #50634f;
-  --alpine-accent: #edbd8d;
-  --alpine-button: #d6ddb9;
-  --alpine-button-ink: #233a2e;
-  --alpine-snow: #b1c5bb;
-  --alpine-distant: #425f57;
-  --alpine-rock: #344e43;
-  --alpine-shadow: #2b433a;
-  --alpine-ridge: #263e30;
-  --alpine-forest: #1c3226;
-  --alpine-foreground: #12291e;
-  --alpine-trail: #c4ad7b;
-  --alpine-sun: #d6ddb9;
+  --alpine-sky: #101f31;
+  --alpine-ink: #e7ecef;
+  --alpine-muted: #a3cef1;
+  --alpine-paper: #182f49;
+  --alpine-line: #416f96;
+  --alpine-accent: #a3cef1;
+  --alpine-button: #a3cef1;
+  --alpine-button-ink: #274c77;
+  --alpine-snow: #e7ecef;
+  --alpine-distant: #416f96;
+  --alpine-rock: #315b85;
+  --alpine-shadow: #1a3654;
+  --alpine-ridge: #244768;
+  --alpine-forest: #1a3654;
+  --alpine-foreground: #10253b;
+  --alpine-trail: #a3cef1;
+  --alpine-sun: #a3cef1;
 }
 .alpine-page :focus-visible { outline: 3px solid var(--alpine-accent); outline-offset: 5px; }
 .alpine-page section:focus, .alpine-page main:focus { outline: none; }
-.alpine-page ::selection { background: var(--alpine-trail); color: #243d34; }
+.alpine-page ::selection { background: var(--alpine-trail); color: #274c77; }
 .alpine-page h1, .alpine-page h2 { font-family: 'Fraunces', Georgia, serif; font-weight: 400; letter-spacing: -.06em; }
 .alpine-page h2 { font-size: clamp(2.7rem, 4.5vw, 4.6rem); line-height: 1.02; margin: 25px 0 30px; }
 .alpine-page h2 em { font-weight: 400; color: var(--alpine-muted); }
@@ -76,7 +76,7 @@
 .alpine-button:hover { background: var(--alpine-accent); color: var(--alpine-paper); }
 .alpine-hero-bottom { position: absolute; bottom: 25px; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; font: .6875rem/1.7 'JetBrains Mono', monospace; }
 .alpine-hero-bottom > span:first-child { display: flex; align-items: center; gap: 10px; }
-.alpine-paper { background: var(--alpine-paper); border: 1px solid var(--alpine-line); border-radius: 5px; padding: 46px; box-shadow: 0 14px 60px #12291e0d; }
+.alpine-paper { background: var(--alpine-paper); border: 1px solid var(--alpine-line); border-radius: 5px; padding: 46px; box-shadow: 0 14px 60px #274c7717; }
 .alpine-paper > p:not(.alpine-kicker) { font-size: 1rem; line-height: 1.85; color: var(--alpine-muted); margin-bottom: 20px; }
 .alpine-about { width: 580px; margin-left: auto; }
 .alpine-values { display: flex; justify-content: space-between; gap: 14px; margin: 30px 0; padding: 18px 0; border-block: 1px solid var(--alpine-line); font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; }
@@ -180,7 +180,7 @@
 .alpine-stars { opacity: 0; }
 .dark .alpine-stars { opacity: .7; }
 .alpine-hero-mist { opacity: max(.05, calc(1 - var(--trail-progress) * 4)); }
-.alpine-landscape-caption { position: absolute; bottom: 10px; right: 18px; color: #f5f4ed; font: .5625rem/1.5 'JetBrains Mono', monospace; letter-spacing: .035em; background: #203c30b8; padding: 4px 7px; border-radius: 2px; }
+.alpine-landscape-caption { position: absolute; bottom: 10px; right: 18px; color: #e7ecef; font: .5625rem/1.5 'JetBrains Mono', monospace; letter-spacing: .035em; background: #274c77cc; padding: 4px 7px; border-radius: 2px; }
 .alpine-header { background: var(--alpine-paper); }
 .alpine-hero-copy { position: relative; }
 .alpine-hero-bottom { background: var(--alpine-paper); padding: 14px 18px; border: 1px solid var(--alpine-line); border-radius: 3px; }
