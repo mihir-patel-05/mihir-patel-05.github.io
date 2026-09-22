@@ -47,7 +47,7 @@
 .library-dialog { position: relative; width: min(1000px, 100%); max-height: min(720px, 88svh); filter: drop-shadow(0 25px 55px #000b); animation: library-book-center 1.15s ease-in-out both; }
 .library-close { position: absolute; top: -42px; right: 0; z-index: 4; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #d7ae78; border-radius: 50%; background: #281811; color: #f6e8d1; }
 .library-close:hover { background: #4b3021; }
-.library-book-spread { position: relative; display: grid; grid-template-columns: 1fr 1fr; width: 100%; min-height: min(620px, 80svh); max-height: min(720px, 88svh); border: 12px solid #492b1e; border-radius: 8px; background: #ecddc0; box-shadow: inset 0 0 0 3px #9b6b45, 0 14px 0 #25150f, 0 0 0 2px #b18a57; perspective: 1400px; overflow: hidden; animation: library-spread-reveal 1.15s ease-in-out both; }
+.library-book-spread { position: relative; display: grid; grid-template-columns: 1fr 1fr; width: 100%; min-height: min(620px, 80svh); max-height: min(720px, 88svh); border: 12px solid #492b1e; border-radius: 8px; background: #ecddc0; box-shadow: inset 0 0 0 3px #9b6b45, 0 14px 0 #25150f, 0 0 0 2px #b18a57; perspective: 1400px; overflow: clip; animation: library-spread-reveal 1.15s ease-in-out both; }
 .library-page { min-width: 0; padding: clamp(28px, 4vw, 50px); overflow-y: auto; color: #32241c; background: linear-gradient(90deg, #e4d2af, #f5ebd7 12%, #eee1c5 90%, #dfc9a4); animation: library-page-in .5s .3s both; }
 .library-page + .library-page { border-left: 1px solid #ac9271; background: linear-gradient(90deg, #ddc7a5, #efe1c5 9%, #f5ead4 95%); }
 .library-page-title { display: flex; flex-direction: column; }
@@ -73,6 +73,18 @@
 .library-projects p, .library-jobs p { margin: 7px 0; font-size: .84rem; line-height: 1.6; }
 .library-projects small, .library-jobs small { color: #775c47; font-size: .58rem; line-height: 1.5; }
 .library-jobs strong { display: block; color: #80513a; font-size: .82rem; }
+.library-paged-detail { display: flex; flex-direction: column; }
+.library-featured-entry { margin: auto 0; padding: 32px 0; transform-origin: left center; animation: library-leaf-turn .45s ease-out both; }
+.library-featured-entry > span, .library-featured-entry > small { display: block; color: #8b5c3b; font: .65rem/1.5 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+.library-featured-entry h3 { margin: 17px 0 14px; font-size: clamp(2.2rem, 3.5vw, 3.6rem); line-height: 1.08; }
+.library-featured-entry strong { color: #80513a; font-size: 1.02rem; }
+.library-featured-entry p { max-width: 380px; margin: 27px 0; font-size: .98rem; line-height: 1.8; }
+.library-featured-entry > small { padding-top: 19px; border-top: 1px solid #c4ae8e; }
+.library-page-controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 16px; border-top: 1px solid #b9a689; }
+.library-page-controls button { display: inline-flex; align-items: center; gap: 5px; padding: 8px 0; color: #6a3e2c; font-size: .82rem; }
+.library-page-controls button:hover:not(:disabled) { color: #a24e35; }
+.library-page-controls button:disabled { cursor: default; opacity: .35; }
+.library-page-controls > span { color: #7d654c; font: .62rem/1.5 'JetBrains Mono', monospace; white-space: nowrap; }
 .library-email { margin: 26px 0 38px; padding-bottom: 8px; font-size: clamp(1rem, 2vw, 1.4rem); overflow-wrap: anywhere; }
 .library-socials { display: flex; flex-wrap: wrap; gap: 22px; }
 .library-socials a { padding-bottom: 5px; font-size: .9rem; }
@@ -84,6 +96,7 @@
 @keyframes library-book-center { 0%, 18% { transform: translateX(-25%); } 100% { transform: translateX(0); } }
 @keyframes library-spread-reveal { 0%, 18% { clip-path: inset(0 0 0 50%); } 100% { clip-path: inset(0); } }
 @keyframes library-page-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes library-leaf-turn { from { opacity: .35; transform: rotateY(-12deg) translateX(12px); } to { opacity: 1; transform: rotateY(0) translateX(0); } }
 @media (max-width: 800px) {
   .library-header { min-height: 67px; gap: 13px; }
   .library-chapter-note { bottom: 78px; left: 18px; width: min(310px, calc(100% - 36px)); }
@@ -120,6 +133,6 @@
 @media (prefers-reduced-motion: reduce) {
   .library-dialog, .library-book-spread { animation: none; }
   .library-opening-cover { display: none; animation: none; }
-  .library-page { animation: none; }
+  .library-page, .library-featured-entry { animation: none; }
   .library-header, .library-entry-cue, .library-chapter-note, .library-volume-nav button, .library-dialog-backdrop { backdrop-filter: none; }
 }

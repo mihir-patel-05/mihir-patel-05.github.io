@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowUpRight, BookOpen, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BookOpen, ChevronLeft, ChevronRight, X } from "lucide-react";
 import LibraryScene, { type LibraryBook } from "@/components/library/LibraryScene";
 import { alpineExperience, alpineProjects } from "@/components/alpine/trail";
 import "@/styles/library.css";
@@ -11,6 +11,16 @@ const volumes: { id: LibraryBook; label: string; caption: string }[] = [
   { id: "contact", label: "Contact", caption: "The next conversation" },
 ];
 
+function ExperiencePages() {
+  const [page, setPage] = useState(0);
+  const job = alpineExperience[page];
+
+  return <>
+    <div className="library-page library-page-title"><span className="library-page-number">Volume III · Experience</span><h2 id="open-volume-title">The work<br /><em>in practice.</em></h2><p>Hands-on roles across data science, engineering, and teaching have made me a better builder and a clearer communicator.</p><span className="library-page-footer">Analytics · Engineering · Teaching</span></div>
+    <div className="library-page library-page-detail library-paged-detail"><span className="library-page-number">Experience · {String(page + 1).padStart(2, "0")}</span><article key={job.company} className="library-featured-entry library-job-feature" aria-live="polite"><span>{job.date}</span><h3>{job.company}</h3><strong>{job.role}</strong><p>{job.description}</p><small>{job.outcome}</small></article><nav className="library-page-controls" aria-label="Experience pages"><button type="button" onClick={() => setPage(previous => previous - 1)} disabled={page === 0} aria-label="Previous experience"><ChevronLeft size={18} /> Previous</button><span>Page {page + 1} of {alpineExperience.length}</span><button type="button" onClick={() => setPage(previous => previous + 1)} disabled={page === alpineExperience.length - 1} aria-label="Next experience">Next <ChevronRight size={18} /></button></nav></div>
+  </>;
+}
+
 function VolumeContent({ book }: { book: LibraryBook }) {
   if (book === "about") return <>
     <div className="library-page library-page-title"><span className="library-page-number">Volume I · About</span><h2 id="open-volume-title">A curious mind,<br /><em>put to work.</em></h2><p>I’m Mihir Patel, a Data Science student at Michigan State University with a Business minor. I like finding the structure in complicated information, then building something useful from it.</p><span className="library-page-footer">Michigan State University · Class of 2027</span></div>
@@ -20,10 +30,7 @@ function VolumeContent({ book }: { book: LibraryBook }) {
     <div className="library-page library-page-title"><span className="library-page-number">Volume II · Projects</span><h2 id="open-volume-title">Ideas made<br /><em>useful.</em></h2><p>Four projects that show how I approach research, modeling, and shipping software.</p><a className="library-page-link" href="https://github.com/mihir-patel-05?tab=repositories" target="_blank" rel="noopener noreferrer">All repositories <ArrowUpRight size={17} /></a><span className="library-page-footer">Selected work · 2025—2026</span></div>
     <div className="library-page library-page-detail"><h3>Selected work</h3><div className="library-projects">{alpineProjects.map(project => <article key={project.href}><span>{project.number} / {project.discipline}</span><h4><a href={project.href} target="_blank" rel="noopener noreferrer">{project.name} <ArrowUpRight size={15} /></a></h4><p>{project.description}</p><small>{project.tools}</small></article>)}</div></div>
   </>;
-  if (book === "experience") return <>
-    <div className="library-page library-page-title"><span className="library-page-number">Volume III · Experience</span><h2 id="open-volume-title">The work<br /><em>in practice.</em></h2><p>Hands-on roles across data science, engineering, and teaching have made me a better builder and a clearer communicator.</p><span className="library-page-footer">Analytics · Engineering · Teaching</span></div>
-    <div className="library-page library-page-detail"><h3>Experience</h3><div className="library-jobs">{alpineExperience.map(job => <article key={job.company}><span>{job.date}</span><h4>{job.company}</h4><strong>{job.role}</strong><p>{job.description}</p><small>{job.outcome}</small></article>)}</div></div>
-  </>;
+  if (book === "experience") return <ExperiencePages />;
   return <>
     <div className="library-page library-page-title"><span className="library-page-number">Volume IV · Contact</span><h2 id="open-volume-title">A new<br /><em>chapter?</em></h2><p>I’m looking for Data Science and Software Engineering roles. If you have a problem worth thinking through, I’d love to compare notes.</p><span className="library-page-footer">Open to opportunities</span></div>
     <div className="library-page library-page-detail"><h3>Let’s talk.</h3><p>Tell me what you’re building and where careful analysis or thoughtful software could help.</p><a className="library-email" href="mailto:mihirrpatel05@gmail.com">mihirrpatel05@gmail.com <ArrowUpRight size={20} /></a><div className="library-socials"><a href="https://www.linkedin.com/in/mihir-patel-a9a19821a/" target="_blank" rel="noopener noreferrer">LinkedIn <ArrowUpRight size={16} /></a><a href="https://github.com/mihir-patel-05" target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={16} /></a></div><p className="library-margin-note">Thanks for stopping by the library.</p></div>
