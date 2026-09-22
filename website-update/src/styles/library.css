@@ -90,11 +90,20 @@
 .library-email { margin: 26px 0 38px; padding-bottom: 8px; font-size: clamp(1rem, 2vw, 1.4rem); overflow-wrap: anywhere; }
 .library-socials { display: flex; flex-wrap: wrap; gap: 22px; }
 .library-socials a { padding-bottom: 5px; font-size: .9rem; }
-.library-opening-cover { position: absolute; z-index: 3; top: 0; left: 50%; width: 50%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 37px; border: 12px double #b78c5c; background: radial-gradient(circle at 60% 40%, #654133, #2c1b17 72%); box-shadow: inset 0 0 0 18px #281812, -10px 0 20px #32190e80; color: #e6c896; transform-origin: left center; transform-style: preserve-3d; backface-visibility: hidden; animation: library-cover-open 1.15s ease-in-out both; pointer-events: none; }
-.library-opening-cover > span { font: 1.35rem/1 'Fraunces', Georgia, serif; letter-spacing: .3em; }
+.library-book-spread { height: min(620px, 80svh); min-height: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; animation: none; }
+.library-dialog { animation-duration: 1.6s; }
+.library-page { border: 10px solid #492b1e; animation: none; }
+.library-page:first-child { border-right: 0; animation: library-left-reveal 1.6s steps(1, end) both; }
+.library-page + .library-page { border-left: 1px solid #ac9271; }
+.library-opening-cover { position: absolute; z-index: 3; top: 0; left: 50%; width: 50%; height: 100%; transform-origin: left center; transform-style: preserve-3d; animation: library-cover-open 1.6s cubic-bezier(.35,0,.2,1) both; pointer-events: none; }
+.library-cover-front, .library-cover-back { position: absolute; inset: 0; backface-visibility: hidden; border: 10px solid #492b1e; }
+.library-cover-front { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 37px; background: radial-gradient(circle at 60% 40%, #654133, #2c1b17 72%); outline: 2px solid #b78c5c; outline-offset: -22px; box-shadow: inset 7px 0 12px #120b08, 5px 4px 0 #b6a17c; color: #e6c896; }
+.library-cover-back { background: linear-gradient(90deg, #e4d2af, #f5ebd7 12%, #eee1c5 90%, #dfc9a4); transform: rotateY(180deg); }
+.library-cover-front > span { font: 1.35rem/1 'Fraunces', Georgia, serif; letter-spacing: .3em; }
 .library-opening-cover strong { font: 400 clamp(2.5rem, 5vw, 4.8rem)/1 'Fraunces', Georgia, serif; }
 .library-opening-cover small { font-size: .7rem; }
-@keyframes library-cover-open { 0%, 18% { transform: rotateY(0); opacity: 1; } 78% { transform: rotateY(-92deg); opacity: 1; } 100% { transform: rotateY(-125deg); opacity: 0; visibility: hidden; } }
+@keyframes library-cover-open { 0%, 18% { transform: rotateY(0); } 99.99% { visibility: visible; } 100% { transform: rotateY(-180deg); visibility: hidden; } }
+@keyframes library-left-reveal { 0% { visibility: hidden; } 100% { visibility: visible; } }
 @keyframes library-book-center { 0%, 18% { transform: translateX(-25%); } 100% { transform: translateX(0); } }
 @keyframes library-spread-reveal { 0%, 18% { clip-path: inset(0 0 0 50%); } 100% { clip-path: inset(0); } }
 @keyframes library-page-in { from { opacity: 0; } to { opacity: 1; } }
@@ -123,7 +132,8 @@
   .library-dialog-backdrop { padding: 70px 10px 28px; align-items: flex-start; }
   .library-dialog { width: 100%; max-height: calc(100svh - 105px); animation: none; }
   .library-close { top: -48px; }
-  .library-book-spread { display: block; min-height: 0; max-height: calc(100svh - 120px); overflow-y: auto; border-width: 8px; animation: none; }
+  .library-book-spread { display: block; height: auto; min-height: min(530px, 70svh); max-height: calc(100svh - 120px); overflow-y: auto; animation: none; }
+  .library-book-spread .library-page { animation: library-left-reveal 1.6s steps(1, end) both; }
   .library-page { overflow: visible; padding: 24px; }
   .library-page + .library-page { border-left: 0; border-top: 1px solid #ac9271; }
   .library-page-title h2 { margin: 20px 0 15px; font-size: 2.8rem; }
@@ -135,6 +145,6 @@
 @media (prefers-reduced-motion: reduce) {
   .library-dialog, .library-book-spread { animation: none; }
   .library-opening-cover { display: none; animation: none; }
-  .library-page, .library-featured-entry { animation: none; }
+  .library-book-spread .library-page, .library-featured-entry { animation: none; }
   .library-header, .library-entry-cue, .library-chapter-note, .library-volume-nav button, .library-dialog-backdrop { backdrop-filter: none; }
 }
