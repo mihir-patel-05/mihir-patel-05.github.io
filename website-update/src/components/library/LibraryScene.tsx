@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
+import { ArrowUpRight } from "lucide-react";
+
+export const ESSAYS_URL = "https://essay-site-one.vercel.app/";
 
 export type LibraryBook = "about" | "projects" | "experience" | "contact";
 
@@ -44,19 +47,62 @@ function spineTexture(title: string, color: number) {
   return texture;
 }
 
+function paperTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 680;
+  const context = canvas.getContext("2d")!;
+  context.fillStyle = "#f3e7cf";
+  context.fillRect(0, 0, 512, 680);
+  context.strokeStyle = "#9fb3c0";
+  context.lineWidth = 2;
+  for (let y = 170; y < 650; y += 38) {
+    context.beginPath();
+    context.moveTo(28, y);
+    context.lineTo(484, y);
+    context.stroke();
+  }
+  context.strokeStyle = "#c98a7a";
+  context.beginPath();
+  context.moveTo(70, 0);
+  context.lineTo(70, 680);
+  context.stroke();
+  context.fillStyle = "#2c2a3a";
+  context.font = "italic 64px Georgia";
+  context.fillText("Essays &", 88, 82);
+  context.fillText("Thoughts", 112, 144);
+  // Loose handwriting: wavy ink strokes of varying length on each ruled line.
+  context.strokeStyle = "#3a3448";
+  context.lineWidth = 3;
+  for (let line = 0; line < 11; line++) {
+    const y = 202 + line * 38 - 6;
+    const end = line % 4 === 3 ? 260 + (line * 37) % 90 : 400 + (line * 53) % 70;
+    context.beginPath();
+    context.moveTo(88, y);
+    for (let x = 88; x < end; x += 9) context.lineTo(x, y + Math.sin(x * .19 + line) * 5 - (x % 31 < 4 ? 8 : 0));
+    context.stroke();
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  return texture;
+}
+
 export default function LibraryScene({ progressRef, openRef, onSelect }: {
   progressRef: RefObject<number>;
   openRef: RefObject<LibraryBook | null>;
   onSelect: (book: LibraryBook) => void;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const tagRef = useRef<HTMLAnchorElement>(null);
   const selectRef = useRef(onSelect);
   const [failed, setFailed] = useState(false);
   selectRef.current = onSelect;
 
   useEffect(() => {
     const host = hostRef.current;
-    if (!host) return;
+    const tag = tagRef.current;
+    if (!host || !tag) return;
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
@@ -175,8 +221,46 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     }
     box(6, .2, 2.55, materials.woodLight, 0, .88, 4.6);
     for (const x of [-2.65, 2.65]) for (const z of [3.65, 5.55]) box(.18, .9, .18, materials.wood, x, .36, z);
-    box(1.2, .045, .75, materials.cream, -.9, 1.02, 4.4);
-    box(.8, .055, .55, genericMaterials[6], .9, 1.04, 4.2);
+    const tableBook = box(.8, .055, .55, genericMaterials[6], -1.3, 1.01, 4.05);
+    tableBook.rotation.y = .18;
+
+    // A loose stack of manuscript pages and a fountain pen: the doorway to the essays site.
+    const essayDesk = new THREE.Group();
+    essayDesk.position.set(1.45, .98, 3.95);
+    essayDesk.rotation.y = -.14;
+    essayDesk.scale.setScalar(1.15);
+    scene.add(essayDesk);
+    const paper = new THREE.MeshStandardMaterial({ color: 0xeadcc0, roughness: .95 });
+    const manuscript = paperTexture();
+    textures.push(manuscript);
+    const topSheetMaterial = new THREE.MeshStandardMaterial({ map: manuscript, roughness: .9, emissive: 0x000000 });
+    const penBody = new THREE.MeshStandardMaterial({ color: 0x14100f, metalness: .35, roughness: .28 });
+    [paper, topSheetMaterial, penBody].forEach(material => managedMaterials.add(material));
+    const sheets = [[-.05, .08, .1], [.06, -.04, -.07], [-.02, .03, .04]];
+    sheets.forEach(([x, z, turn], i) => {
+      const sheet = box(.7, .006, .92, i % 2 ? materials.cream : paper, x, .004 + i * .007, z, essayDesk);
+      sheet.rotation.y = turn;
+      sheet.userData.href = ESSAYS_URL;
+      clickable.push(sheet);
+    });
+    const topSheet = box(.7, .006, .92, topSheetMaterial, 0, .004 + sheets.length * .007, 0, essayDesk);
+    topSheet.userData.href = ESSAYS_URL;
+    clickable.push(topSheet);
+    const topSheetRest = topSheet.position.y;
+    const pen = new THREE.Group();
+    pen.position.set(.44, .05, .12);
+    pen.rotation.y = -.95;
+    essayDesk.add(pen);
+    const penParts = [
+      cylinder(.022, .022, .42, penBody, 0, 0, 0, pen),
+      cylinder(.024, .024, .17, materials.brass, .29, 0, 0, pen),
+      cylinder(.004, .022, .09, materials.brass, -.255, 0, 0, pen),
+      box(.13, .006, .012, materials.brass, .3, .026, 0, pen),
+    ];
+    penParts.slice(0, 3).forEach(part => { part.rotation.z = Math.PI / 2; });
+    penParts.forEach(part => { part.userData.href = ESSAYS_URL; clickable.push(part); });
+    essayDesk.updateMatrixWorld(true);
+    const essayAnchor = essayDesk.localToWorld(new THREE.Vector3(0, .1, -.3));
     const chair = new THREE.Group();
     chair.position.set(4.8, 0, -.55);
     chair.rotation.y = -.22;
@@ -238,20 +322,39 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
-    const hitBook = (event: PointerEvent) => {
+    const hit = (event: MouseEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
       raycaster.setFromCamera(pointer, camera);
-      return raycaster.intersectObjects(clickable, false)[0]?.object.userData.book as LibraryBook | undefined;
+      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string } | undefined;
     };
-    const onMove = (event: PointerEvent) => { renderer.domElement.style.cursor = hitBook(event) ? "pointer" : "default"; };
-    const onDown = (event: PointerEvent) => { const book = hitBook(event); if (book) selectRef.current(book); };
+    let essayHovered = false;
+    const onMove = (event: PointerEvent) => {
+      const target = hit(event);
+      essayHovered = !!target?.href;
+      renderer.domElement.style.cursor = target ? "pointer" : "default";
+    };
+    const onLeave = () => { essayHovered = false; };
+    let tagHovered = false;
+    const onTagEnter = () => { tagHovered = true; };
+    const onTagLeave = () => { tagHovered = false; };
+    tag.addEventListener("pointerenter", onTagEnter);
+    tag.addEventListener("pointerleave", onTagLeave);
+    tag.addEventListener("focus", onTagEnter);
+    tag.addEventListener("blur", onTagLeave);
+    const onDown = (event: PointerEvent) => { const book = hit(event)?.book; if (book) selectRef.current(book); };
+    // Opened on click rather than pointerdown so touch taps count as a user gesture for the new tab.
+    const onClick = (event: MouseEvent) => { const href = hit(event)?.href; if (href) open(href, "_blank", "noopener,noreferrer"); };
     renderer.domElement.addEventListener("pointermove", onMove);
+    renderer.domElement.addEventListener("pointerleave", onLeave);
     renderer.domElement.addEventListener("pointerdown", onDown);
+    renderer.domElement.addEventListener("click", onClick);
 
     let width = 0;
     let height = 0;
+    let tagHalfWidth = 0;
     const resize = () => {
+      tagHalfWidth = tag.offsetWidth / 2;
       width = host.clientWidth;
       height = host.clientHeight;
       if (!width || !height) return;
@@ -262,20 +365,23 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     };
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(host);
+    resizeObserver.observe(tag);
     resize();
     camera.position.set(...views[0].position);
     const currentTarget = new THREE.Vector3(...views[0].target);
     const desiredTarget = new THREE.Vector3();
     const desiredPosition = new THREE.Vector3();
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const projectedAnchor = new THREE.Vector3();
+    let tagShown = false;
     const animate = () => {
       const progress = Math.max(0, Math.min(5, progressRef.current));
       const index = Math.min(4, Math.floor(progress));
       const t = reducedMotion.matches ? Math.round(progress) - index : THREE.MathUtils.smoothstep(progress - index, 0, 1);
       desiredTarget.fromArray(views[index].target).lerp(new THREE.Vector3(...views[index + 1].target), t);
       desiredPosition.fromArray(views[index].position).lerp(new THREE.Vector3(...views[index + 1].position), t);
+      const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - 4, 0, 1));
       if (width < 650) {
-        const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - 4, 0, 1));
         const readingCorner = overview * 2.8;
         desiredPosition.x += readingCorner;
         desiredTarget.x += readingCorner;
@@ -292,7 +398,24 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
         entry.cover.rotation.y = THREE.MathUtils.lerp(entry.cover.rotation.y, selected ? -2.15 : 0, .09);
         entry.material.emissive.setHex(focused ? 0x34200c : 0x000000);
       }
-      if (width && height) renderer.render(scene, camera);
+      const essayActive = (essayHovered || tagHovered) && overview > .05;
+      topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, .12);
+      topSheetMaterial.emissive.setHex(essayActive ? 0x2a1a08 : 0x000000);
+      tag.classList.toggle("is-hovered", essayActive);
+      if (!width || !height) return;
+      renderer.render(scene, camera);
+      // Pin the HTML callout above the manuscript while the room is in its overview shot.
+      projectedAnchor.copy(essayAnchor).project(camera);
+      const show = overview > .05 && projectedAnchor.z < 1;
+      if (show !== tagShown) { tagShown = show; tag.style.visibility = show ? "visible" : "hidden"; }
+      if (!show) return;
+      const anchorX = (projectedAnchor.x + 1) / 2 * width;
+      const x = THREE.MathUtils.clamp(anchorX, tagHalfWidth + 16, width - tagHalfWidth - 16);
+      const y = (1 - projectedAnchor.y) / 2 * height;
+      tag.style.opacity = String(overview);
+      tag.style.setProperty("--tag-x", `${x.toFixed(1)}px`);
+      tag.style.setProperty("--tag-y", `${y.toFixed(1)}px`);
+      tag.style.setProperty("--tag-line", `${THREE.MathUtils.clamp(anchorX - x, 12 - tagHalfWidth, tagHalfWidth - 12).toFixed(1)}px`);
     };
     let inView = true;
     const syncLoop = () => renderer.setAnimationLoop(inView && !document.hidden ? animate : null);
@@ -306,7 +429,13 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       visibilityObserver.disconnect();
       document.removeEventListener("visibilitychange", syncLoop);
       renderer.domElement.removeEventListener("pointermove", onMove);
+      renderer.domElement.removeEventListener("pointerleave", onLeave);
       renderer.domElement.removeEventListener("pointerdown", onDown);
+      renderer.domElement.removeEventListener("click", onClick);
+      tag.removeEventListener("pointerenter", onTagEnter);
+      tag.removeEventListener("pointerleave", onTagLeave);
+      tag.removeEventListener("focus", onTagEnter);
+      tag.removeEventListener("blur", onTagLeave);
       scene.traverse(object => { if (object instanceof THREE.Mesh) object.geometry.dispose(); });
       managedMaterials.forEach(material => material.dispose());
       textures.forEach(texture => texture.dispose());
@@ -315,5 +444,8 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     };
   }, []);
 
-  return <div ref={hostRef} className="library-scene" data-failed={failed || undefined} aria-label="Interactive 3D library shelves" />;
+  return <>
+    <div ref={hostRef} className="library-scene" data-failed={failed || undefined} aria-label="Interactive 3D library shelves" />
+    <a ref={tagRef} className="library-essay-tag" href={ESSAYS_URL} target="_blank" rel="noopener noreferrer"><span>The writing desk</span><strong>Click the pages to read my essays &amp; thoughts <ArrowUpRight size={15} /></strong></a>
+  </>;
 }
