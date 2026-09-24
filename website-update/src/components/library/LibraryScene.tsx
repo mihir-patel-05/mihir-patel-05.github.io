@@ -29,9 +29,6 @@ const favoriteShelf = favorites.map((book, index) => ({
   x: .78 + (index - (favorites.length - 1) / 2) * .29,
   height: 1.5 + ((index * 5) % 3) * .05,
 }));
-// Where the camera settles while the "Books I've read" toggle lights up the favorites.
-const favoritesX = favoriteShelf.length ? favoriteShelf.reduce((sum, book) => sum + book.x, 0) / favoriteShelf.length : 0;
-const favoritesView = { target: [favoritesX, shelfRows[favoritesRow] + .75, -4] as const, position: [favoritesX, shelfRows[favoritesRow] + .9, 2.4] as const };
 
 const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
@@ -272,6 +269,10 @@ export default function LibraryScene({ progressRef, openRef, favoritesRef, onSel
       const mesh = add(new THREE.BoxGeometry(.27, book.height, .48), [cloth, cloth, cloth, cloth, spine, cloth], scene, book.x, shelfRows[favoritesRow] + book.height / 2, -4.12);
       favoriteSpines.push({ mesh, cloth, spine });
     }
+    // A warm pool of light that fades in over the favorites while they're highlighted.
+    const favoritesLight = new THREE.PointLight(0xffc37a, 0, 2.6, 2);
+    favoritesLight.position.set(favoriteShelf.reduce((sum, book) => sum + book.x, 0) / Math.max(1, favoriteShelf.length), shelfRows[favoritesRow] + 1.2, -3.3);
+    scene.add(favoritesLight);
 
     const clickable: THREE.Mesh[] = [];
     // Every lamp in the room can be clicked off and back on; there's deliberately no hint that it's possible.
@@ -541,15 +542,14 @@ export default function LibraryScene({ progressRef, openRef, favoritesRef, onSel
         desiredTarget.x += readingCorner;
         desiredPosition.z += THREE.MathUtils.lerp(.55, 2.5, overview);
       }
-      // While the favorites are lit, the camera leaves the scroll path to frame their shelf.
+      // The "Books I've read" toggle warms the favorites' spines and eases them forward off the shelf.
       favoritesLevel = reducedMotion.matches ? +favoritesRef.current : THREE.MathUtils.lerp(favoritesLevel, +favoritesRef.current, ease(.08));
-      desiredTarget.lerp(new THREE.Vector3(...favoritesView.target), favoritesLevel);
-      desiredPosition.lerp(new THREE.Vector3(...favoritesView.position), favoritesLevel);
       favoriteSpines.forEach(({ mesh, cloth, spine }, index) => {
-        mesh.position.z = -4.12 + favoritesLevel * (.13 + (index % 2) * .03);
-        cloth.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .35);
-        spine.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .7);
+        mesh.position.z = -4.12 + favoritesLevel * (.2 + (index % 2) * .04);
+        cloth.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .5);
+        spine.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel);
       });
+      favoritesLight.intensity = favoritesLevel * 5;
       camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : ease(.065));
       currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : ease(.065));
       camera.lookAt(currentTarget);

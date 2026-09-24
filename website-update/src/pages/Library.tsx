@@ -100,9 +100,6 @@ export default function Library() {
     return () => { cancelAnimationFrame(frame); observer.disconnect(); removeEventListener("scroll", schedule); removeEventListener("resize", schedule); };
   }, []);
 
-  // Scrolling on to another stage hands the camera back to the scroll path.
-  useEffect(() => { favoritesRef.current = false; setShowFavorites(false); }, [activeIndex]);
-
   useEffect(() => {
     if (!openBook) return;
     const previousOverflow = document.body.style.overflow;
