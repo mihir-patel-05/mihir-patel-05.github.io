@@ -24,6 +24,8 @@ const views: { target: readonly [number, number, number]; position: readonly [nu
   ...featured.map(book => ({ target: [book.x, book.y, -3.85] as const, position: [book.x, book.y + .07, 0.65] as const })),
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
 ];
+// Scroll progress runs from the entrance (0), through one stage per volume, to the return view.
+const lastStage = views.length - 1;
 
 function spineTexture(title: string, color: number) {
   const canvas = document.createElement("canvas");
@@ -387,12 +389,12 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       const frames = lastFrame ? Math.min(time - lastFrame, 250) / (1000 / 60) : 0;
       lastFrame = time;
       const ease = (rate: number) => 1 - Math.pow(1 - rate, frames);
-      const progress = Math.max(0, Math.min(5, progressRef.current));
-      const index = Math.min(4, Math.floor(progress));
+      const progress = Math.max(0, Math.min(lastStage, progressRef.current));
+      const index = Math.min(lastStage - 1, Math.floor(progress));
       const t = reducedMotion.matches ? Math.round(progress) - index : THREE.MathUtils.smoothstep(progress - index, 0, 1);
       desiredTarget.fromArray(views[index].target).lerp(new THREE.Vector3(...views[index + 1].target), t);
       desiredPosition.fromArray(views[index].position).lerp(new THREE.Vector3(...views[index + 1].position), t);
-      const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - 4, 0, 1));
+      const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - (lastStage - 1), 0, 1));
       if (width < 650) {
         const readingCorner = overview * 2.8;
         desiredPosition.x += readingCorner;

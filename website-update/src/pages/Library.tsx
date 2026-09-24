@@ -10,6 +10,9 @@ const volumes: { id: LibraryBook; label: string; caption: string }[] = [
   { id: "experience", label: "Experience", caption: "Where I've practiced" },
   { id: "contact", label: "Contact", caption: "The next conversation" },
 ];
+// Scroll stages: the entrance, one per volume, then the return view.
+const lastStage = volumes.length + 1;
+const pad = (value: number) => String(value).padStart(2, "0");
 
 function ExperiencePages() {
   const [page, setPage] = useState(0);
@@ -68,8 +71,8 @@ export default function Library() {
         else if (focus > centers[i]) { progress = i + (focus - centers[i]) / (centers[i + 1] - centers[i]); break; }
         else break;
       }
-      progressRef.current = Math.min(5, progress);
-      journey.style.setProperty("--library-progress", String(progressRef.current / 5));
+      progressRef.current = Math.min(lastStage, progress);
+      journey.style.setProperty("--library-progress", String(progressRef.current / lastStage));
       setActiveIndex(previous => { const next = Math.round(progressRef.current); return previous === next ? previous : next; });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -115,7 +118,7 @@ export default function Library() {
         {volumes.map((volume, index) => <section key={volume.id} id={`library-${volume.id}`} className="library-stage library-book-stage" aria-label={`Volume ${index + 1}: ${volume.label}`}><h2 className="library-visually-hidden">{volume.label}</h2></section>)}
         <section id="library-return" className="library-stage library-start" aria-label="Return to the full library view" />
       </main>
-      <div className="library-reading-ui">{current ? <div className="library-chapter-note" aria-live="polite"><span>0{activeIndex} / 04 · {current.caption}</span><strong>{current.label}</strong><small>Click the highlighted spine or open the book below.</small><button type="button" onClick={() => selectBook(current.id)}>Open {current.label} <ArrowUpRight size={17} /></button></div> : <div className="library-entry-cue"><span>Four volumes · one portfolio</span><p>Scroll toward a book, then click its binding to open a chapter.</p><button type="button" onClick={() => scrollTo("library-about")}>Start with About <ArrowUpRight size={16} /></button></div>}<nav className="library-volume-nav" aria-label="Library volumes">{volumes.map((volume, index) => <button key={volume.id} type="button" className={activeIndex === index + 1 ? "is-active" : ""} aria-current={activeIndex === index + 1 ? "location" : undefined} onClick={() => scrollTo(`library-${volume.id}`)}><span>0{index + 1}</span>{volume.label}</button>)}</nav><div className="library-progress" aria-hidden="true"><span /></div></div>
+      <div className="library-reading-ui">{current ? <div className="library-chapter-note" aria-live="polite"><span>{pad(activeIndex)} / {pad(volumes.length)} · {current.caption}</span><strong>{current.label}</strong><small>Click the highlighted spine or open the book below.</small><button type="button" onClick={() => selectBook(current.id)}>Open {current.label} <ArrowUpRight size={17} /></button></div> : <div className="library-entry-cue"><span>Four volumes · one portfolio</span><p>Scroll toward a book, then click its binding to open a chapter.</p><button type="button" onClick={() => scrollTo("library-about")}>Start with About <ArrowUpRight size={16} /></button></div>}<nav className="library-volume-nav" aria-label="Library volumes">{volumes.map((volume, index) => <button key={volume.id} type="button" className={activeIndex === index + 1 ? "is-active" : ""} aria-current={activeIndex === index + 1 ? "location" : undefined} onClick={() => scrollTo(`library-${volume.id}`)}><span>{pad(index + 1)}</span>{volume.label}</button>)}</nav><div className="library-progress" aria-hidden="true"><span /></div></div>
     </div>
     {openBook && <div className="library-dialog-backdrop" onPointerDown={event => { if (event.target === event.currentTarget) closeBook(); }}><section ref={dialogRef} className="library-dialog" role="dialog" aria-modal="true" aria-labelledby="open-volume-title"><button ref={closeRef} type="button" className="library-close" aria-label="Close book" onClick={closeBook}><X size={21} /></button><div className="library-book-spread"><VolumeContent book={openBook} /><div className="library-opening-cover" aria-hidden="true"><div className="library-cover-front"><span>M · P</span><strong>{volumes.find(volume => volume.id === openBook)?.label}</strong><small>THE LIBRARY</small></div><div className="library-cover-back" /></div></div></section></div>}
   </div>;
