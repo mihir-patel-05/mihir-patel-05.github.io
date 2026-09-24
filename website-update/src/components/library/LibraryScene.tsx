@@ -29,6 +29,9 @@ const favoriteShelf = favorites.map((book, index) => ({
   x: .78 + (index - (favorites.length - 1) / 2) * .29,
   height: 1.5 + ((index * 5) % 3) * .05,
 }));
+// Where the camera settles while the "Books I've read" toggle lights up the favorites.
+const favoritesX = favoriteShelf.length ? favoriteShelf.reduce((sum, book) => sum + book.x, 0) / favoriteShelf.length : 0;
+const favoritesView = { target: [favoritesX, shelfRows[favoritesRow] + .75, -4] as const, position: [favoritesX, shelfRows[favoritesRow] + .9, 2.4] as const };
 
 const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
@@ -155,9 +158,10 @@ function openPagesTexture() {
   return texture;
 }
 
-export default function LibraryScene({ progressRef, openRef, onSelect }: {
+export default function LibraryScene({ progressRef, openRef, favoritesRef, onSelect }: {
   progressRef: RefObject<number>;
   openRef: RefObject<LibraryBook | null>;
+  favoritesRef: RefObject<boolean>;
   onSelect: (book: LibraryBook) => void;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -257,6 +261,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       }
     }
 
+    const favoriteSpines: { mesh: THREE.Mesh; cloth: THREE.MeshStandardMaterial; spine: THREE.MeshStandardMaterial }[] = [];
     for (const book of favoriteShelf) {
       const texture = titledSpineTexture(book.title, book.author, book.color);
       textures.push(texture);
@@ -264,7 +269,8 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       const spine = new THREE.MeshStandardMaterial({ map: texture, roughness: .8 });
       managedMaterials.add(cloth);
       managedMaterials.add(spine);
-      add(new THREE.BoxGeometry(.27, book.height, .48), [cloth, cloth, cloth, cloth, spine, cloth], scene, book.x, shelfRows[favoritesRow] + book.height / 2, -4.12);
+      const mesh = add(new THREE.BoxGeometry(.27, book.height, .48), [cloth, cloth, cloth, cloth, spine, cloth], scene, book.x, shelfRows[favoritesRow] + book.height / 2, -4.12);
+      favoriteSpines.push({ mesh, cloth, spine });
     }
 
     const clickable: THREE.Mesh[] = [];
@@ -515,6 +521,8 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     let tagShown = false;
     let readingShown = false;
     let lastFrame = 0;
+    let favoritesLevel = 0;
+    const favoritesGlow = new THREE.Color(0x3a2008);
     const animate = (time: number) => {
       // Easing rates are tuned per 60fps frame; scale them by the real frame time so the camera glides
       // between shelves at the same pace on any refresh rate. The first frame after a pause holds still.
@@ -533,6 +541,15 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
         desiredTarget.x += readingCorner;
         desiredPosition.z += THREE.MathUtils.lerp(.55, 2.5, overview);
       }
+      // While the favorites are lit, the camera leaves the scroll path to frame their shelf.
+      favoritesLevel = reducedMotion.matches ? +favoritesRef.current : THREE.MathUtils.lerp(favoritesLevel, +favoritesRef.current, ease(.08));
+      desiredTarget.lerp(new THREE.Vector3(...favoritesView.target), favoritesLevel);
+      desiredPosition.lerp(new THREE.Vector3(...favoritesView.position), favoritesLevel);
+      favoriteSpines.forEach(({ mesh, cloth, spine }, index) => {
+        mesh.position.z = -4.12 + favoritesLevel * (.13 + (index % 2) * .03);
+        cloth.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .35);
+        spine.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .7);
+      });
       camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : ease(.065));
       currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : ease(.065));
       camera.lookAt(currentTarget);

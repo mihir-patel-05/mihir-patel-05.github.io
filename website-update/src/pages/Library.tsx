@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, BookOpen, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ArrowUpRight, BookMarked, BookOpen, ChevronLeft, ChevronRight, X } from "lucide-react";
 import LibraryScene, { type LibraryBook } from "@/components/library/LibraryScene";
 import { alpineExperience, alpineProjects } from "@/components/alpine/trail";
 import { courseworkAreas, courseworkSummary } from "@/components/library/coursework";
+import { favorites } from "@/components/library/reading";
 import "@/styles/library.css";
 
 const volumes: { id: LibraryBook; label: string; caption: string }[] = [
@@ -64,10 +65,12 @@ export default function Library() {
   const journeyRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const openRef = useRef<LibraryBook | null>(null);
+  const favoritesRef = useRef(false);
   const dialogRef = useRef<HTMLElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [openBook, setOpenBook] = useState<LibraryBook | null>(null);
+  const [showFavorites, setShowFavorites] = useState(false);
 
   useEffect(() => {
     const journey = journeyRef.current;
@@ -97,6 +100,9 @@ export default function Library() {
     return () => { cancelAnimationFrame(frame); observer.disconnect(); removeEventListener("scroll", schedule); removeEventListener("resize", schedule); };
   }, []);
 
+  // Scrolling on to another stage hands the camera back to the scroll path.
+  useEffect(() => { favoritesRef.current = false; setShowFavorites(false); }, [activeIndex]);
+
   useEffect(() => {
     if (!openBook) return;
     const previousOverflow = document.body.style.overflow;
@@ -118,20 +124,21 @@ export default function Library() {
 
   const selectBook = (book: LibraryBook) => { openRef.current = book; setOpenBook(book); };
   const closeBook = () => { openRef.current = null; setOpenBook(null); };
+  const toggleFavorites = () => { favoritesRef.current = !favoritesRef.current; setShowFavorites(favoritesRef.current); };
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center" });
   const current = activeIndex > 0 ? volumes[activeIndex - 1] : null;
 
   return <div className="library-site">
     <a className="library-skip" href="#library-main">Skip to content</a>
     <div className="library-journey" ref={journeyRef}>
-      <div className="library-canvas"><LibraryScene progressRef={progressRef} openRef={openRef} onSelect={selectBook} /></div>
+      <div className="library-canvas"><LibraryScene progressRef={progressRef} openRef={openRef} favoritesRef={favoritesRef} onSelect={selectBook} /></div>
       <header className="library-header"><a href="#library-start" className="library-brand" aria-label="Back to the library entrance" onClick={event => { event.preventDefault(); scrollTo("library-start"); }}><BookOpen size={25} strokeWidth={1.5} /><span>MP · THE LIBRARY</span></a><h1 id="library-title">The library of <em>Mihir Patel.</em></h1><span className="library-header-end" aria-hidden="true">Five volumes · One story</span></header>
       <main id="library-main">
         <section id="library-start" className="library-stage library-start" aria-label="Library entrance" />
         {volumes.map((volume, index) => <section key={volume.id} id={`library-${volume.id}`} className="library-stage library-book-stage" aria-label={`Volume ${index + 1}: ${volume.label}`}><h2 className="library-visually-hidden">{volume.label}</h2></section>)}
         <section id="library-return" className="library-stage library-start" aria-label="Return to the full library view" />
       </main>
-      <div className="library-reading-ui">{current ? <div className="library-chapter-note" aria-live="polite"><span>{pad(activeIndex)} / {pad(volumes.length)} · {current.caption}</span><strong>{current.label}</strong><small>Click the highlighted spine or open the book below.</small><button type="button" onClick={() => selectBook(current.id)}>Open {current.label} <ArrowUpRight size={17} /></button></div> : <div className="library-entry-cue"><span>Five volumes · one portfolio</span><p>Scroll toward a book, then click its binding to open a chapter.</p><button type="button" onClick={() => scrollTo("library-about")}>Start with About <ArrowUpRight size={16} /></button></div>}<nav className="library-volume-nav" aria-label="Library volumes">{volumes.map((volume, index) => <button key={volume.id} type="button" className={activeIndex === index + 1 ? "is-active" : ""} aria-current={activeIndex === index + 1 ? "location" : undefined} onClick={() => scrollTo(`library-${volume.id}`)}><span>{pad(index + 1)}</span>{volume.label}</button>)}</nav><div className="library-progress" aria-hidden="true"><span /></div></div>
+      <div className="library-reading-ui">{current ? <div className="library-chapter-note" aria-live="polite"><span>{pad(activeIndex)} / {pad(volumes.length)} · {current.caption}</span><strong>{current.label}</strong><small>Click the highlighted spine or open the book below.</small><button type="button" onClick={() => selectBook(current.id)}>Open {current.label} <ArrowUpRight size={17} /></button></div> : <div className="library-entry-cue"><span>Five volumes · one portfolio</span><p>Scroll toward a book, then click its binding to open a chapter.</p><button type="button" onClick={() => scrollTo("library-about")}>Start with About <ArrowUpRight size={16} /></button></div>}<nav className="library-volume-nav" aria-label="Library volumes">{volumes.map((volume, index) => <button key={volume.id} type="button" className={activeIndex === index + 1 ? "is-active" : ""} aria-current={activeIndex === index + 1 ? "location" : undefined} onClick={() => scrollTo(`library-${volume.id}`)}><span>{pad(index + 1)}</span>{volume.label}</button>)}</nav>{favorites.length > 0 && <div className="library-favorites"><button type="button" className="library-favorites-toggle" aria-pressed={showFavorites} aria-controls="library-favorites-list" onClick={toggleFavorites}><BookMarked size={16} strokeWidth={1.6} />Books I've read</button><ul id="library-favorites-list" className="library-favorites-list" hidden={!showFavorites}>{favorites.map(book => <li key={book.title}><strong>{book.title}</strong><small>{book.author}</small></li>)}</ul></div>}<div className="library-progress" aria-hidden="true"><span /></div></div>
     </div>
     {openBook && <div className="library-dialog-backdrop" onPointerDown={event => { if (event.target === event.currentTarget) closeBook(); }}><section ref={dialogRef} className="library-dialog" role="dialog" aria-modal="true" aria-labelledby="open-volume-title"><button ref={closeRef} type="button" className="library-close" aria-label="Close book" onClick={closeBook}><X size={21} /></button><div className="library-book-spread"><VolumeContent book={openBook} /><div className="library-opening-cover" aria-hidden="true"><div className="library-cover-front"><span>M · P</span><strong>{volumes.find(volume => volume.id === openBook)?.label}</strong><small>THE LIBRARY</small></div><div className="library-cover-back" /></div></div></section></div>}
   </div>;
