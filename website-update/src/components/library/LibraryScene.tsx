@@ -197,6 +197,18 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     }
 
     const clickable: THREE.Mesh[] = [];
+    // Every lamp in the room can be clicked off and back on; there's deliberately no hint that it's possible.
+    type Shade = THREE.MeshBasicMaterial | THREE.MeshStandardMaterial;
+    const lamps: { on: boolean; level: number; flickerUntil: number; lights: [THREE.PointLight, number][]; shade: Shade; lit: THREE.Color; unlit: THREE.Color }[] = [];
+    const addLamp = (lights: THREE.PointLight[], parts: THREE.Mesh[], shade: Shade, unlit: number) => {
+      const index = lamps.push({ on: true, level: 1, flickerUntil: 0, lights: lights.map(light => [light, light.intensity]), shade, lit: shade.color.clone(), unlit: new THREE.Color(unlit) }) - 1;
+      parts.forEach(part => { part.userData.lamp = index; clickable.push(part); });
+    };
+    const lampShade = <T extends Shade>(material: T) => {
+      const shade = material.clone() as T;
+      managedMaterials.add(shade);
+      return shade;
+    };
     const bookGroups = new Map<LibraryBook, { group: THREE.Group; cover: THREE.Group; material: THREE.MeshStandardMaterial }>();
     for (const book of featured) {
       const group = new THREE.Group();
@@ -222,11 +234,13 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
 
     // Warm sconces, a library table, a wingback reading chair, and a simple chandelier.
     for (const x of [-7.5, -3.5, .5, 4.5, 7.8]) {
-      box(.13, .7, .18, materials.brass, x, 5.45, -3.65);
-      cylinder(.28, .38, .42, materials.glow, x, 5.75, -3.5);
+      const glow = lampShade(materials.glow);
+      const bracket = box(.13, .7, .18, materials.brass, x, 5.45, -3.65);
+      const shade = cylinder(.28, .38, .42, glow, x, 5.75, -3.5);
       const lamp = new THREE.PointLight(0xffbe78, 2.1, 5.5, 2);
       lamp.position.set(x, 5.75, -3.25);
       scene.add(lamp);
+      addLamp([lamp], [bracket, shade], glow, 0x2e231b);
     }
     box(6, .2, 2.55, materials.woodLight, 0, .88, 4.6);
     for (const x of [-2.65, 2.65]) for (const z of [3.65, 5.55]) box(.18, .9, .18, materials.wood, x, .36, z);
@@ -298,21 +312,28 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     blanket.rotation.z = .1;
     cylinder(.43, .49, .08, materials.woodLight, 6.75, .68, .2);
     cylinder(.12, .12, .68, materials.wood, 6.75, .3, .2);
-    cylinder(.32, .36, .12, materials.brass, 3.25, .06, -.55);
-    cylinder(.035, .035, 2.0, materials.brass, 3.25, 1.08, -.55);
-    cylinder(.22, .43, .6, materials.cream, 3.25, 2.35, -.55);
+    const floorShade = lampShade(materials.cream);
+    const floorLamp = [
+      cylinder(.32, .36, .12, materials.brass, 3.25, .06, -.55),
+      cylinder(.035, .035, 2.0, materials.brass, 3.25, 1.08, -.55),
+      cylinder(.22, .43, .6, floorShade, 3.25, 2.35, -.55),
+    ];
     const readingLight = new THREE.PointLight(0xffca82, 7, 5, 2);
     readingLight.position.set(3.25, 2.1, -.25);
     scene.add(readingLight);
-    cylinder(.55, .72, .3, materials.brass, 0, 7.65, 2.5);
-    cylinder(.09, .09, 1.2, materials.brass, 0, 8.35, 2.5);
+    addLamp([readingLight], floorLamp, floorShade, 0x5a4a38);
+    const chandelierGlow = lampShade(materials.glow);
+    const chandelier = [
+      cylinder(.55, .72, .3, materials.brass, 0, 7.65, 2.5),
+      cylinder(.09, .09, 1.2, materials.brass, 0, 8.35, 2.5),
+    ];
     for (let i = 0; i < 6; i++) {
       const angle = i * Math.PI / 3;
       const x = Math.cos(angle) * 1.05;
       const z = 2.5 + Math.sin(angle) * 1.05;
       const arm = cylinder(.025, .025, .65, materials.brass, x * .6, 7.38, 2.5 + Math.sin(angle) * .6);
       arm.rotation.z = -Math.cos(angle) * .9;
-      cylinder(.11, .15, .25, materials.glow, x, 7.25, z);
+      chandelier.push(arm, cylinder(.11, .15, .25, chandelierGlow, x, 7.25, z));
     }
 
     scene.add(new THREE.AmbientLight(0xffd9af, 1.25));
@@ -328,6 +349,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const warm = new THREE.PointLight(0xffbd75, 12, 12, 2);
     warm.position.set(0, 7.1, 2.5);
     scene.add(warm);
+    addLamp([warm], chandelier, chandelierGlow, 0x2e231b);
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -335,7 +357,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
       raycaster.setFromCamera(pointer, camera);
-      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string } | undefined;
+      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string; lamp?: number } | undefined;
     };
     let essayHovered = false;
     const onMove = (event: PointerEvent) => {
@@ -353,7 +375,14 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     tag.addEventListener("blur", onTagLeave);
     const onDown = (event: PointerEvent) => { const book = hit(event)?.book; if (book) selectRef.current(book); };
     // Opened on click rather than pointerdown so touch taps count as a user gesture for the new tab.
-    const onClick = (event: MouseEvent) => { const href = hit(event)?.href; if (href) open(href, "_blank", "noopener,noreferrer"); };
+    const onClick = (event: MouseEvent) => {
+      const target = hit(event);
+      if (target?.href) open(target.href, "_blank", "noopener,noreferrer");
+      if (target?.lamp === undefined) return;
+      const lamp = lamps[target.lamp];
+      lamp.on = !lamp.on;
+      if (lamp.on) lamp.flickerUntil = performance.now() + 320;
+    };
     renderer.domElement.addEventListener("pointermove", onMove);
     renderer.domElement.addEventListener("pointerleave", onLeave);
     renderer.domElement.addEventListener("pointerdown", onDown);
@@ -417,6 +446,14 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, ease(.12));
       topSheetMaterial.emissive.setHex(essayActive ? 0x2a1a08 : 0x000000);
       tag.classList.toggle("is-hovered", essayActive);
+      const now = performance.now();
+      for (const lamp of lamps) {
+        lamp.level = reducedMotion.matches ? +lamp.on : THREE.MathUtils.lerp(lamp.level, +lamp.on, ease(.16));
+        // A switched-on bulb sputters for a moment before it settles.
+        const level = !reducedMotion.matches && now < lamp.flickerUntil && Math.random() < .4 ? lamp.level * .2 : lamp.level;
+        for (const [light, intensity] of lamp.lights) light.intensity = intensity * level;
+        lamp.shade.color.lerpColors(lamp.unlit, lamp.lit, level);
+      }
       if (!width || !height) return;
       renderer.render(scene, camera);
       // Pin the HTML callout above the manuscript while the room is in its overview shot.
