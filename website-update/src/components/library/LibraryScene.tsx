@@ -380,7 +380,13 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const projectedAnchor = new THREE.Vector3();
     let tagShown = false;
-    const animate = () => {
+    let lastFrame = 0;
+    const animate = (time: number) => {
+      // Easing rates are tuned per 60fps frame; scale them by the real frame time so the camera glides
+      // between shelves at the same pace on any refresh rate. The first frame after a pause holds still.
+      const frames = lastFrame ? Math.min(time - lastFrame, 250) / (1000 / 60) : 0;
+      lastFrame = time;
+      const ease = (rate: number) => 1 - Math.pow(1 - rate, frames);
       const progress = Math.max(0, Math.min(5, progressRef.current));
       const index = Math.min(4, Math.floor(progress));
       const t = reducedMotion.matches ? Math.round(progress) - index : THREE.MathUtils.smoothstep(progress - index, 0, 1);
@@ -393,19 +399,19 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
         desiredTarget.x += readingCorner;
         desiredPosition.z += THREE.MathUtils.lerp(.55, 2.5, overview);
       }
-      camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : .065);
-      currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : .065);
+      camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : ease(.065));
+      currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : ease(.065));
       camera.lookAt(currentTarget);
       for (const book of featured) {
         const entry = bookGroups.get(book.id)!;
         const selected = openRef.current === book.id;
         const focused = Math.round(progress) === featured.indexOf(book) + 1;
-        entry.group.position.z = THREE.MathUtils.lerp(entry.group.position.z, selected ? -3.25 : -3.83, .09);
-        entry.cover.rotation.y = THREE.MathUtils.lerp(entry.cover.rotation.y, selected ? -2.15 : 0, .09);
+        entry.group.position.z = THREE.MathUtils.lerp(entry.group.position.z, selected ? -3.25 : -3.83, ease(.09));
+        entry.cover.rotation.y = THREE.MathUtils.lerp(entry.cover.rotation.y, selected ? -2.15 : 0, ease(.09));
         entry.material.emissive.setHex(focused ? 0x34200c : 0x000000);
       }
       const essayActive = (essayHovered || tagHovered) && overview > .05;
-      topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, .12);
+      topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, ease(.12));
       topSheetMaterial.emissive.setHex(essayActive ? 0x2a1a08 : 0x000000);
       tag.classList.toggle("is-hovered", essayActive);
       if (!width || !height) return;
@@ -424,7 +430,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       tag.style.setProperty("--tag-line", `${THREE.MathUtils.clamp(anchorX - x, 12 - tagHalfWidth, tagHalfWidth - 12).toFixed(1)}px`);
     };
     let inView = true;
-    const syncLoop = () => renderer.setAnimationLoop(inView && !document.hidden ? animate : null);
+    const syncLoop = () => { lastFrame = 0; renderer.setAnimationLoop(inView && !document.hidden ? animate : null); };
     const visibilityObserver = new IntersectionObserver(entries => { inView = entries[0].isIntersecting; syncLoop(); }, { threshold: .01 });
     visibilityObserver.observe(host);
     document.addEventListener("visibilitychange", syncLoop);
