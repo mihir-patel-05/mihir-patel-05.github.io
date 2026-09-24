@@ -1,148 +1,102 @@
-interface Project {
-  num: string;
-  title: string;
-  desc: string;
-  tags: string[];
-  links: { label: string; href: string; arr?: string }[];
-  size: "lg" | "md" | "sm";
-  featured?: boolean;
-}
+import { ArrowUpRight, Braces, GitBranch, FileText, Database } from "lucide-react";
 
-const projects: Project[] = [
+const projects = [
   {
-    num: "P·01 — 2026",
     title: "VoteInformed",
-    desc: "A nonpartisan election intelligence platform that brings federal races, candidate records, campaign finance, and voting resources into one evidence-first experience. A React frontend is backed by a typed Express API and automated FEC data pipelines.",
-    tags: ["React", "TypeScript", "Express", "PostgreSQL", "Prisma", "Data Pipelines"],
-    links: [
-      { label: "Source", href: "https://github.com/mihir-patel-05/2026Midterms", arr: "↗" },
-    ],
-    size: "lg",
-    featured: true,
+    category: "Full-stack engineering",
+    description: "Making election research easier to navigate. Federal races, candidate records, and campaign finance come together through a typed API and automated FEC data pipelines.",
+    tags: ["React", "TypeScript", "Express", "PostgreSQL"],
+    href: "https://github.com/mihir-patel-05/2026Midterms",
+    visual: "election",
   },
   {
-    num: "P·02 — 2026",
-    title: "Arc Life Planner",
-    desc: "A full-stack planning workspace for mapping long-term goals on branching timelines. Built with authenticated server actions, a relational schema, and row-level security so personal plans stay private by design.",
-    tags: ["Next.js", "TypeScript", "Supabase", "Drizzle", "PostgreSQL"],
-    links: [{ label: "Source", href: "https://github.com/mihir-patel-05/Life_Planning_app", arr: "↗" }],
-    size: "md",
-  },
-  {
-    num: "P·03 — 2026",
-    title: "OCR to LaTeX & Markdown",
-    desc: "A computer-vision pipeline for turning scanned technical documents into structured, editable text. It combines image processing and symbol recognition with spatial parsing to reconstruct equations as LaTeX and document structure as Markdown.",
-    tags: ["Python", "OpenCV", "Hugging Face", "Scikit-learn", "AST Parsing"],
-    links: [{ label: "Source", href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir", arr: "↗" }],
-    size: "sm",
-  },
-  {
-    num: "P·04 — 2026",
-    title: "PageFlow",
-    desc: "An offline-first iOS reading companion that turns sessions into a searchable knowledge base. Timers, reflections, quotes, streaks, and progress analytics are stored locally first and synced securely in the background.",
-    tags: ["Swift", "SwiftUI", "SwiftData", "Supabase", "Google Books API"],
-    links: [{ label: "Source", href: "https://github.com/mihir-patel-05/Booktracking", arr: "↗" }],
-    size: "sm",
-  },
-  {
-    num: "P·05 — 2026",
-    title: "OzempicAI",
-    desc: "An installable health and fitness PWA built for fast, mobile-first tracking. The current web architecture combines typed React components, cached server state, Supabase persistence, and Workbox-powered offline behavior.",
-    tags: ["React", "TypeScript", "PWA", "Supabase", "TanStack Query"],
-    links: [{ label: "Source", href: "https://github.com/mihir-patel-05/OzempicAI", arr: "↗" }],
-    size: "sm",
-  },
-  {
-    num: "P·06 — 2025",
-    title: "RespondXR",
-    desc: "An AI-assisted mobile guide for the first critical moments of an emergency. It translates a stressful scene into clear, step-by-step actions while professional responders are still on the way.",
-    tags: ["React Native", "Expo", "Gemini", "Anthropic", "Computer Vision"],
-    links: [
-      { label: "Visit site", href: "https://respondxr.tech/", arr: "→" },
-      { label: "Source", href: "https://github.com/mihir-patel-05/Respond-XR", arr: "↗" },
-    ],
-    size: "sm",
+    title: "March Madness predictions",
+    category: "Machine learning · Sports analytics",
+    description: "Exploring what the numbers can tell us about the tournament. A machine learning project for analyzing college basketball data and predicting March Madness outcomes.",
+    tags: ["Python", "Scikit-learn", "Pandas", "NumPy"],
+    href: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis",
+    visual: "bracket",
   },
 ];
 
-const sizeClass: Record<Project["size"], string> = {
-  lg: "md:col-span-7 bg-tea min-h-[420px]",
-  md: "md:col-span-5",
-  sm: "md:col-span-6",
-};
+const studies = [
+  {
+    title: "War on Drugs: a policy analysis",
+    category: "Research & statistical analysis",
+    description: "Examining the impact of drug policy through data, statistical analysis, and visualization.",
+    tools: "Python · Statsmodels · Matplotlib",
+    href: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy",
+    icon: FileText,
+  },
+  {
+    title: "From scanned pages to structured text",
+    category: "Applied ML & engineering",
+    description: "A computer-vision pipeline that reconstructs technical documents as editable LaTeX and Markdown.",
+    tools: "Python · OpenCV · Hugging Face",
+    href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir",
+    icon: Braces,
+  },
+];
+
+const ProjectVisual = ({ variant }: { variant: string }) => variant === "election" ? (
+  <div className="project-visual election-visual" aria-hidden="true">
+    <span className="visual-kicker">PUBLIC DATA → CLEARER CONTEXT</span>
+    <div className="data-flow">
+      <div className="source-docs"><span /><span /><span /></div>
+      <span className="flow-line" />
+      <div className="data-node"><Database size={30} strokeWidth={1.25} /></div>
+      <span className="flow-line" />
+      <div className="data-result"><span /><span /><span /></div>
+    </div>
+    <div className="visual-labels"><span>Records</span><span>Connect</span><span>Explore</span></div>
+  </div>
+) : (
+  <div className="project-visual bracket-visual" aria-hidden="true">
+    <span className="visual-kicker">THE TOURNAMENT, THROUGH DATA</span>
+    <div className="bracket-art">
+      <div className="bracket-round"><span /><span /><span /><span /></div>
+      <div className="bracket-round second"><span /><span /></div>
+      <div className="bracket-final"><GitBranch size={29} strokeWidth={1.3} /></div>
+      <span className="bracket-question">What<br /><em>comes next?</em></span>
+    </div>
+    <span className="visual-footnote">Analyze / Model / Predict</span>
+  </div>
+);
 
 const Projects = () => (
-  <section id="projects" className="bg-beige py-24 md:py-[140px] px-5 md:px-10">
-    <div className="max-w-[1240px] mx-auto">
-      <div className="reveal grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 md:gap-10 items-end mb-12 md:mb-16">
-        <span className="font-mono text-[12px] text-ink-faint tracking-[0.08em]">03 — Projects</span>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
-          <h2 className="font-serif-title text-[clamp(40px,6vw,72px)] leading-[1.02]">
-            Things I've <em className="italic font-normal text-bronze-deep">built.</em>
-          </h2>
-          <a
-            href="https://github.com/mihir-patel-05?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group shrink-0 font-mono text-[12px] text-ink border-b border-bronze pb-[2px] hover:text-bronze-deep transition-colors"
-          >
-            View all on GitHub <span className="inline-block transition-transform group-hover:translate-x-1">↗</span>
-          </a>
-        </div>
+  <section id="projects" className="projects-section section-space" aria-labelledby="projects-title">
+    <div className="container-shell">
+      <div className="section-heading">
+        <div><p className="eyebrow section-index">01 / Selected work</p><h2 id="projects-title">Questions explored.<br /><em>Ideas put to work.</em></h2></div>
+        <p className="section-intro">A selection across data science,<br className="desktop-break" /> research, and software engineering.</p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-7">
-        {projects.map((p) => (
-          <article
-            key={p.num}
-            className={`reveal relative overflow-hidden flex flex-col p-8 border border-rule min-h-[340px]
-              bg-cornsilk transition-all duration-400 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_hsla(30,33%,18%,0.25)]
-              ${sizeClass[p.size]}`}
-          >
-            {p.featured && (
-              <span className="absolute top-8 right-8 font-mono text-[10px] tracking-[0.1em] uppercase px-[10px] py-1 border border-ink rounded-full bg-cornsilk">
-                Featured
-              </span>
-            )}
-            <div className="font-mono text-[11px] text-ink-faint tracking-[0.08em]">{p.num}</div>
-            <h3
-              className={`font-serif-title mt-4 mb-3 ${p.size === "lg" ? "text-[40px] leading-[1.05]" : "text-[26px] leading-[1.2]"}`}
-              style={{ textWrap: "balance" }}
-            >
-              {p.title}
-            </h3>
-            <p className={`text-ink-soft leading-[1.5] flex-1 ${p.size === "lg" ? "text-[17px] max-w-[46ch]" : "text-[15px]"}`}>
-              {p.desc}
-            </p>
-
-            <div className="flex flex-wrap gap-[6px] my-5 font-mono text-[11px]">
-              {p.tags.map((t, i) => (
-                <span key={t} className="text-ink-soft">
-                  {t}
-                  {i < p.tags.length - 1 && <span className="text-ink-faint mx-[2px]"> · </span>}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex gap-5 font-mono text-[12px]">
-              {p.links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-[6px] text-ink border-b border-bronze pb-[2px] hover:text-bronze-deep hover:gap-[10px] transition-all"
-                >
-                  {l.label}{" "}
-                  <span className="inline-block transition-transform group-hover:translate-x-[2px]">{l.arr}</span>
-                </a>
-              ))}
+      <div className="featured-projects">
+        {projects.map((project, index) => (
+          <article className="project-card" key={project.title}>
+            <a className="project-visual-link" href={project.href} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.title} on GitHub`}>
+              <ProjectVisual variant={project.visual} />
+              <span className="visual-arrow"><ArrowUpRight size={21} aria-hidden="true" /></span>
+            </a>
+            <div className="project-body">
+              <p className="project-category"><span>0{index + 1}</span>{project.category}</p>
+              <h3><a href={project.href} target="_blank" rel="noopener noreferrer">{project.title}<ArrowUpRight size={21} aria-hidden="true" /></a></h3>
+              <p>{project.description}</p>
+              <ul className="tag-list" aria-label="Technologies">{project.tags.map(tag => <li key={tag}>{tag}</li>)}</ul>
             </div>
           </article>
         ))}
       </div>
+      <div className="project-studies">
+        {studies.map(({ icon: Icon, ...study }, index) => (
+          <article className="study-row" key={study.title}>
+            <span className="study-icon" aria-hidden="true"><Icon size={25} strokeWidth={1.4} /></span>
+            <div><p className="project-category">0{index + 3} / {study.category}</p><h3><a href={study.href} target="_blank" rel="noopener noreferrer">{study.title}<ArrowUpRight size={19} aria-hidden="true" /></a></h3><p>{study.description}</p></div>
+            <span className="study-tools">{study.tools}</span>
+          </article>
+        ))}
+      </div>
+      <a className="text-link all-projects" href="https://github.com/mihir-patel-05?tab=repositories" target="_blank" rel="noopener noreferrer">More projects on GitHub <ArrowUpRight size={17} aria-hidden="true" /></a>
     </div>
   </section>
 );
-
 export default Projects;

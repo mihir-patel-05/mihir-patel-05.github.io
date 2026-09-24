@@ -1,32 +1,7 @@
-# Mihir Patel — Personal Website
+# Mihir Patel — The Library
 
-Redesigned with a warm editorial aesthetic using the cornsilk / tea green / bronze palette.
+The Vercel preview for `redesign_astra` builds only the library at `/`. The Vite production build uses `index.html` and `src/library-main.tsx`; it does not include the other page entries or their React components.
 
-## Stack
-Vite + React 19 + TypeScript + Tailwind + shadcn/ui
+The mountain animation and original redesign remain in `designs/` for local comparison. Run `npm ci` and `npm run dev` in this directory, then open `/designs/mountains.html` or `/designs/original.html`. Their React components and styles remain under `src/`. The `designs/` folder is not a Vite production build input.
 
-## Run locally
-```bash
-npm install
-npm run dev
-```
-
-## Build
-```bash
-npm run build
-```
-
-## Design notes
-- **Type**: Fraunces (display serif), Inter (body), JetBrains Mono (metadata)
-- **Palette**: tokens defined in `src/index.css` under `:root`. Change hex values there once; Tailwind picks them up via the `hsl(var(--x))` pattern.
-- **Sections**: Hero, About, Experience, Projects, Skills (as "Toolkit"), Education, Contact
-- **No more**: neural-net bg, typing animation, gradient glow, fake skill-bar percentages
-
-## Content to update
-- `src/components/Experience.tsx` — `experiences` array
-- `src/components/Projects.tsx` — `projects` array
-- `src/components/Skills.tsx` — `categories` array
-- `src/components/Education.tsx` — `courses` array
-- `src/components/Hero.tsx` — headline name + intro
-- `src/components/About.tsx` — about copy + principles
-- `public/linkedin-profile.jpg` — swap with a new photo if needed
+To check the library locally, run `npm run build` and inspect `dist/`, or run `npm run dev` and open `/`. Vercel configuration in this folder and at the repository root supports either project root setting while always publishing only `website-update/dist`.

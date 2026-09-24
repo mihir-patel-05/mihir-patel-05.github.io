@@ -14,6 +14,11 @@ export default defineConfig(({ mode }) => ({
     port: Number(process.env.PORT) || 8080,
     allowedHosts: true,
   },
+  build: {
+    rollupOptions: {
+      input: path.resolve(__dirname, "index.html"),
+    },
+  },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
