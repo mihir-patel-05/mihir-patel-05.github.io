@@ -95,6 +95,16 @@
 .library-job-feature h3 { font-size: clamp(1.8rem, 2.8vw, 2.6rem); }
 .library-job-feature ul { margin: 22px 0 0; padding-left: 20px; list-style: disc; font-size: .9rem; line-height: 1.65; }
 .library-job-feature li + li { margin-top: 13px; }
+.library-course-feature { padding: 18px 0; }
+.library-course-feature h3 { margin-bottom: 0; font-size: clamp(1.8rem, 2.8vw, 2.6rem); }
+.library-course-feature ul { margin: 20px 0 0; padding: 0; list-style: none; }
+.library-course-feature li { display: grid; grid-template-columns: 5.6em 1fr auto; align-items: baseline; gap: 10px; padding: 6px 0; border-top: 1px solid #c4ae8e; font-size: .85rem; line-height: 1.4; }
+.library-course-feature li > span { color: #8b5c3b; font: .66rem/1.4 'JetBrains Mono', monospace; letter-spacing: .04em; white-space: nowrap; }
+.library-course-feature li > small { padding: 2px 6px; border: 1px solid #b9a689; color: #80513a; font: .55rem/1.4 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.library-transcript-stats { display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 30px 0 0; }
+.library-transcript-stats dt { color: #8b5c3b; font: .6rem/1.4 'JetBrains Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+.library-transcript-stats dd { margin: 6px 0 0; color: #32241c; font: 400 2.1rem/1 'Fraunces', Georgia, serif; }
+.library-transcript-stats dd small { font-size: .95rem; color: #7d654c; }
 .library-featured-entry p { max-width: 380px; margin: 27px 0; font-size: .98rem; line-height: 1.8; }
 .library-featured-entry > small { padding-top: 19px; border-top: 1px solid #c4ae8e; }
 .library-project-feature > a { display: inline-flex; align-items: center; gap: 8px; margin-top: 27px; padding-bottom: 5px; border-bottom: 1px solid #8e644a; color: #6a3e2c; font-size: .9rem; text-decoration: none; }

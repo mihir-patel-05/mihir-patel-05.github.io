@@ -4,19 +4,20 @@ import { ArrowUpRight } from "lucide-react";
 
 export const ESSAYS_URL = "https://essay-site-one.vercel.app/";
 
-export type LibraryBook = "about" | "projects" | "experience" | "contact";
+export type LibraryBook = "about" | "projects" | "experience" | "coursework" | "contact";
 
 // Where the books on each shelf row stand, bottom to top. A featured volume's centre sits .73 above
 // its row so its brass nameplate rests on the shelf lip.
 const shelfRows = [.7, 2.65, 4.6, 6.55];
 
-// The volumes zigzag between the second and third rows. Third-row books stand clear of the
-// sconces, and every volume keeps clear of the bay dividers so the covers can swing open.
+// The volumes zigzag between the second and third rows, one per bay. Third-row books stand clear
+// of the sconces, and every volume keeps clear of the bay dividers so the covers can swing open.
 const featured = ([
   { id: "about", title: "ABOUT", x: -5.5, row: 2, color: 0x355047 },
   { id: "projects", title: "PROJECTS", x: -2.2, row: 1, color: 0x6d3230 },
   { id: "experience", title: "EXPERIENCE", x: 1.7, row: 2, color: 0x303f50 },
-  { id: "contact", title: "CONTACT", x: 5, row: 1, color: 0x694c2e },
+  { id: "coursework", title: "COURSEWORK", x: 4.3, row: 1, color: 0x4b2f45 },
+  { id: "contact", title: "CONTACT", x: 6.75, row: 2, color: 0x694c2e },
 ] satisfies { id: LibraryBook; title: string; x: number; row: number; color: number }[]).map(book => ({ ...book, y: shelfRows[book.row] + .73 }));
 
 const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
