@@ -140,7 +140,7 @@
   .library-chapter-note { bottom: 78px; left: 18px; width: min(310px, calc(100% - 36px)); }
   .library-entry-cue { bottom: 77px; left: 18px; width: min(280px, calc(100% - 36px)); }
   .library-volume-nav { top: auto; bottom: 13px; left: 13px; right: 13px; width: auto; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr); gap: 4px; transform: none; }
-  .library-volume-nav button { display: block; padding: 10px 5px; text-align: center; font-size: .72rem; }
+  .library-volume-nav button { display: block; padding: 10px 2px; text-align: center; font-size: clamp(.54rem, 2.7vw, .68rem); white-space: nowrap; }
   .library-volume-nav button > span { display: block; margin-bottom: 3px; }
 }
 @media (max-width: 600px) {
