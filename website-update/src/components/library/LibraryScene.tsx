@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { ArrowUpRight } from "lucide-react";
+import { currentRead } from "./reading";
 
 export const ESSAYS_URL = "https://essay-site-one.vercel.app/";
 
@@ -97,6 +98,24 @@ function paperTexture() {
   return texture;
 }
 
+function openPagesTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 340;
+  const context = canvas.getContext("2d")!;
+  context.fillStyle = "#efe3c8";
+  context.fillRect(0, 0, 256, 340);
+  context.fillStyle = "#6f6152";
+  for (let line = 0; line < 17; line++) {
+    const end = line % 6 === 5 ? 120 + (line * 29) % 60 : 222 - (line * 13) % 18;
+    context.fillRect(28, 34 + line * 17, end - 28, 5);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  return texture;
+}
+
 export default function LibraryScene({ progressRef, openRef, onSelect }: {
   progressRef: RefObject<number>;
   openRef: RefObject<LibraryBook | null>;
@@ -104,6 +123,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const tagRef = useRef<HTMLAnchorElement>(null);
+  const readingTagRef = useRef<HTMLDivElement>(null);
   const selectRef = useRef(onSelect);
   const [failed, setFailed] = useState(false);
   selectRef.current = onSelect;
@@ -111,6 +131,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
   useEffect(() => {
     const host = hostRef.current;
     const tag = tagRef.current;
+    const readingTag = readingTagRef.current;
     if (!host || !tag) return;
     let renderer: THREE.WebGLRenderer;
     try {
@@ -306,6 +327,28 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       arm.scale.set(.3, .29, .86);
       cylinder(.075, .075, .15, materials.brass, x * 1.06, .71, .78, chair);
     }
+    // The current read, left open face-up on the seat as if its reader just stepped away.
+    const openBook = new THREE.Group();
+    let openPagesMaterial: THREE.MeshStandardMaterial | undefined;
+    if (currentRead) {
+      openBook.position.set(.12, 1.1, .25);
+      openBook.rotation.set(.1, -.28, 0);
+      chair.add(openBook);
+      const binding = new THREE.MeshStandardMaterial({ color: currentRead.color, roughness: .62, metalness: .05 });
+      const pagesTexture = openPagesTexture();
+      textures.push(pagesTexture);
+      openPagesMaterial = new THREE.MeshStandardMaterial({ map: pagesTexture, roughness: .9, emissive: 0x000000 });
+      [binding, openPagesMaterial].forEach(material => managedMaterials.add(material));
+      const bookParts = [box(.9, .02, .6, binding, 0, 0, 0, openBook), box(.05, .03, .6, binding, 0, .012, 0, openBook)];
+      for (const side of [-1, 1]) {
+        const page = box(.42, .04, .56, openPagesMaterial, side * .215, .03, 0, openBook);
+        page.rotation.z = side * .07;
+        bookParts.push(page);
+      }
+      bookParts.push(box(.022, .004, .2, binding, .06, .052, .36, openBook));
+      bookParts.forEach(part => { part.userData.reading = true; clickable.push(part); });
+    }
+    const openBookRest = openBook.position.y;
     const lumbar = add(new THREE.SphereGeometry(1, 18, 12), materials.leather, chair, .05, 1.18, -.31);
     lumbar.scale.set(.48, .36, .14);
     const blanket = box(.47, .04, .92, materials.cream, -1.08, 1.3, .18, chair);
@@ -351,21 +394,28 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     scene.add(warm);
     addLamp([warm], chandelier, chandelierGlow, 0x2e231b);
 
+    chair.updateMatrixWorld(true);
+    const readingAnchor = openBook.localToWorld(new THREE.Vector3(0, .06, 0));
+
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     const hit = (event: MouseEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
       raycaster.setFromCamera(pointer, camera);
-      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string; lamp?: number } | undefined;
+      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string; lamp?: number; reading?: boolean } | undefined;
     };
     let essayHovered = false;
+    let readingHovered = false;
+    // Hovering shows the current read; a click or tap pins it open until the next click elsewhere.
+    let readingPinned = false;
     const onMove = (event: PointerEvent) => {
       const target = hit(event);
       essayHovered = !!target?.href;
+      readingHovered = !!target?.reading;
       renderer.domElement.style.cursor = target ? "pointer" : "default";
     };
-    const onLeave = () => { essayHovered = false; };
+    const onLeave = () => { essayHovered = false; readingHovered = false; };
     let tagHovered = false;
     const onTagEnter = () => { tagHovered = true; };
     const onTagLeave = () => { tagHovered = false; };
@@ -378,6 +428,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const onClick = (event: MouseEvent) => {
       const target = hit(event);
       if (target?.href) open(target.href, "_blank", "noopener,noreferrer");
+      readingPinned = !!target?.reading && !readingPinned;
       if (target?.lamp === undefined) return;
       const lamp = lamps[target.lamp];
       lamp.on = !lamp.on;
@@ -412,6 +463,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const projectedAnchor = new THREE.Vector3();
     let tagShown = false;
+    let readingShown = false;
     let lastFrame = 0;
     const animate = (time: number) => {
       // Easing rates are tuned per 60fps frame; scale them by the real frame time so the camera glides
@@ -446,6 +498,9 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, ease(.12));
       topSheetMaterial.emissive.setHex(essayActive ? 0x2a1a08 : 0x000000);
       tag.classList.toggle("is-hovered", essayActive);
+      const readingActive = (readingHovered || readingPinned) && overview > .05;
+      openBook.position.y = THREE.MathUtils.lerp(openBook.position.y, readingActive ? openBookRest + .03 : openBookRest, ease(.12));
+      openPagesMaterial?.emissive.setHex(readingActive ? 0x2a1a08 : 0x000000);
       const now = performance.now();
       for (const lamp of lamps) {
         lamp.level = reducedMotion.matches ? +lamp.on : THREE.MathUtils.lerp(lamp.level, +lamp.on, ease(.16));
@@ -456,6 +511,21 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       }
       if (!width || !height) return;
       renderer.render(scene, camera);
+      // The reading callout sits up and to the left of the chair, clear of the volume nav and the essay tag.
+      if (readingTag) {
+        projectedAnchor.copy(readingAnchor).project(camera);
+        const show = readingActive && projectedAnchor.z < 1;
+        if (show !== readingShown) { readingShown = show; readingTag.style.visibility = show ? "visible" : "hidden"; }
+        if (show) {
+          const halfWidth = readingTag.offsetWidth / 2;
+          const anchorX = (projectedAnchor.x + 1) / 2 * width;
+          const x = THREE.MathUtils.clamp(anchorX - halfWidth + 36, halfWidth + 16, width - halfWidth - 16);
+          readingTag.style.opacity = String(overview);
+          readingTag.style.setProperty("--tag-x", `${x.toFixed(1)}px`);
+          readingTag.style.setProperty("--tag-y", `${((1 - projectedAnchor.y) / 2 * height).toFixed(1)}px`);
+          readingTag.style.setProperty("--tag-line", `${THREE.MathUtils.clamp(anchorX - x, 12 - halfWidth, halfWidth - 12).toFixed(1)}px`);
+        }
+      }
       // Pin the HTML callout above the manuscript while the room is in its overview shot.
       projectedAnchor.copy(essayAnchor).project(camera);
       const show = overview > .05 && projectedAnchor.z < 1;
@@ -499,5 +569,9 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
   return <>
     <div ref={hostRef} className="library-scene" data-failed={failed || undefined} aria-label="Interactive 3D library shelves" />
     <a ref={tagRef} className="library-essay-tag" href={ESSAYS_URL} target="_blank" rel="noopener noreferrer"><span>The writing desk</span><strong>Click the pages to read my essays &amp; thoughts <ArrowUpRight size={15} /></strong></a>
+    {currentRead && <>
+      <div ref={readingTagRef} className="library-essay-tag library-reading-tag" aria-hidden="true"><span>Currently reading</span><strong>{currentRead.title}</strong><small>{currentRead.author}</small></div>
+      <p className="library-visually-hidden">Currently reading: {currentRead.title} by {currentRead.author}.</p>
+    </>}
   </>;
 }

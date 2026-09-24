@@ -33,6 +33,9 @@
 .library-essay-tag strong svg { flex-shrink: 0; }
 .library-essay-tag:hover, .library-essay-tag:focus-visible, .library-essay-tag.is-hovered { border-color: #d7ae78; background: #d7ae78; color: #241710; }
 .library-essay-tag:hover span, .library-essay-tag:focus-visible span, .library-essay-tag.is-hovered span { color: #513a27; }
+.library-reading-tag { pointer-events: none; }
+.library-reading-tag strong { font-family: 'Fraunces', Georgia, serif; font-size: 1rem; font-style: italic; }
+.library-reading-tag small { display: block; margin-top: 1px; color: #bfae94; font: .74rem/1.4 'Inter', sans-serif; }
 .library-scene[data-failed] + .library-essay-tag { position: fixed; top: auto; bottom: 28px; left: 50%; visibility: visible; transform: translateX(-50%); }
 .library-scene[data-failed] + .library-essay-tag::after { display: none; }
 .library-reading-ui { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
