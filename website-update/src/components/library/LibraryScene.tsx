@@ -6,16 +6,20 @@ export const ESSAYS_URL = "https://essay-site-one.vercel.app/";
 
 export type LibraryBook = "about" | "projects" | "experience" | "contact";
 
-const featured: { id: LibraryBook; title: string; x: number; color: number }[] = [
-  { id: "about", title: "ABOUT", x: -5.35, color: 0x355047 },
-  { id: "projects", title: "PROJECTS", x: -1.78, color: 0x6d3230 },
-  { id: "experience", title: "EXPERIENCE", x: 1.78, color: 0x303f50 },
-  { id: "contact", title: "CONTACT", x: 5.35, color: 0x694c2e },
-];
+// Where the books on each shelf row stand, bottom to top. A featured volume's centre sits .73 above
+// its row so its brass nameplate rests on the shelf lip.
+const shelfRows = [.7, 2.65, 4.6, 6.55];
+
+const featured = ([
+  { id: "about", title: "ABOUT", x: -5.35, row: 1, color: 0x355047 },
+  { id: "projects", title: "PROJECTS", x: -1.78, row: 1, color: 0x6d3230 },
+  { id: "experience", title: "EXPERIENCE", x: 1.78, row: 1, color: 0x303f50 },
+  { id: "contact", title: "CONTACT", x: 5.35, row: 1, color: 0x694c2e },
+] satisfies { id: LibraryBook; title: string; x: number; row: number; color: number }[]).map(book => ({ ...book, y: shelfRows[book.row] + .73 }));
 
 const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
-  ...featured.map(book => ({ target: [book.x, 3.38, -3.85] as const, position: [book.x, 3.45, 0.65] as const })),
+  ...featured.map(book => ({ target: [book.x, book.y, -3.85] as const, position: [book.x, book.y + .07, 0.65] as const })),
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
 ];
 
@@ -176,11 +180,11 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     for (let row = 0; row < 4; row++) {
       for (let i = 0; i < 100; i++) {
         const x = -8.52 + i * .172;
-        if (row === 1 && featured.some(book => Math.abs(book.x - x) < .49)) continue;
+        if (featured.some(book => book.row === row && Math.abs(book.x - x) < .49)) continue;
         if ((i + row * 7) % 19 === 0) continue;
         const height = 1.28 + ((i * 7 + row * 11) % 9) * .052;
         const width = .13 + ((i * 3 + row) % 4) * .014;
-        const y = [.7, 2.65, 4.6, 6.55][row] + height / 2;
+        const y = shelfRows[row] + height / 2;
         const book = box(width, height, .48, genericMaterials[(i * 5 + row * 3) % genericMaterials.length], x, y, -4.12);
         if (i % 17 === 0) book.rotation.z = .07;
         if (i % 9 === 0) box(.012, height * .78, .006, materials.brass, x, y, -3.874);
@@ -191,7 +195,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const bookGroups = new Map<LibraryBook, { group: THREE.Group; cover: THREE.Group; material: THREE.MeshStandardMaterial }>();
     for (const book of featured) {
       const group = new THREE.Group();
-      group.position.set(book.x, 3.38, -3.83);
+      group.position.set(book.x, book.y, -3.83);
       scene.add(group);
       const leather = new THREE.MeshStandardMaterial({ color: book.color, roughness: .7, metalness: .08, emissive: 0x000000 });
       managedMaterials.add(leather);
