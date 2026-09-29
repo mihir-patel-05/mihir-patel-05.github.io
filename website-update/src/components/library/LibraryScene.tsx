@@ -1,23 +1,42 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { ArrowUpRight } from "lucide-react";
+import { currentRead, favorites } from "./reading";
 
 export const ESSAYS_URL = "https://essay-site-one.vercel.app/";
 
-export type LibraryBook = "about" | "projects" | "experience" | "contact";
+export type LibraryBook = "about" | "projects" | "experience" | "coursework" | "contact";
 
-const featured: { id: LibraryBook; title: string; x: number; color: number }[] = [
-  { id: "about", title: "ABOUT", x: -5.35, color: 0x355047 },
-  { id: "projects", title: "PROJECTS", x: -1.78, color: 0x6d3230 },
-  { id: "experience", title: "EXPERIENCE", x: 1.78, color: 0x303f50 },
-  { id: "contact", title: "CONTACT", x: 5.35, color: 0x694c2e },
-];
+// Where the books on each shelf row stand, bottom to top. A featured volume's centre sits .73 above
+// its row so its brass nameplate rests on the shelf lip.
+const shelfRows = [.7, 2.65, 4.6, 6.55];
+
+// The volumes zigzag between the second and third rows, one per bay. Third-row books stand clear
+// of the sconces, and every volume keeps clear of the bay dividers so the covers can swing open.
+const featured = ([
+  { id: "about", title: "ABOUT", x: -5.5, row: 2, color: 0x355047 },
+  { id: "projects", title: "PROJECTS", x: -2.2, row: 1, color: 0x6d3230 },
+  { id: "experience", title: "EXPERIENCE", x: 1.7, row: 2, color: 0x303f50 },
+  { id: "coursework", title: "COURSEWORK", x: 4.3, row: 1, color: 0x4b2f45 },
+  { id: "contact", title: "CONTACT", x: 6.75, row: 2, color: 0x694c2e },
+] satisfies { id: LibraryBook; title: string; x: number; row: number; color: number }[]).map(book => ({ ...book, y: shelfRows[book.row] + .73 }));
+
+// Favorite reads stand side by side on the second row, centred in the bay between the Projects and
+// Coursework volumes.
+const favoritesRow = 1;
+const favoriteShelf = favorites.map((book, index) => ({
+  ...book,
+  x: .78 + (index - (favorites.length - 1) / 2) * .29,
+  height: 1.5 + ((index * 5) % 3) * .05,
+}));
 
 const views: { target: readonly [number, number, number]; position: readonly [number, number, number] }[] = [
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
-  ...featured.map(book => ({ target: [book.x, 3.38, -3.85] as const, position: [book.x, 3.45, 0.65] as const })),
+  ...featured.map(book => ({ target: [book.x, book.y, -3.85] as const, position: [book.x, book.y + .07, 0.65] as const })),
   { target: [0, 3.2, -4] as const, position: [0, 3.5, 10.5] as const },
 ];
+// Scroll progress runs from the entrance (0), through one stage per volume, to the return view.
+const lastStage = views.length - 1;
 
 function spineTexture(title: string, color: number) {
   const canvas = document.createElement("canvas");
@@ -40,6 +59,36 @@ function spineTexture(title: string, color: number) {
   context.textBaseline = "middle";
   context.font = "bold 81px Georgia";
   context.fillText(title, 0, 0);
+  context.restore();
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  return texture;
+}
+
+function titledSpineTexture(title: string, author: string, color: number) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 160;
+  canvas.height = 1024;
+  const context = canvas.getContext("2d")!;
+  context.fillStyle = `#${color.toString(16).padStart(6, "0")}`;
+  context.fillRect(0, 0, 160, 1024);
+  context.fillStyle = "#d8bb83";
+  for (const y of [60, 76, 948, 964]) context.fillRect(14, y, 132, 5);
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.save();
+  context.translate(80, 430);
+  context.rotate(-Math.PI / 2);
+  let size = 70;
+  do context.font = `bold ${size--}px Georgia`; while (context.measureText(title.toUpperCase()).width > 580);
+  context.fillText(title.toUpperCase(), 0, 0);
+  context.restore();
+  context.save();
+  context.translate(80, 870);
+  context.rotate(-Math.PI / 2);
+  context.font = "italic 32px Georgia";
+  context.fillText(author.split(" ").pop()!.toUpperCase(), 0, 0);
   context.restore();
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -88,13 +137,33 @@ function paperTexture() {
   return texture;
 }
 
-export default function LibraryScene({ progressRef, openRef, onSelect }: {
+function openPagesTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 340;
+  const context = canvas.getContext("2d")!;
+  context.fillStyle = "#efe3c8";
+  context.fillRect(0, 0, 256, 340);
+  context.fillStyle = "#6f6152";
+  for (let line = 0; line < 17; line++) {
+    const end = line % 6 === 5 ? 120 + (line * 29) % 60 : 222 - (line * 13) % 18;
+    context.fillRect(28, 34 + line * 17, end - 28, 5);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  return texture;
+}
+
+export default function LibraryScene({ progressRef, openRef, favoritesRef, onSelect }: {
   progressRef: RefObject<number>;
   openRef: RefObject<LibraryBook | null>;
+  favoritesRef: RefObject<boolean>;
   onSelect: (book: LibraryBook) => void;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const tagRef = useRef<HTMLAnchorElement>(null);
+  const readingTagRef = useRef<HTMLDivElement>(null);
   const selectRef = useRef(onSelect);
   const [failed, setFailed] = useState(false);
   selectRef.current = onSelect;
@@ -102,6 +171,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
   useEffect(() => {
     const host = hostRef.current;
     const tag = tagRef.current;
+    const readingTag = readingTagRef.current;
     if (!host || !tag) return;
     let renderer: THREE.WebGLRenderer;
     try {
@@ -136,7 +206,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     };
     const managedMaterials = new Set<THREE.Material>(Object.values(materials));
     const textures: THREE.Texture[] = [];
-    const add = (geometry: THREE.BufferGeometry, material: THREE.Material, parent: THREE.Object3D, x: number, y: number, z: number) => {
+    const add = (geometry: THREE.BufferGeometry, material: THREE.Material | THREE.Material[], parent: THREE.Object3D, x: number, y: number, z: number) => {
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(x, y, z);
       mesh.castShadow = true;
@@ -176,22 +246,51 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     for (let row = 0; row < 4; row++) {
       for (let i = 0; i < 100; i++) {
         const x = -8.52 + i * .172;
-        if (row === 1 && featured.some(book => Math.abs(book.x - x) < .49)) continue;
+        if (featured.some(book => book.row === row && Math.abs(book.x - x) < .49)) continue;
+        if (row === favoritesRow && favoriteShelf.some(book => Math.abs(book.x - x) < .24)) continue;
         if ((i + row * 7) % 19 === 0) continue;
         const height = 1.28 + ((i * 7 + row * 11) % 9) * .052;
         const width = .13 + ((i * 3 + row) % 4) * .014;
-        const y = [.7, 2.65, 4.6, 6.55][row] + height / 2;
+        const y = shelfRows[row] + height / 2;
         const book = box(width, height, .48, genericMaterials[(i * 5 + row * 3) % genericMaterials.length], x, y, -4.12);
         if (i % 17 === 0) book.rotation.z = .07;
         if (i % 9 === 0) box(.012, height * .78, .006, materials.brass, x, y, -3.874);
       }
     }
 
+    const favoriteSpines: { mesh: THREE.Mesh; cloth: THREE.MeshStandardMaterial; spine: THREE.MeshStandardMaterial }[] = [];
+    for (const book of favoriteShelf) {
+      const texture = titledSpineTexture(book.title, book.author, book.color);
+      textures.push(texture);
+      const cloth = new THREE.MeshStandardMaterial({ color: book.color, roughness: .85 });
+      const spine = new THREE.MeshStandardMaterial({ map: texture, roughness: .8 });
+      managedMaterials.add(cloth);
+      managedMaterials.add(spine);
+      const mesh = add(new THREE.BoxGeometry(.27, book.height, .48), [cloth, cloth, cloth, cloth, spine, cloth], scene, book.x, shelfRows[favoritesRow] + book.height / 2, -4.12);
+      favoriteSpines.push({ mesh, cloth, spine });
+    }
+    // A warm pool of light that fades in over the favorites while they're highlighted.
+    const favoritesLight = new THREE.PointLight(0xffc37a, 0, 2.6, 2);
+    favoritesLight.position.set(favoriteShelf.reduce((sum, book) => sum + book.x, 0) / Math.max(1, favoriteShelf.length), shelfRows[favoritesRow] + 1.2, -3.3);
+    scene.add(favoritesLight);
+
     const clickable: THREE.Mesh[] = [];
+    // Every lamp in the room can be clicked off and back on; there's deliberately no hint that it's possible.
+    type Shade = THREE.MeshBasicMaterial | THREE.MeshStandardMaterial;
+    const lamps: { on: boolean; level: number; flickerUntil: number; lights: [THREE.PointLight, number][]; shade: Shade; lit: THREE.Color; unlit: THREE.Color }[] = [];
+    const addLamp = (lights: THREE.PointLight[], parts: THREE.Mesh[], shade: Shade, unlit: number) => {
+      const index = lamps.push({ on: true, level: 1, flickerUntil: 0, lights: lights.map(light => [light, light.intensity]), shade, lit: shade.color.clone(), unlit: new THREE.Color(unlit) }) - 1;
+      parts.forEach(part => { part.userData.lamp = index; clickable.push(part); });
+    };
+    const lampShade = <T extends Shade>(material: T) => {
+      const shade = material.clone() as T;
+      managedMaterials.add(shade);
+      return shade;
+    };
     const bookGroups = new Map<LibraryBook, { group: THREE.Group; cover: THREE.Group; material: THREE.MeshStandardMaterial }>();
     for (const book of featured) {
       const group = new THREE.Group();
-      group.position.set(book.x, 3.38, -3.83);
+      group.position.set(book.x, book.y, -3.83);
       scene.add(group);
       const leather = new THREE.MeshStandardMaterial({ color: book.color, roughness: .7, metalness: .08, emissive: 0x000000 });
       managedMaterials.add(leather);
@@ -213,11 +312,13 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
 
     // Warm sconces, a library table, a wingback reading chair, and a simple chandelier.
     for (const x of [-7.5, -3.5, .5, 4.5, 7.8]) {
-      box(.13, .7, .18, materials.brass, x, 5.45, -3.65);
-      cylinder(.28, .38, .42, materials.glow, x, 5.75, -3.5);
+      const glow = lampShade(materials.glow);
+      const bracket = box(.13, .7, .18, materials.brass, x, 5.45, -3.65);
+      const shade = cylinder(.28, .38, .42, glow, x, 5.75, -3.5);
       const lamp = new THREE.PointLight(0xffbe78, 2.1, 5.5, 2);
       lamp.position.set(x, 5.75, -3.25);
       scene.add(lamp);
+      addLamp([lamp], [bracket, shade], glow, 0x2e231b);
     }
     box(6, .2, 2.55, materials.woodLight, 0, .88, 4.6);
     for (const x of [-2.65, 2.65]) for (const z of [3.65, 5.55]) box(.18, .9, .18, materials.wood, x, .36, z);
@@ -283,27 +384,56 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       arm.scale.set(.3, .29, .86);
       cylinder(.075, .075, .15, materials.brass, x * 1.06, .71, .78, chair);
     }
+    // The current read, left open face-up on the seat as if its reader just stepped away.
+    const openBook = new THREE.Group();
+    let openPagesMaterial: THREE.MeshStandardMaterial | undefined;
+    if (currentRead) {
+      openBook.position.set(.12, 1.1, .25);
+      openBook.rotation.set(.1, -.28, 0);
+      chair.add(openBook);
+      const binding = new THREE.MeshStandardMaterial({ color: currentRead.color, roughness: .62, metalness: .05 });
+      const pagesTexture = openPagesTexture();
+      textures.push(pagesTexture);
+      openPagesMaterial = new THREE.MeshStandardMaterial({ map: pagesTexture, roughness: .9, emissive: 0x000000 });
+      [binding, openPagesMaterial].forEach(material => managedMaterials.add(material));
+      const bookParts = [box(.9, .02, .6, binding, 0, 0, 0, openBook), box(.05, .03, .6, binding, 0, .012, 0, openBook)];
+      for (const side of [-1, 1]) {
+        const page = box(.42, .04, .56, openPagesMaterial, side * .215, .03, 0, openBook);
+        page.rotation.z = side * .07;
+        bookParts.push(page);
+      }
+      bookParts.push(box(.022, .004, .2, binding, .06, .052, .36, openBook));
+      bookParts.forEach(part => { part.userData.reading = true; clickable.push(part); });
+    }
+    const openBookRest = openBook.position.y;
     const lumbar = add(new THREE.SphereGeometry(1, 18, 12), materials.leather, chair, .05, 1.18, -.31);
     lumbar.scale.set(.48, .36, .14);
     const blanket = box(.47, .04, .92, materials.cream, -1.08, 1.3, .18, chair);
     blanket.rotation.z = .1;
     cylinder(.43, .49, .08, materials.woodLight, 6.75, .68, .2);
     cylinder(.12, .12, .68, materials.wood, 6.75, .3, .2);
-    cylinder(.32, .36, .12, materials.brass, 3.25, .06, -.55);
-    cylinder(.035, .035, 2.0, materials.brass, 3.25, 1.08, -.55);
-    cylinder(.22, .43, .6, materials.cream, 3.25, 2.35, -.55);
+    const floorShade = lampShade(materials.cream);
+    const floorLamp = [
+      cylinder(.32, .36, .12, materials.brass, 3.25, .06, -.55),
+      cylinder(.035, .035, 2.0, materials.brass, 3.25, 1.08, -.55),
+      cylinder(.22, .43, .6, floorShade, 3.25, 2.35, -.55),
+    ];
     const readingLight = new THREE.PointLight(0xffca82, 7, 5, 2);
     readingLight.position.set(3.25, 2.1, -.25);
     scene.add(readingLight);
-    cylinder(.55, .72, .3, materials.brass, 0, 7.65, 2.5);
-    cylinder(.09, .09, 1.2, materials.brass, 0, 8.35, 2.5);
+    addLamp([readingLight], floorLamp, floorShade, 0x5a4a38);
+    const chandelierGlow = lampShade(materials.glow);
+    const chandelier = [
+      cylinder(.55, .72, .3, materials.brass, 0, 7.65, 2.5),
+      cylinder(.09, .09, 1.2, materials.brass, 0, 8.35, 2.5),
+    ];
     for (let i = 0; i < 6; i++) {
       const angle = i * Math.PI / 3;
       const x = Math.cos(angle) * 1.05;
       const z = 2.5 + Math.sin(angle) * 1.05;
       const arm = cylinder(.025, .025, .65, materials.brass, x * .6, 7.38, 2.5 + Math.sin(angle) * .6);
       arm.rotation.z = -Math.cos(angle) * .9;
-      cylinder(.11, .15, .25, materials.glow, x, 7.25, z);
+      chandelier.push(arm, cylinder(.11, .15, .25, chandelierGlow, x, 7.25, z));
     }
 
     scene.add(new THREE.AmbientLight(0xffd9af, 1.25));
@@ -319,6 +449,10 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const warm = new THREE.PointLight(0xffbd75, 12, 12, 2);
     warm.position.set(0, 7.1, 2.5);
     scene.add(warm);
+    addLamp([warm], chandelier, chandelierGlow, 0x2e231b);
+
+    chair.updateMatrixWorld(true);
+    const readingAnchor = openBook.localToWorld(new THREE.Vector3(0, .06, 0));
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -326,15 +460,19 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       const rect = renderer.domElement.getBoundingClientRect();
       pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
       raycaster.setFromCamera(pointer, camera);
-      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string } | undefined;
+      return raycaster.intersectObjects(clickable, false)[0]?.object.userData as { book?: LibraryBook; href?: string; lamp?: number; reading?: boolean } | undefined;
     };
     let essayHovered = false;
+    let readingHovered = false;
+    // Hovering shows the current read; a click or tap pins it open until the next click elsewhere.
+    let readingPinned = false;
     const onMove = (event: PointerEvent) => {
       const target = hit(event);
       essayHovered = !!target?.href;
+      readingHovered = !!target?.reading;
       renderer.domElement.style.cursor = target ? "pointer" : "default";
     };
-    const onLeave = () => { essayHovered = false; };
+    const onLeave = () => { essayHovered = false; readingHovered = false; };
     let tagHovered = false;
     const onTagEnter = () => { tagHovered = true; };
     const onTagLeave = () => { tagHovered = false; };
@@ -344,7 +482,15 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     tag.addEventListener("blur", onTagLeave);
     const onDown = (event: PointerEvent) => { const book = hit(event)?.book; if (book) selectRef.current(book); };
     // Opened on click rather than pointerdown so touch taps count as a user gesture for the new tab.
-    const onClick = (event: MouseEvent) => { const href = hit(event)?.href; if (href) open(href, "_blank", "noopener,noreferrer"); };
+    const onClick = (event: MouseEvent) => {
+      const target = hit(event);
+      if (target?.href) open(target.href, "_blank", "noopener,noreferrer");
+      readingPinned = !!target?.reading && !readingPinned;
+      if (target?.lamp === undefined) return;
+      const lamp = lamps[target.lamp];
+      lamp.on = !lamp.on;
+      if (lamp.on) lamp.flickerUntil = performance.now() + 320;
+    };
     renderer.domElement.addEventListener("pointermove", onMove);
     renderer.domElement.addEventListener("pointerleave", onLeave);
     renderer.domElement.addEventListener("pointerdown", onDown);
@@ -374,36 +520,79 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     const projectedAnchor = new THREE.Vector3();
     let tagShown = false;
-    const animate = () => {
-      const progress = Math.max(0, Math.min(5, progressRef.current));
-      const index = Math.min(4, Math.floor(progress));
+    let readingShown = false;
+    let lastFrame = 0;
+    let favoritesLevel = 0;
+    const favoritesGlow = new THREE.Color(0x3a2008);
+    const animate = (time: number) => {
+      // Easing rates are tuned per 60fps frame; scale them by the real frame time so the camera glides
+      // between shelves at the same pace on any refresh rate. The first frame after a pause holds still.
+      const frames = lastFrame ? Math.min(time - lastFrame, 250) / (1000 / 60) : 0;
+      lastFrame = time;
+      const ease = (rate: number) => 1 - Math.pow(1 - rate, frames);
+      const progress = Math.max(0, Math.min(lastStage, progressRef.current));
+      const index = Math.min(lastStage - 1, Math.floor(progress));
       const t = reducedMotion.matches ? Math.round(progress) - index : THREE.MathUtils.smoothstep(progress - index, 0, 1);
       desiredTarget.fromArray(views[index].target).lerp(new THREE.Vector3(...views[index + 1].target), t);
       desiredPosition.fromArray(views[index].position).lerp(new THREE.Vector3(...views[index + 1].position), t);
-      const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - 4, 0, 1));
+      const overview = Math.max(THREE.MathUtils.clamp(1 - progress * 2, 0, 1), THREE.MathUtils.clamp(progress - (lastStage - 1), 0, 1));
       if (width < 650) {
         const readingCorner = overview * 2.8;
         desiredPosition.x += readingCorner;
         desiredTarget.x += readingCorner;
         desiredPosition.z += THREE.MathUtils.lerp(.55, 2.5, overview);
       }
-      camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : .065);
-      currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : .065);
+      // The "Books I've read" toggle warms the favorites' spines and eases them forward off the shelf.
+      favoritesLevel = reducedMotion.matches ? +favoritesRef.current : THREE.MathUtils.lerp(favoritesLevel, +favoritesRef.current, ease(.08));
+      favoriteSpines.forEach(({ mesh, cloth, spine }, index) => {
+        mesh.position.z = -4.12 + favoritesLevel * (.2 + (index % 2) * .04);
+        cloth.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel * .5);
+        spine.emissive.copy(favoritesGlow).multiplyScalar(favoritesLevel);
+      });
+      favoritesLight.intensity = favoritesLevel * 5;
+      camera.position.lerp(desiredPosition, reducedMotion.matches ? 1 : ease(.065));
+      currentTarget.lerp(desiredTarget, reducedMotion.matches ? 1 : ease(.065));
       camera.lookAt(currentTarget);
       for (const book of featured) {
         const entry = bookGroups.get(book.id)!;
         const selected = openRef.current === book.id;
         const focused = Math.round(progress) === featured.indexOf(book) + 1;
-        entry.group.position.z = THREE.MathUtils.lerp(entry.group.position.z, selected ? -3.25 : -3.83, .09);
-        entry.cover.rotation.y = THREE.MathUtils.lerp(entry.cover.rotation.y, selected ? -2.15 : 0, .09);
+        entry.group.position.z = THREE.MathUtils.lerp(entry.group.position.z, selected ? -3.25 : -3.83, ease(.09));
+        entry.cover.rotation.y = THREE.MathUtils.lerp(entry.cover.rotation.y, selected ? -2.15 : 0, ease(.09));
         entry.material.emissive.setHex(focused ? 0x34200c : 0x000000);
       }
       const essayActive = (essayHovered || tagHovered) && overview > .05;
-      topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, .12);
+      topSheet.position.y = THREE.MathUtils.lerp(topSheet.position.y, essayActive ? topSheetRest + .035 : topSheetRest, ease(.12));
       topSheetMaterial.emissive.setHex(essayActive ? 0x2a1a08 : 0x000000);
       tag.classList.toggle("is-hovered", essayActive);
+      const readingActive = (readingHovered || readingPinned) && overview > .05;
+      openBook.position.y = THREE.MathUtils.lerp(openBook.position.y, readingActive ? openBookRest + .03 : openBookRest, ease(.12));
+      openPagesMaterial?.emissive.setHex(readingActive ? 0x2a1a08 : 0x000000);
+      const now = performance.now();
+      for (const lamp of lamps) {
+        lamp.level = reducedMotion.matches ? +lamp.on : THREE.MathUtils.lerp(lamp.level, +lamp.on, ease(.16));
+        // A switched-on bulb sputters for a moment before it settles.
+        const level = !reducedMotion.matches && now < lamp.flickerUntil && Math.random() < .4 ? lamp.level * .2 : lamp.level;
+        for (const [light, intensity] of lamp.lights) light.intensity = intensity * level;
+        lamp.shade.color.lerpColors(lamp.unlit, lamp.lit, level);
+      }
       if (!width || !height) return;
       renderer.render(scene, camera);
+      // The reading callout sits up and to the left of the chair, clear of the volume nav and the essay tag.
+      if (readingTag) {
+        projectedAnchor.copy(readingAnchor).project(camera);
+        const show = readingActive && projectedAnchor.z < 1;
+        if (show !== readingShown) { readingShown = show; readingTag.style.visibility = show ? "visible" : "hidden"; }
+        if (show) {
+          const halfWidth = readingTag.offsetWidth / 2;
+          const anchorX = (projectedAnchor.x + 1) / 2 * width;
+          const x = THREE.MathUtils.clamp(anchorX - halfWidth + 36, halfWidth + 16, width - halfWidth - 16);
+          readingTag.style.opacity = String(overview);
+          readingTag.style.setProperty("--tag-x", `${x.toFixed(1)}px`);
+          readingTag.style.setProperty("--tag-y", `${((1 - projectedAnchor.y) / 2 * height).toFixed(1)}px`);
+          readingTag.style.setProperty("--tag-line", `${THREE.MathUtils.clamp(anchorX - x, 12 - halfWidth, halfWidth - 12).toFixed(1)}px`);
+        }
+      }
       // Pin the HTML callout above the manuscript while the room is in its overview shot.
       projectedAnchor.copy(essayAnchor).project(camera);
       const show = overview > .05 && projectedAnchor.z < 1;
@@ -418,7 +607,7 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
       tag.style.setProperty("--tag-line", `${THREE.MathUtils.clamp(anchorX - x, 12 - tagHalfWidth, tagHalfWidth - 12).toFixed(1)}px`);
     };
     let inView = true;
-    const syncLoop = () => renderer.setAnimationLoop(inView && !document.hidden ? animate : null);
+    const syncLoop = () => { lastFrame = 0; renderer.setAnimationLoop(inView && !document.hidden ? animate : null); };
     const visibilityObserver = new IntersectionObserver(entries => { inView = entries[0].isIntersecting; syncLoop(); }, { threshold: .01 });
     visibilityObserver.observe(host);
     document.addEventListener("visibilitychange", syncLoop);
@@ -447,5 +636,9 @@ export default function LibraryScene({ progressRef, openRef, onSelect }: {
   return <>
     <div ref={hostRef} className="library-scene" data-failed={failed || undefined} aria-label="Interactive 3D library shelves" />
     <a ref={tagRef} className="library-essay-tag" href={ESSAYS_URL} target="_blank" rel="noopener noreferrer"><span>The writing desk</span><strong>Click the pages to read my essays &amp; thoughts <ArrowUpRight size={15} /></strong></a>
+    {currentRead && <>
+      <div ref={readingTagRef} className="library-essay-tag library-reading-tag" aria-hidden="true"><span>Currently reading</span><strong>{currentRead.title}</strong><small>{currentRead.author}</small></div>
+      <p className="library-visually-hidden">Currently reading: {currentRead.title} by {currentRead.author}.</p>
+    </>}
   </>;
 }
