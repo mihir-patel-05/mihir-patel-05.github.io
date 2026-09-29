@@ -1,4 +1,4 @@
-import { ArrowUpRight, Braces, GitBranch, FileText, Database } from "lucide-react";
+import { ArrowUpRight, Activity, BookOpen, GitBranch, FileText, Database } from "lucide-react";
 
 const projects = [
   {
@@ -21,20 +21,28 @@ const projects = [
 
 const studies = [
   {
+    title: "PageFlow",
+    category: "iOS app development",
+    description: "A gamified reading tracker with session timers, guided reflections, and XP streaks, built offline-first with cloud sync.",
+    tools: "Swift · SwiftUI · Firebase",
+    href: "https://github.com/mihir-patel-05/Booktracking",
+    icon: BookOpen,
+  },
+  {
+    title: "OzempicAI",
+    category: "Full-stack engineering",
+    description: "An installable health and fitness PWA for logging meals, workouts, weight, and vitals, with built-in analytics.",
+    tools: "React · TypeScript · Supabase",
+    href: "https://github.com/mihir-patel-05/OzempicAI",
+    icon: Activity,
+  },
+  {
     title: "War on Drugs: a policy analysis",
     category: "Research & statistical analysis",
     description: "Examining the impact of drug policy through data, statistical analysis, and visualization.",
     tools: "Python · Statsmodels · Matplotlib",
     href: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy",
     icon: FileText,
-  },
-  {
-    title: "From scanned pages to structured text",
-    category: "Applied ML & engineering",
-    description: "A computer-vision pipeline that reconstructs technical documents as editable LaTeX and Markdown.",
-    tools: "Python · OpenCV · Hugging Face",
-    href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir",
-    icon: Braces,
   },
 ];
 

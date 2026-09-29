@@ -14,22 +14,28 @@ export const alpineProjects = [
     href: "https://github.com/mihir-patel-05/2026Midterms",
   },
   {
-    name: "March Madness predictions", discipline: "Data science", number: "02",
+    name: "PageFlow", discipline: "iOS app development", number: "02",
+    description: "A gamified reading tracker with session timers, guided reflections, a quotes vault, and XP streaks, built offline-first with cloud sync.",
+    tools: "Swift / SwiftUI / SwiftData / Firebase",
+    href: "https://github.com/mihir-patel-05/Booktracking",
+  },
+  {
+    name: "OzempicAI", discipline: "Full-stack engineering", number: "03",
+    description: "An installable health and fitness PWA for logging meals, workouts, weight, and vitals, with analytics and row-level security on every user table.",
+    tools: "React / TypeScript / Supabase / PWA",
+    href: "https://github.com/mihir-patel-05/OzempicAI",
+  },
+  {
+    name: "March Madness predictions", discipline: "Data science", number: "04",
     description: "Analyzing college basketball data and building machine learning models to predict tournament outcomes.",
     tools: "Python / Scikit-learn / Pandas",
     href: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis",
   },
   {
-    name: "War on Drugs: a policy analysis", discipline: "Research & analysis", number: "03",
+    name: "War on Drugs: a policy analysis", discipline: "Research & analysis", number: "05",
     description: "Examining the impact of drug policy through statistical analysis and data visualization.",
     tools: "Python / Statsmodels / Matplotlib",
     href: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy",
-  },
-  {
-    name: "Scanned pages to structured text", discipline: "Applied machine learning", number: "04",
-    description: "Reconstructing technical documents as editable LaTeX and Markdown with a computer-vision pipeline.",
-    tools: "Python / OpenCV / Hugging Face",
-    href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir",
   },
 ];
 
