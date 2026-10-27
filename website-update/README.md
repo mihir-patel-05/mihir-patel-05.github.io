@@ -21,14 +21,14 @@ npm run build
 
 ## Where things live
 
-- `src/content/` is the only place copy and lists change: `site.ts` (intro, the Now line, contact, updated date), `projects.ts`, `experience.ts`, `coursework.ts`, `reading.ts`.
+- `src/content/` is the only place copy and lists change: `site.ts` (greeting, about, section leads, updated date), `projects.ts`, `experience.ts`, `coursework.ts`, `reading.ts`.
 - `src/pages/Index.tsx` lays the content out. `src/styles/paper.css` holds the design tokens and every style.
 - `src/components/ThemeToggle.tsx` is the Dark / Light link in the footer. The page follows the system theme until a choice is saved under `mihir-portfolio-theme` in local storage; `index.html` applies the saved choice before first paint.
 - `public/` has the favicon, the portrait (also the social preview image) and `robots.txt`.
 
 ## Design
 
-Paper: a document. White page, Source Serif 4, deep-navy text and one blue (`#1a4fd6`) for links, the header rule and the email button; a navy page with a lighter blue in dark mode. Two columns from 720px: section labels and dates on the left, content on the right. No cards, icons, motion or component library. The tokens and the reasoning are in the "Mihir Patel Site Redesign" design system.
+Paper: a document. White page, Source Serif 4, deep-navy text and one blue (`#1a4fd6`) for links, the header rule and the email button; a navy page with a lighter blue in dark mode. One centred column: a greeting and first-person about, then Projects as a two-column grid, Experience as short prose per role, Writing, Now and Contact. No cards, icons, motion or component library. The tokens and the reasoning are in the "Mihir Patel Site Redesign" design system.
 
 ## Browser checks
 

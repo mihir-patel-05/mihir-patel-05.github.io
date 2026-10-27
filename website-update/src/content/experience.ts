@@ -1,34 +1,26 @@
-// Roles, newest first. `date` is shown as written; keep it to a year or a range.
-export type Role = { company: string; role: string; date: string; bullets: string[] };
+// Roles, newest first. `summary` is two or three sentences in the first person, not bullets.
+export type Role = { company: string; role: string; date: string; summary: string };
 
 export const experience: Role[] = [
   {
     company: "Meijer",
     role: "Data Science Intern",
-    date: "2026",
-    bullets: [
-      "Unified 20+ behavioural datasets and 3M+ rows into a queryable model on Databricks.",
-      "Built attribution models on the behavioural data.",
-      "Developed a retrieval-grounded analytics agent for non-technical stakeholders.",
-    ],
+    date: "Summer 2026",
+    summary:
+      "I unified more than twenty behavioural datasets, over three million rows, into one queryable model on Databricks, then built attribution models on top of it. I also developed a retrieval-grounded analytics agent so people outside the data team could ask questions of the data directly.",
   },
   {
     company: "Michigan State University",
     role: "Undergraduate Learning Assistant, CMSE 201",
     date: "2026 to present",
-    bullets: [
-      "Support 30+ students a semester in computational modelling and data analysis.",
-      "Lead labs that connect statistics to practical analysis in Python.",
-    ],
+    summary:
+      "I help thirty-plus students a semester get comfortable with Python, computational modelling and data analysis, and lead the labs that connect the statistics to real problems.",
   },
   {
     company: "Voya Financial",
     role: "Data Engineering Intern",
-    date: "2025",
-    bullets: [
-      "Built ingestion pipelines for Oracle datasets with Microsoft Fabric and Apache Spark.",
-      "Developed semantic models and Power BI dashboards for eight cost centres.",
-      "Improved data processing speed by 32%.",
-    ],
+    date: "Summer 2025",
+    summary:
+      "I built ingestion pipelines for Oracle datasets with Microsoft Fabric and Apache Spark, and developed the semantic models and Power BI dashboards behind reporting for eight cost centres. The pipeline work made data processing 32% faster.",
   },
 ];

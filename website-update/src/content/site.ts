@@ -6,10 +6,15 @@ export const site = {
   github: "https://github.com/mihir-patel-05",
   linkedin: "https://www.linkedin.com/in/mihir-patel-a9a19821a/",
   essays: "https://essay-site-one.vercel.app/",
-  intro:
-    "Data Science student at Michigan State University, class of 2027, with a minor in Business. I build analysis and software: most recently a Databricks data model and an analytics agent at Meijer, and Spark ingestion pipelines at Voya Financial. I'm looking for data science and software engineering roles starting 2027.",
-  // Update this every term.
-  now: "Learning assistant for CMSE 201 at Michigan State, supporting 30+ students a semester. Finishing CMSE 382, CSE 482 and STT 465 this fall.",
-  contact: "If you have a problem worth thinking through, email me. I reply within a couple of days.",
+  greeting: "Hi, I'm Mihir.",
+  about: [
+    "I'm a data science student at Michigan State, class of 2027, with a minor in business. I like finding the structure in complicated information and then building something useful with it, which has meant everything from election research tools to attribution models for a grocery chain.",
+    "Right now I'm teaching CMSE 201 as a learning assistant, finishing my last year of coursework, and looking for data science and software engineering roles starting in 2027.",
+  ],
+  projectsLead: "A few things I've built. All of them are on GitHub.",
+  experienceLead: "Where I've worked and what I did there.",
+  writingLead: "I keep essays and longer thoughts on a separate site.",
+  writingLink: "Read the essays",
+  contactLead: "If you have a problem worth thinking through, or just want to compare notes, email me. I reply within a couple of days.",
   updated: "October 2026",
 };
