@@ -1,7 +1,35 @@
-# Mihir Patel — The Library
+# Mihir Patel — personal site
 
-The Vercel preview for `redesign_astra` builds only the library at `/`. The Vite production build uses `index.html` and `src/library-main.tsx`; it does not include the other page entries or their React components.
+One page, built with Vite and React, deployed from this folder by Vercel (`vercel.json` at the repository root builds `website-update/` and publishes `dist/`).
 
-The mountain animation and original redesign remain in `designs/` for local comparison. Run `npm ci` and `npm run dev` in this directory, then open `/designs/mountains.html` or `/designs/original.html`. Their React components and styles remain under `src/`. The `designs/` folder is not a Vite production build input.
+## Run locally
 
-To check the library locally, run `npm run build` and inspect `dist/`, or run `npm run dev` and open `/`. Vercel configuration in this folder and at the repository root supports either project root setting while always publishing only `website-update/dist`.
+```bash
+npm ci
+npm run dev
+```
+
+## Check and build
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+`dist/` holds `index.html`, `404.html`, the stylesheet and one small script.
+
+## Where things live
+
+- `src/content/` is the only place copy and lists change: `site.ts` (intro, the Now line, contact, updated date), `projects.ts`, `experience.ts`, `coursework.ts`, `reading.ts`.
+- `src/pages/Index.tsx` lays the content out. `src/styles/paper.css` holds the design tokens and every style.
+- `src/components/ThemeToggle.tsx` is the Dark / Light link in the footer. The page follows the system theme until a choice is saved under `mihir-portfolio-theme` in local storage; `index.html` applies the saved choice before first paint.
+- `public/` has the favicon, the portrait (also the social preview image) and `robots.txt`.
+
+## Design
+
+Paper: a document. White page, Source Serif 4, deep-navy text and one blue (`#1a4fd6`) for links, the header rule and the email button; a navy page with a lighter blue in dark mode. Two columns from 720px: section labels and dates on the left, content on the right. No cards, icons, motion or component library. The tokens and the reasoning are in the "Mihir Patel Site Redesign" design system.
+
+## Browser checks
+
+Both themes, the saved theme after reload, 320px width, keyboard focus on every link and the toggle, reduced motion, and `/404.html`.

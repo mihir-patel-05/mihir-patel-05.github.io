@@ -3,20 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mihir Patel — The Library</title>
-    <meta name="description" content="Explore Mihir Patel’s Data Science and Software Engineering portfolio through an interactive 3D library." />
-    <meta name="theme-color" content="#120e0c" />
     <meta name="author" content="Mihir Patel" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1726" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <meta property="og:title" content="Mihir Patel — The Library" />
-    <meta property="og:description" content="Data Science and Software Engineering work in an interactive 3D library." />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+    <script>
+      // Apply a saved theme before first paint so the page never flashes the wrong colours.
+      try {
+        var theme = localStorage.getItem("mihir-portfolio-theme");
+        if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+      } catch (e) {}
+    </script>
+    <title>Mihir Patel</title>
+    <meta name="description" content="Data Science student at Michigan State University, class of 2027. Projects, experience and coursework in data science and software engineering." />
+    <meta property="og:title" content="Mihir Patel" />
+    <meta property="og:description" content="Data Science student at Michigan State University, class of 2027. Projects, experience and coursework in data science and software engineering." />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="/linkedin-profile.jpg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Mihir Patel" />
+    <meta name="twitter:description" content="Data Science student at Michigan State University, class of 2027." />
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/library-main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

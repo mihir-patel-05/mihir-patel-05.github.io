@@ -3,16 +3,17 @@
 export type Course = { code: string; title: string; inProgress?: boolean };
 
 export const courseworkSummary = {
+  degree: "B.S. Data Science, minor in Business",
+  graduation: "2027",
   gpa: "3.92",
   credits: 117,
   deansList: 6,
   inProgressTerm: "Fall 2026",
 };
 
-export const courseworkAreas: { name: string; blurb: string; courses: Course[] }[] = [
+export const courseworkAreas: { name: string; courses: Course[] }[] = [
   {
-    name: "Data Science",
-    blurb: "Modeling and analysis, end to end",
+    name: "Data science",
     courses: [
       { code: "STT 180", title: "Introduction to Data Science" },
       { code: "CMSE 201", title: "Computational Modeling & Data Analysis I" },
@@ -24,8 +25,7 @@ export const courseworkAreas: { name: string; blurb: string; courses: Course[] }
     ],
   },
   {
-    name: "Computer Science & AI",
-    blurb: "Programming, algorithms, and learning systems",
+    name: "Computer science and AI",
     courses: [
       { code: "CSE 232", title: "Introduction to Programming II" },
       { code: "CSE 331", title: "Algorithms and Data Structures" },
@@ -35,8 +35,7 @@ export const courseworkAreas: { name: string; blurb: string; courses: Course[] }
     ],
   },
   {
-    name: "Mathematics & Statistics",
-    blurb: "The theory underneath the models",
+    name: "Mathematics and statistics",
     courses: [
       { code: "MTH 132", title: "Calculus I" },
       { code: "MTH 133", title: "Calculus II" },
@@ -47,8 +46,7 @@ export const courseworkAreas: { name: string; blurb: string; courses: Course[] }
     ],
   },
   {
-    name: "Business Minor",
-    blurb: "How organizations decide, operate, and grow",
+    name: "Business minor",
     courses: [
       { code: "BUS 109", title: "Introduction to Business: Digital Society" },
       { code: "MGT 325", title: "Management Skills" },
@@ -59,8 +57,7 @@ export const courseworkAreas: { name: string; blurb: string; courses: Course[] }
     ],
   },
   {
-    name: "Physical Sciences",
-    blurb: "Lab science and quantitative reasoning",
+    name: "Physical sciences",
     courses: [
       { code: "CEM 141", title: "General Chemistry" },
       { code: "CEM 142", title: "General & Inorganic Chemistry" },
@@ -70,8 +67,7 @@ export const courseworkAreas: { name: string; blurb: string; courses: Course[] }
     ],
   },
   {
-    name: "Writing & Perspectives",
-    blurb: "Communication and the wider world",
+    name: "Writing and perspectives",
     courses: [
       { code: "WRA 101", title: "Writing as Inquiry" },
       { code: "IAH 201", title: "U.S. & the World" },
