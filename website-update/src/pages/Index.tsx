@@ -47,9 +47,13 @@ const Index = () => (
           <ul className="project-grid">
             {projects.map(project => (
               <li className="project" key={project.href}>
-                <h3><a href={project.href} target="_blank" rel="noopener noreferrer">{project.name}</a></h3>
+                <h3><a href={project.site ?? project.href} target="_blank" rel="noopener noreferrer">{project.name}</a></h3>
                 <p>{project.description}</p>
                 <p className="meta">{project.tools}</p>
+                <p className="project-links">
+                  {project.site && <a href={project.site} target="_blank" rel="noopener noreferrer">Website ↗</a>}
+                  <a href={project.href} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                </p>
               </li>
             ))}
           </ul>

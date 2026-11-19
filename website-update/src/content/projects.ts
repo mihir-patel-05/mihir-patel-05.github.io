@@ -1,5 +1,13 @@
-// Selected projects, newest first. The title links straight to the repository.
-export type Project = { name: string; description: string; tools: string; href: string };
+// Selected projects. The title links to the live site when there is one, otherwise to the repository.
+export type Project = {
+  name: string;
+  description: string;
+  tools: string;
+  /** The GitHub repository. */
+  href: string;
+  /** The live site, if the project has one. */
+  site?: string;
+};
 
 export const projects: Project[] = [
   {

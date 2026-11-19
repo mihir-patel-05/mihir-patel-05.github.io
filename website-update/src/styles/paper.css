@@ -105,6 +105,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .project h3 { font-size: 22px; line-height: 28px; font-weight: 600; }
 .project p { margin-top: var(--space-2); }
 .project .meta { margin-top: var(--space-2); }
+.project-links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: 15px; line-height: 22px; }
 
 /* Experience: prose per role */
 .roles { max-width: var(--measure); }
