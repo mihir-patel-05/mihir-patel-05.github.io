@@ -1,7 +1,7 @@
 import ThemeToggle from "@/components/ThemeToggle";
 import { courseworkAreas } from "@/content/coursework";
 import { experience } from "@/content/experience";
-import { projects } from "@/content/projects";
+import { currentWork, projects } from "@/content/projects";
 import { currentRead, favorites } from "@/content/reading";
 import { site } from "@/content/site";
 
@@ -57,6 +57,19 @@ const Index = () => (
               </li>
             ))}
           </ul>
+
+          <div className="suite">
+            <h3>In progress: <a href={currentWork.site} target="_blank" rel="noopener noreferrer">{currentWork.name} ↗</a></h3>
+            <p className="lead">{currentWork.tagline} I'm building these now.</p>
+            <ul className="suite-list">
+              {currentWork.products.map(product => (
+                <li key={product.name}>
+                  <p><strong>{product.name}</strong> <span className="meta">· {product.field}</span></p>
+                  <p>{product.summary}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         <section className="section" id="experience" aria-labelledby="experience-title">

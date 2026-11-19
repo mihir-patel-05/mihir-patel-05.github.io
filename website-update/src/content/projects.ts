@@ -44,3 +44,20 @@ export const projects: Project[] = [
     site: "https://decisonmakingsupremecourt-website.vercel.app/",
   },
 ];
+
+// Products I'm building now, under one suite. Copy follows the suite's landing page.
+export type SuiteProduct = { name: string; field: string; summary: string };
+
+export const currentWork = {
+  name: "Mycroft",
+  tagline: "Software for political and policy analysis, where every number carries its source.",
+  site: "https://landingpagesuite-production.up.railway.app/#products",
+  products: [
+    { name: "Whitehall", field: "Elections", summary: "Every federal race on one board: results, maps, the swing between any two elections, and a replay of election night." },
+    { name: "Threadneedle", field: "Prediction markets", summary: "Political prediction markets across venues, with a warning when a market is thin and cited reporting when a price moves." },
+    { name: "Melas", field: "Congress", summary: "Bills, members and roll-call votes, tied to the elections that put those members in office." },
+    { name: "Lombard", field: "Campaign finance", summary: "Where the money in each race came from and where it went, from the first filing to the last ad buy." },
+    { name: "Diogenes", field: "Forecast scoring", summary: "Ratings, polls, markets and models, archived every day and scored once the votes are counted." },
+    { name: "Reichenbach", field: "Scenarios", summary: "A what-if for the House, the Senate or the presidency that can be saved, compared and shared." },
+  ] satisfies SuiteProduct[],
+};

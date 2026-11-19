@@ -107,6 +107,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .project .meta { margin-top: var(--space-2); }
 .project-links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: 15px; line-height: 22px; }
 
+/* In progress: one suite, its products as a short list */
+.suite { margin-top: var(--space-12); }
+.suite h3 { font-size: 22px; line-height: 28px; font-weight: 600; }
+.suite .lead { margin-bottom: var(--space-4); }
+.suite-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-12); }
+.suite-list li { padding: var(--space-4) 0; border-top: var(--hairline) solid var(--paper-rule); }
+.suite-list strong { font-weight: 600; }
+.suite-list p + p { margin-top: var(--space-1); }
+
 /* Experience: prose per role */
 .roles { max-width: var(--measure); }
 .role { padding: var(--space-6) 0; border-top: var(--hairline) solid var(--paper-rule); }
@@ -139,6 +148,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .greeting { font-size: 40px; line-height: 44px; }
   .about { font-size: 18px; line-height: 29px; }
   .project-grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  .suite-list { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
