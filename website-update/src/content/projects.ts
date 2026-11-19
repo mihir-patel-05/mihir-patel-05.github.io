@@ -29,4 +29,11 @@ export const projects: Project[] = [
     tools: "React, TypeScript, Hono, PostgreSQL, PWA, Railway",
     href: "https://github.com/mihir-patel-05/OzempicAI",
   },
+  {
+    name: "ATC Voice Sim",
+    description: "An open-source air traffic control simulator you work by voice. Hold push-to-talk, speak real phraseology, and pilots read back and comply. Radar scope, flight strips and conflict alerts across 19 positions at 8 facilities, with a deterministic engine checking every instruction.",
+    tools: "React, TypeScript, Zustand, Web Workers, OpenAI",
+    href: "https://github.com/mihir-patel-05/ate_sim",
+    site: "https://atesim-website.vercel.app/",
+  },
 ];
