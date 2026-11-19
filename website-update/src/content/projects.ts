@@ -11,27 +11,10 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "VoteInformed",
-    description: "An election research platform that connects candidate records, campaign finance and voting resources in one place.",
-    tools: "React, TypeScript, Express, PostgreSQL",
-    href: "https://github.com/mihir-patel-05/2026Midterms",
-  },
-  {
-    name: "March Madness predictions",
-    description: "College basketball data and machine learning models that predict tournament outcomes.",
-    tools: "Python, scikit-learn, pandas",
-    href: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis",
-  },
-  {
-    name: "War on Drugs: a policy analysis",
-    description: "Statistical analysis and visualisation of the impact of drug policy.",
-    tools: "Python, statsmodels, Matplotlib",
-    href: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy",
-  },
-  {
-    name: "Scanned pages to structured text",
-    description: "A computer-vision pipeline that reconstructs technical documents as editable LaTeX and Markdown.",
-    tools: "Python, OpenCV, Hugging Face",
-    href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir",
+    name: "War Room by VoteInformed",
+    description: "A free election-night dashboard for the 2026 midterms. Live results, poll closing times, prediction-market odds, campaign money and economic data for every House and Senate race, on one screen.",
+    tools: "React, TypeScript, Express, PostgreSQL, Prisma, MapLibre",
+    href: "https://github.com/mihir-patel-05/Mycroft_elections_analysis",
+    site: "https://warroomlanding-testing.up.railway.app/",
   },
 ];
