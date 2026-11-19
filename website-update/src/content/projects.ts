@@ -1,29 +1,63 @@
-// Selected projects, newest first. The title links straight to the repository.
-export type Project = { name: string; description: string; tools: string; href: string };
+// Selected projects. The title links to the live site when there is one, otherwise to the repository.
+export type Project = {
+  name: string;
+  description: string;
+  tools: string;
+  /** The GitHub repository. */
+  href: string;
+  /** The live site, if the project has one. */
+  site?: string;
+};
 
 export const projects: Project[] = [
   {
-    name: "VoteInformed",
-    description: "An election research platform that connects candidate records, campaign finance and voting resources in one place.",
-    tools: "React, TypeScript, Express, PostgreSQL",
-    href: "https://github.com/mihir-patel-05/2026Midterms",
+    name: "War Room by VoteInformed",
+    description: "A free election-night dashboard for the 2026 midterms. Live results, poll closing times, prediction-market odds, campaign money and economic data for every House and Senate race, on one screen.",
+    tools: "React, TypeScript, Express, PostgreSQL, Prisma, MapLibre",
+    href: "https://github.com/mihir-patel-05/Mycroft_elections_analysis",
+    site: "https://warroomlanding-testing.up.railway.app/",
   },
   {
-    name: "March Madness predictions",
-    description: "College basketball data and machine learning models that predict tournament outcomes.",
-    tools: "Python, scikit-learn, pandas",
-    href: "https://github.com/mihir-patel-05/NCAA_College_Basketball_Analysis",
+    name: "Snap-a-Store",
+    description: "Built at Cal Hacks 13.0. Photograph what you want to sell, and Claude proposes names and prices; publish the catalog and share a storefront QR code. Inventory is reserved at checkout and sold only after a verified Square payment.",
+    tools: "Expo, React Native, TypeScript, Claude, Square, SQLite",
+    href: "https://github.com/mihir-patel-05/snap_a_store",
   },
   {
-    name: "War on Drugs: a policy analysis",
-    description: "Statistical analysis and visualisation of the impact of drug policy.",
-    tools: "Python, statsmodels, Matplotlib",
-    href: "https://github.com/mihir-patel-05/Analysis_War_on_Drugs_Policy",
+    name: "OzempicAI",
+    description: "An installable health and fitness tracker: meals and calories, water, weight, workouts with planned splits, meal plans, groceries and a range-based analytics dashboard. Every user table is protected by Postgres row-level security.",
+    tools: "React, TypeScript, Hono, PostgreSQL, PWA, Railway",
+    href: "https://github.com/mihir-patel-05/OzempicAI",
   },
   {
-    name: "Scanned pages to structured text",
-    description: "A computer-vision pipeline that reconstructs technical documents as editable LaTeX and Markdown.",
-    tools: "Python, OpenCV, Hugging Face",
-    href: "https://github.com/mihir-patel-05/ocr-latex-md_mihir",
+    name: "ATC Voice Sim",
+    description: "An open-source air traffic control simulator you work by voice. Hold push-to-talk, speak real phraseology, and pilots read back and comply. Radar scope, flight strips and conflict alerts across 19 positions at 8 facilities, with a deterministic engine checking every instruction.",
+    tools: "React, TypeScript, Zustand, Web Workers, OpenAI",
+    href: "https://github.com/mihir-patel-05/ate_sim",
+    site: "https://atesim-website.vercel.app/",
+  },
+  {
+    name: "The Court of Decision",
+    description: "A judicial-branch simulation. Nine AI justices, each with a distinct philosophy, read your brief, hear an AI opposing counsel, deliberate in private and hand down a written opinion of the court.",
+    tools: "Next.js, TypeScript, Claude, Tailwind CSS",
+    href: "https://github.com/mihir-patel-05/decison_making_supreme_court",
+    site: "https://decisonmakingsupremecourt-website.vercel.app/",
   },
 ];
+
+// Products I'm building now, under one suite. Copy follows the suite's landing page.
+export type SuiteProduct = { name: string; field: string; summary: string };
+
+export const currentWork = {
+  name: "Mycroft",
+  tagline: "Software for political and policy analysis, where every number carries its source.",
+  site: "https://landingpagesuite-production.up.railway.app/#products",
+  products: [
+    { name: "Whitehall", field: "Elections", summary: "Every federal race on one board: results, maps, the swing between any two elections, and a replay of election night." },
+    { name: "Threadneedle", field: "Prediction markets", summary: "Political prediction markets across venues, with a warning when a market is thin and cited reporting when a price moves." },
+    { name: "Melas", field: "Congress", summary: "Bills, members and roll-call votes, tied to the elections that put those members in office." },
+    { name: "Lombard", field: "Campaign finance", summary: "Where the money in each race came from and where it went, from the first filing to the last ad buy." },
+    { name: "Diogenes", field: "Forecast scoring", summary: "Ratings, polls, markets and models, archived every day and scored once the votes are counted." },
+    { name: "Reichenbach", field: "Scenarios", summary: "A what-if for the House, the Senate or the presidency that can be saved, compared and shared." },
+  ] satisfies SuiteProduct[],
+};
