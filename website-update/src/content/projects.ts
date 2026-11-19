@@ -36,4 +36,11 @@ export const projects: Project[] = [
     href: "https://github.com/mihir-patel-05/ate_sim",
     site: "https://atesim-website.vercel.app/",
   },
+  {
+    name: "The Court of Decision",
+    description: "A judicial-branch simulation. Nine AI justices, each with a distinct philosophy, read your brief, hear an AI opposing counsel, deliberate in private and hand down a written opinion of the court.",
+    tools: "Next.js, TypeScript, Claude, Tailwind CSS",
+    href: "https://github.com/mihir-patel-05/decison_making_supreme_court",
+    site: "https://decisonmakingsupremecourt-website.vercel.app/",
+  },
 ];
