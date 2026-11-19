@@ -23,4 +23,10 @@ export const projects: Project[] = [
     tools: "Expo, React Native, TypeScript, Claude, Square, SQLite",
     href: "https://github.com/mihir-patel-05/snap_a_store",
   },
+  {
+    name: "OzempicAI",
+    description: "An installable health and fitness tracker: meals and calories, water, weight, workouts with planned splits, meal plans, groceries and a range-based analytics dashboard. Every user table is protected by Postgres row-level security.",
+    tools: "React, TypeScript, Hono, PostgreSQL, PWA, Railway",
+    href: "https://github.com/mihir-patel-05/OzempicAI",
+  },
 ];
