@@ -43,6 +43,13 @@ export const projects: Project[] = [
     href: "https://github.com/mihir-patel-05/decison_making_supreme_court",
     site: "https://decisonmakingsupremecourt-website.vercel.app/",
   },
+  {
+    name: "Textbook for Claude Code",
+    description: "A Claude Code plugin that turns Claude into a textbook team of ten specialist agents, from a curriculum architect and researchers to independent fact-checkers and an expert reviewer. No agent checks its own work. The result is a typeset PDF with cited charts, worked examples computed in code and a verification appendix.",
+    tools: "Claude Code, Claude, Python, matplotlib, Pandoc, XeLaTeX",
+    href: "https://github.com/mihir-patel-05/Textbook_Creation",
+    site: "https://website-phi-five-74.vercel.app/",
+  },
 ];
 
 // Products I'm building now, under one suite. Copy follows the suite's landing page.
